@@ -5,7 +5,7 @@
 		importEtudiant("userfile");
 	}
 	function importEtudiant($fichier) {
-		$db = new PDO("mysql:host=localhost;dbname=emploi_du_temps;charset=utf8","root","root");
+		$db = new PDO("mysql:host=localhost;dbname=gestioneleve;charset=utf8","root","root");
 		$fp = file_get_contents($_FILES[$fichier]["tmp_name"]);
 		//remplis la table etudiant avec les le fichier csv
 		$reqEtudiant = $db->prepare("INSERT INTO etudiant(ine,id_groupe,nom,prenom) VALUES (:ine, :nom, :prenom, :groupe)");

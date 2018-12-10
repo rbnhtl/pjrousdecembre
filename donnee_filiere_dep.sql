@@ -1,3 +1,10 @@
+INSERT INTO `departement` (`id_departement`, `libelle`) VALUES
+('1', 'Carriere Juridique'),
+('2', 'GEA'),
+('3', 'INFOCOM'),
+('4', 'Informatique'),
+('5', 'QLIO');
+
 INSERT INTO `filiere` (`id_filiere`, `id_departement`, `libelle`) VALUES
 ('11', '1', 'DUT-1A-Carrières juridiques'),
 ('12', '1', 'DUT-2A-Carrières juridiques'),
@@ -21,12 +28,3 @@ INSERT INTO `filiere` (`id_filiere`, `id_departement`, `libelle`) VALUES
 ('52', '5', 'DUT-2A-QLIO'),
 ('53', '5', 'LPRO - Animateur qualité'),
 ('54', '5', 'LPRO - Pilotage Logistique');
-
-
-
-INSERT INTO `departement` (`id_departement`, `libelle`) VALUES
-('1', 'Carriere Juridique'),
-('2', 'GEA'),
-('3', 'INFOCOM'),
-('4', 'Informatique'),
-('5', 'QLIO');
