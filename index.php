@@ -2,7 +2,7 @@
 	include 'Objets/Cour.php';
 	include 'DataManagement.php';
 
-	// On initialise la timezone
+	// On initialise la timezone 
 	// On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
 	// On récupère la liste des timeZone UTC et prend la première etant donné que l'on est en UTC + 0
 	date_default_timezone_set(DateTimeZone::listIdentifiers(DateTimeZone::UTC)[0]);
@@ -39,7 +39,7 @@
 
 		$returnTab = array();
 		// Parcours de tout le tableau
-		for ($j=0 ; $j < $n ; ++$j) { 
+		for ($j=0 ; $j < $n ; ++$j) {
 			/*
 			* Recupère les données de la fonction en preg_match_all
 			*/
