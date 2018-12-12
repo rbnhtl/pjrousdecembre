@@ -2,15 +2,15 @@
 	include 'Objets/Cour.php';
 	include 'DataManagement.php';
 
-	// On initialise la timezone 
+	// On initialise la timezone
 	// On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
 	// On récupère la liste des timeZone UTC et prend la première etant donné que l'on est en UTC + 0
 	date_default_timezone_set(DateTimeZone::listIdentifiers(DateTimeZone::UTC)[0]);
 
-    /*
-	* Recupère un fichier .ics, le parse et en ressors un objet php
-	* Cet objet contient toutes les infos permettant de devenir un cours
-    */
+  /*
+	 * Recupère un fichier .ics, le parse et en ressors un objet php
+	 * Cet objet contient toutes les infos permettant de devenir un cours
+   */
 	function icsExtractor($file) {
 		$calendar = $file;
 
