@@ -14,11 +14,11 @@
 
 	// database configuration parameters
 	$conn = array(
-		'driver' => 'pdo_mysql',
-		'dbname' => 'gestioneleve2',
+		'dbname' => 'gestioneleve',
 		'host' => 'localhost',
 		'user' => 'root',
 		'password' => 'root',
+		'driver' => 'pdo_mysql',
 	);
 
 	// obtaining the entity manager
