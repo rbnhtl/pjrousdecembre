@@ -117,7 +117,29 @@
 		return $returnTab;
 	}
 
+	/* ---------------------------------------------------------------------- */
+	// Démarrage des sessions
+ 	session_start();
 
+	// Détruit la session si elle est déjà ouverte
+	if (isset($_POST["deco"])) {
+		session_unset();
+		session_destroy();
+	}
+
+	// Si le formulaire a été validé, on enregistre les données dans la session
+    if ( isset($_POST["user"]) and $_POST["user"] != "" and
+	 	 isset($_POST["passwd"]) and $_POST["passwd"] != "") {
+
+		$_SESSION["user"] = $_POST["user"];
+		$_SESSION["mdp"] = $_POST["passwd"];
+	}
+
+	if ( isset($_SESSION["user"]) and isset($_SESSION["mdp"]) ) {
+		echo "User : ".$_SESSION["user"]."<br />
+			  Mot de passe : ".$_SESSION["mdp"]."<br />
+			  Id : ".session_id();
+	}
 ?>
 <html>
 <head>
@@ -126,7 +148,17 @@
 </head>
 <body>
 	<?php
-	 	var_dump(icsExtractor(file_get_contents("ICS/QLIO.ics")));
+		// Affichage du test d'extraction ICS
+	 	// var_dump(icsExtractor(file_get_contents("ICS/QLIO.ics")));
 	?>
+	<form id="form" action="index.php" method="post">
+		<br/>
+		Login : <br/>
+		<input type="text" name="user"/> <br/>
+		Mot de passe : <br/>
+		<input type="password" name="passwd"/> <br/>
+		<input type="submit" value="Connexion"/>
+		<input type="submit" name="deco" value="Déconnexion"/>
+	</form>
 </body>
 </html>
