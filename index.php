@@ -145,6 +145,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>ICS Extractor</title>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="style.css" rel="stylesheet"/>
 </head>
 <body>
 	<?php
