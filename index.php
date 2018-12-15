@@ -144,23 +144,44 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>ICS Extractor</title>
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="style.css" rel="stylesheet"/>
+	<title>Connexion</title>
+	<link href="style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
+	<link href="style/style.css" rel="stylesheet"/>
 </head>
 <body>
 	<?php
 		// Affichage du test d'extraction ICS
 	 	// var_dump(icsExtractor(file_get_contents("ICS/QLIO.ics")));
 	?>
-	<form id="form" action="index.php" method="post">
-		<br/>
-		Login : <br/>
-		<input type="text" name="user"/> <br/>
-		Mot de passe : <br/>
-		<input type="password" name="passwd"/> <br/>
-		<input type="submit" value="Connexion"/>
-		<input type="submit" name="deco" value="Déconnexion"/>
-	</form>
+	<!-- Début du contenu de la page -->
+	<div class="container bloc">
+
+		<!-- Ligne d'entête -->
+		<div class="row enBleu">
+			<h1>Les élèves égarés</h1>
+		</div>
+
+		<!-- Ligne du formulaire de connexion -->
+		<div class="row">
+			<!-- Espace à gauche -->
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6">
+				<!-- Formulaire de connexion -->
+				<form id="form" action="index.php" method="post">
+					<br/>
+					<h3>Login</h3>
+					<input type="text" name="user" class="form-control"/> <br/>
+					<h3>Mot de passe</h3>
+					<input type="password" name="passwd" class="form-control"/> <br/>
+					<button type="submit" class="btn bouton">Connexion  <span class="fas fa-sign-in-alt"></span></button>
+					<button type="submit" name="deco" class="btn bouton">Déconnexion  <span class="fas fa-sign-out-alt"></span></button>
+				</form>
+			</div>
+			<!-- Espace à droite -->
+			<div class="col-xs-3"></div>
+		</div>
+
+	</div>
 </body>
 </html>

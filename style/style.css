@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina');
+
+/* Style global de la page avec image de fond */
+body {
+	background-color: #BCCCE5;
+	font-family: 'Baloo Bhaina';
+	line-height: 33px;
+	color: #233656;
+    background-image: url("../img/IndexBackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+	text-align: center;
+}
+
+/* Cadre pour les balise div */
+.bloc {
+    border: solid #7B9BA6 5px;
+    border-radius: 10px;
+    background-color: #EEF4F2;
+    box-shadow: 0px 0px 30px 5px #CDD6D5;
+    margin-top: 200px;
+    height: 500px;
+}
+
+/* Style pour les entêtes de rubriques */
+.enBleu {
+    background-color: #415B76;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+/* Bouton bleu avec texte en blanc */
+.bouton {
+    background-color: #415B76;
+    color: white;
+    width: 200px;
+    height: 40px;
+    padding-top: 10px;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
