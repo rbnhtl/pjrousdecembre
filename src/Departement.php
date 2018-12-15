@@ -6,9 +6,9 @@
  */
 
  /**
-  * @Entity @Table(name="matiere")
+  * @Entity @Table(name="departement")
   **/
-class Matiere
+class Departement
 {
     /** @Id @Column(type="integer") @GeneratedValue **/
     private $id;
@@ -17,8 +17,9 @@ class Matiere
     private $libelle;
 
     // Constructeur de la classe
-    public function Matiere($libelle)
+    public function Departement($id,$libelle)
     {
+        $this->id = $id;
         $this->libelle = $libelle;
     }
 
@@ -28,8 +29,7 @@ class Matiere
     /* Getter et Setter LIBELLE */
     public function getLibelle(){ return $this->libelle; }
 
-    public function setLibelle($libelle) { $this->descSalle = $libelle; }
-
+    public function setLibelle($plibelle){ $this->libelle = $plibelle; }
 }
 
 ?>

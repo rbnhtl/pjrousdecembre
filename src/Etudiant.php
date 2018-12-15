@@ -13,8 +13,11 @@ class Etudiant
 	/** @Id @Column(type="string", length=13) **/
     private $ine;
 
-	/** @Column(type="integer") **/
-    private $id_groupe;
+    /**
+     * @ManyToOne(targetEntity="Groupe")
+     * @JoinColumn(name="idGroupe", referencedColumnName="id")
+     **/
+    private $idGroupe;
 
 	/** @Column(type="string") **/
     private $nom;
@@ -23,7 +26,7 @@ class Etudiant
     private $prenom;
 
     // Constructeur de la classe
-    public function Etudiant($ine,$id_groupe,$nom,$prenom)
+    public function Etudiant($ine,$idGroupe,$nom,$prenom)
     {
         $this->ine = $ine;
         $this->id_groupe = $id_groupe;
@@ -36,6 +39,11 @@ class Etudiant
 
     public function setIne($ine){ $this->ine = $ine; }
 
+    /* Getter et Setter ID_GROUPE */
+    public function getIdGroupe() { return $this->idGroupe; }
+
+    public function setIdGroupe($idGroupe){ $this->idGroupe = $idGroupe; }
+
     /* Getter et Setter NOM */
     public function getNom(){ return $this->nom; }
 
@@ -45,11 +53,6 @@ class Etudiant
     public function getPrenom() { return $this->prenom; }
 
     public function setPrenom($prenom){ $this->prenom = $prenom; }
-
-    /* Getter et Setter ID_GROUPE */
-    public function getIdGroupe() { return $this->id_groupe; }
-
-    public function setIdGroupe($id_groupe){ $this->id_groupe = $id_groupe; }
 }
 
 ?>

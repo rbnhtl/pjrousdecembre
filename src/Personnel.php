@@ -30,7 +30,7 @@ class Personnel
         $this->prenom = $prenom;
     }
 
-    /* Getter et Setter ID */
+    /* Getter ID */
     public function getIdPersonnel(){ return $this->id; }
 
     /* Getter et Setter NOM */

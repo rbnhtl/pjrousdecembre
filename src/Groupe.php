@@ -6,19 +6,26 @@
  */
 
  /**
-  * @Entity @Table(name="role")
+  * @Entity @Table(name="groupe")
   **/
-class Role
+class Groupe
 {
     /** @Id @Column(type="integer") @GeneratedValue **/
     private $id;
+
+    /**
+     * @ManyToOne(targetEntity="Filiere")
+     * @JoinColumn(name="idFiliere", referencedColumnName="id")
+     **/
+    private $idFiliere;
 
     /** @Column(type="string") **/
     private $libelle;
 
     // Constructeur de la classe
-    public function Role($libelle)
+    public function Groupe($idFiliere,$libelle)
     {
+        $this->idFiliere = $idFiliere;
         $this->libelle = $libelle;
     }
 
@@ -29,6 +36,11 @@ class Role
     public function getLibelle(){ return $this->libelle; }
 
     public function setLibelle($libelle){ $this->libelle = $libelle; }
+
+    /* Getter et Setter ID_FILIERE */
+    public function getIdFiliere(){ return $this->idFiliere; }
+
+    public function setIdFiliere($idFiliere){ $this->idFiliere = $idFiliere; }
 }
 
 ?>

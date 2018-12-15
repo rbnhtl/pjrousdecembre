@@ -12,14 +12,14 @@ class Remplit
 {
     /**
      * @Id
-     * @OneToOne(targetEntity="Personnel")
+     * @ManyToOne(targetEntity="Personnel")
      * @JoinColumn(name="idPersonnel", referencedColumnName="id")
      **/
     private $idPersonnel;
 
     /**
      * @Id
-     * @OneToOne(targetEntity="Role")
+     * @ManyToOne(targetEntity="Role")
      * @JoinColumn(name="idRole", referencedColumnName="id")
      **/
     private $idRole;
