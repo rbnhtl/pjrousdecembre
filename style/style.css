@@ -18,12 +18,11 @@ body {
     border-radius: 10px;
     background-color: #EEF4F2;
     box-shadow: 0px 0px 30px 5px #CDD6D5;
-    margin-top: 200px;
-    height: 500px;
+    margin-top: 8%;
 }
 
 /* Style pour les entêtes de rubriques */
-.enBleu {
+.enteteRubrique {
     background-color: #415B76;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
@@ -39,4 +38,26 @@ body {
     font-size: 18px;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+/* Customisation des inputText */
+.inputText:hover, .inputText:focus {
+	border: 1px solid #415B76;
+}
+
+/* Mise en forme du tableau de planning */
+.planning {
+	text-align: center;
+}
+
+/* Menu de recherche pour le planning */
+.menuPlanning {
+	padding: 10px 0px 10px 12px;
+}
+
+.sousMenuPlanning {
+    border: solid #7B9BA6 2px;
+    border-radius: 5px;
+    background-color: #EEF4F2;
+	margin-bottom: 30px;
 }
