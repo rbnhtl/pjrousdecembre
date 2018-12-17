@@ -14,6 +14,9 @@ class Personnel
     private $id;
 
     /** @Column(type="string") **/
+    private $login;
+
+    /** @Column(type="string") **/
     private $mdp;
 
     /** @Column(type="string") **/
@@ -23,8 +26,9 @@ class Personnel
     private $prenom;
 
     // Constructeur de la classe
-    public function Personnel($mdp,$nom,$prenom)
+    public function Personnel($login,$mdp,$nom,$prenom)
     {
+        $this->login = $login;
         $this->mdp = $mdp;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -42,6 +46,11 @@ class Personnel
     public function getPrenom(){ return $this->prenom; }
 
     public function setPrenom($prenom){ $this->prenom = $prenom; }
+
+    /* Getter et Setter LOGIN */
+    public function getLogin(){ return $this->login; }
+
+    public function setLogin($login){ $this->login = $login; }
 
     /* Getter et Setter MDP */
     public function getMdp(){ return $this->mdp; }
