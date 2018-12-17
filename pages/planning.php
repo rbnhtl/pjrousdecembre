@@ -23,37 +23,47 @@
 
                 <!-- Menu de sélection du groupe -->
                 <div class="col-xs-12 sousMenuPlanning">
-                    <br/>
-                    Dépatement<br/>
-                    <select class="" name="departement">
+                    Département<br/>
+                    <select class="form-control" name="departement">
                         <option value="defaut"></option>
                         <option value="dep1">Informatique</option>
                         <option value="dep2">QLIO</option>
                         <option value="dep3">Info-com</option>
                         <option value="dep4">GEA</option>
                         <option value="dep5">Carrière juridique</option>
-                    </select><br/><br/>
+                    </select>
                     Groupe<br/>
-                    <select class="" name="groupe">
+                    <select class="form-control" name="groupe">
                         <option value="defaut"></option>
                         <option value="gr1">DUT 1</option>
                         <option value="gr2">DUT 2</option>
                         <option value="gr3">LP MMS</option>
-                    </select><br/><br/>
+                    </select><br/>
                 </div>
 
                 <!-- Menu de sélection de la semaine -->
                 <div class="col-xs-12 sousMenuPlanning">
-                    <br/>
                     Semaine<br/>
-                    <select class="" name="departement">
+                    <select class="form-control" name="departement">
                         <option value="defaut"></option>
-                        <option value="dep1">Informatique</option>
-                        <option value="dep2">QLIO</option>
-                        <option value="dep3">Info-com</option>
-                        <option value="dep4">GEA</option>
-                        <option value="dep5">Carrière juridique</option>
-                    </select><br/><br/>
+                        <option value="sem1">Semaine</option>
+                        <option value="sem2">Semaine</option>
+                        <option value="sem3">Semaine</option>
+                        <option value="sem4">Semaine</option>
+                        <option value="sem5">Semaine</option>
+                    </select><br/>
+                </div>
+
+				<!-- Menu de sélection des étudiants -->
+                <div class="col-xs-12 sousMenuPlanning listeEleves">
+                    <div>Norbert <input type="checkbox"/><br/></div>
+                    <div>Roger <input type="checkbox"/><br/></div>
+                    <div>Jean-Pierre <input type="checkbox"/><br/></div>
+                    <div>Louis <input type="checkbox"/><br/></div>
+                    <div>André <input type="checkbox"/><br/></div>
+                    <div>Paul <input type="checkbox"/><br/></div>
+                    <div>Claude <input type="checkbox"/><br/></div>
+                    <div>Michel <input type="checkbox"/><br/></div>
                 </div>
 
             </div>
@@ -74,7 +84,7 @@
                     <tr><td>16h00</td><td></td><td></td><td></td><td></td><td></td></tr>
                     <tr><td>17h00</td><td></td><td></td><td></td><td></td><td></td></tr>
                     <tr><td>18h00</td><td></td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>19h00</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr class="derniereLigneTableau"><td>19h00</td><td></td><td></td><td></td><td></td><td></td></tr>
                 </table>
                 <br/>
             </div>
