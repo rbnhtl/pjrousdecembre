@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 17, 2018 at 05:46 PM
+-- Generation Time: Dec 18, 2018 at 09:41 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -53,9 +53,7 @@ CREATE TABLE `cours` (
   `id` int(11) NOT NULL,
   `dateDebut` datetime NOT NULL,
   `dateFin` datetime NOT NULL,
-  `idMatiere` int(11) DEFAULT NULL,
-  `idGroupe` int(11) DEFAULT NULL,
-  `numSalle` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL
+  `idMatiere` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -66,8 +64,7 @@ CREATE TABLE `cours` (
 
 CREATE TABLE `departement` (
   `id` int(11) NOT NULL,
-  `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idAdministratif` int(11) DEFAULT NULL
+  `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -92,7 +89,8 @@ CREATE TABLE `etudiant` (
 CREATE TABLE `filiere` (
   `id` int(11) NOT NULL,
   `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idDep` int(11) DEFAULT NULL
+  `idDep` int(11) DEFAULT NULL,
+  `idAdministratif` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -116,6 +114,28 @@ CREATE TABLE `groupe` (
 CREATE TABLE `matiere` (
   `id` int(11) NOT NULL,
   `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `occupe`
+--
+
+CREATE TABLE `occupe` (
+  `numSalle` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `idCours` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `participe`
+--
+
+CREATE TABLE `participe` (
+  `idGroupe` int(11) NOT NULL,
+  `idCours` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -161,7 +181,8 @@ CREATE TABLE `role` (
 --
 
 CREATE TABLE `salle` (
-  `num` varchar(5) COLLATE utf8_unicode_ci NOT NULL
+  `num` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -189,16 +210,13 @@ ALTER TABLE `anime`
 --
 ALTER TABLE `cours`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_FDCA8C9C80AD3CB8` (`idMatiere`),
-  ADD KEY `IDX_FDCA8C9C67A824BB` (`idGroupe`),
-  ADD KEY `IDX_FDCA8C9CE30D28AD` (`numSalle`);
+  ADD KEY `IDX_FDCA8C9C80AD3CB8` (`idMatiere`);
 
 --
 -- Indexes for table `departement`
 --
 ALTER TABLE `departement`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_C1765B63DEBB2984` (`idAdministratif`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `etudiant`
@@ -212,7 +230,8 @@ ALTER TABLE `etudiant`
 --
 ALTER TABLE `filiere`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_2ED05D9ED95849B7` (`idDep`);
+  ADD KEY `IDX_2ED05D9ED95849B7` (`idDep`),
+  ADD KEY `IDX_2ED05D9EDEBB2984` (`idAdministratif`);
 
 --
 -- Indexes for table `groupe`
@@ -226,6 +245,22 @@ ALTER TABLE `groupe`
 --
 ALTER TABLE `matiere`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `occupe`
+--
+ALTER TABLE `occupe`
+  ADD PRIMARY KEY (`numSalle`,`idCours`),
+  ADD KEY `IDX_FFBC0FC6E30D28AD` (`numSalle`),
+  ADD KEY `IDX_FFBC0FC6EA0ECF81` (`idCours`);
+
+--
+-- Indexes for table `participe`
+--
+ALTER TABLE `participe`
+  ADD PRIMARY KEY (`idGroupe`,`idCours`),
+  ADD KEY `IDX_9FFA8D467A824BB` (`idGroupe`),
+  ADD KEY `IDX_9FFA8D4EA0ECF81` (`idCours`);
 
 --
 -- Indexes for table `personnel`
@@ -319,15 +354,7 @@ ALTER TABLE `anime`
 -- Constraints for table `cours`
 --
 ALTER TABLE `cours`
-  ADD CONSTRAINT `FK_FDCA8C9C67A824BB` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`id`),
-  ADD CONSTRAINT `FK_FDCA8C9C80AD3CB8` FOREIGN KEY (`idMatiere`) REFERENCES `matiere` (`id`),
-  ADD CONSTRAINT `FK_FDCA8C9CE30D28AD` FOREIGN KEY (`numSalle`) REFERENCES `salle` (`num`);
-
---
--- Constraints for table `departement`
---
-ALTER TABLE `departement`
-  ADD CONSTRAINT `FK_C1765B63DEBB2984` FOREIGN KEY (`idAdministratif`) REFERENCES `personnel` (`id`);
+  ADD CONSTRAINT `FK_FDCA8C9C80AD3CB8` FOREIGN KEY (`idMatiere`) REFERENCES `matiere` (`id`);
 
 --
 -- Constraints for table `etudiant`
@@ -339,13 +366,28 @@ ALTER TABLE `etudiant`
 -- Constraints for table `filiere`
 --
 ALTER TABLE `filiere`
-  ADD CONSTRAINT `FK_2ED05D9ED95849B7` FOREIGN KEY (`idDep`) REFERENCES `departement` (`id`);
+  ADD CONSTRAINT `FK_2ED05D9ED95849B7` FOREIGN KEY (`idDep`) REFERENCES `departement` (`id`),
+  ADD CONSTRAINT `FK_2ED05D9EDEBB2984` FOREIGN KEY (`idAdministratif`) REFERENCES `personnel` (`id`);
 
 --
 -- Constraints for table `groupe`
 --
 ALTER TABLE `groupe`
   ADD CONSTRAINT `FK_4B98C213E69366C` FOREIGN KEY (`idFiliere`) REFERENCES `filiere` (`id`);
+
+--
+-- Constraints for table `occupe`
+--
+ALTER TABLE `occupe`
+  ADD CONSTRAINT `FK_FFBC0FC6E30D28AD` FOREIGN KEY (`numSalle`) REFERENCES `salle` (`num`),
+  ADD CONSTRAINT `FK_FFBC0FC6EA0ECF81` FOREIGN KEY (`idCours`) REFERENCES `cours` (`id`);
+
+--
+-- Constraints for table `participe`
+--
+ALTER TABLE `participe`
+  ADD CONSTRAINT `FK_9FFA8D467A824BB` FOREIGN KEY (`idGroupe`) REFERENCES `groupe` (`id`),
+  ADD CONSTRAINT `FK_9FFA8D4EA0ECF81` FOREIGN KEY (`idCours`) REFERENCES `cours` (`id`);
 
 --
 -- Constraints for table `remplit`
