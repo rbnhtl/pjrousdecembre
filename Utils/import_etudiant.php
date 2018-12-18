@@ -15,7 +15,7 @@
 			// $reqEtudiant->bindParam(":ine",$champs[0]);
 			// $reqEtudiant->bindParam(":nom",$champs[1]);
 			// $reqEtudiant->bindParam(":prenom",$champs[2]);
-			// $reqEtudiant->bindParam(":groupe",$champs[3]);
+			// $reqEtudiant->bindParam(":groupe",$champs[3]); 
 			try {
 				$reqEtudiant->execute(array(':ine' => $champs[0], ':nom' => $champs[1], ':prenom' => $champs[2], ':groupe' => intval($champs[3])));
 				echo("Etudiant ajouté en BD<br>");
