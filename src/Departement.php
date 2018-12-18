@@ -16,18 +16,11 @@ class Departement
     /** @Column(type="string") **/
     private $libelle;
 
-    /**
-     * @ManyToOne(targetEntity="Personnel")
-     * @JoinColumn(name="idAdministratif", referencedColumnName="id")
-     **/
-    private $idAdministratif;
-
     // Constructeur de la classe
-    public function Departement($id,$libelle, $idAdministratif)
+    public function Departement($id,$libelle)
     {
         $this->id = $id;
         $this->libelle = $libelle;
-        $this->idAdministratif = $idAdministratif;
     }
 
     /* Getter ID */
@@ -37,11 +30,6 @@ class Departement
     public function getLibelle(){ return $this->libelle; }
 
     public function setLibelle($libelle){ $this->libelle = $libelle; }
-
-    /* Getter et Setter ID_ADMINISTRATIF */
-    public function getIdAdministratif(){ return $this->idAdministratif; }
-
-    public function setIdAdministratif($idAdministratif){ $this->idAdministratif = $idAdministratif; }
 }
 
 ?>

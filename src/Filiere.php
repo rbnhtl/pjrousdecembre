@@ -22,11 +22,18 @@ class Filiere
     /** @Column(type="string") **/
     private $libelle;
 
+    /**
+     * @ManyToOne(targetEntity="Personnel")
+     * @JoinColumn(name="idAdministratif", referencedColumnName="id")
+     **/
+    private $idAdministratif;
+
     // Constructeur de la classe
-    public function Filiere($idDep,$libelle)
+    public function Filiere($idDep,$libelle, $idAdministratif)
     {
         $this->idDep = $idDep;
         $this->libelle = $libelle;
+        $this->idAdministratif = $idAdministratif;
     }
 
     /* Getter ID */
@@ -41,6 +48,11 @@ class Filiere
     public function getLibelle() { return $this->libelle; }
 
     public function setLibelle($libelle){ $this->libelle = $libelle; }
+
+    /* Getter et Setter ID_ADMINISTRATIF */
+    public function getIdAdministratif(){ return $this->idAdministratif; }
+
+    public function setIdAdministratif($idAdministratif){ $this->idAdministratif = $idAdministratif; }
 
 }
 
