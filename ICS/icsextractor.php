@@ -90,6 +90,7 @@
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
 			$allSalles = explode(":", $salleTab[0][$j]);
 
+	  //recup de l'ensemble des salles
       $allsalles = explode("\,", $allSalles[1]);
 
       foreach ($allSalles as $salles) {
