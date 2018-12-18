@@ -69,7 +69,7 @@
 
 
 			//Intialisation des chaines de caractère pour catégoriser les cours
-			$promo = "";
+			$groupes = "";
 			$prof = array();
 			// Si il manque des infos alors on rajoutera les informations qui en découle
 			for ($i = 0; $i < sizeof($descCours); $i++) {
@@ -78,7 +78,39 @@
 				if(stripos($descCours[$i], " ") and preg_match('~[0-9]~', $descCours[$i]) === 0 and preg_match('~-~', $descCours[$i]) === 0) {
 					$prof[] = $descCours[$i];
 				} else {
-					$promo .= $descCours[$i]."\\n";
+					$groupes .= $descCours[$i]."\\n";
+
+					//On recherche l'id du groupe
+					$idGroupe = findGroupeByName($descCours[$i]);
+
+					if($idGroupe==-1){
+						//Créer le groupe
+
+						//Récupération du nom de la filière
+						$pos = strpos($descCours[$i], "TD");
+						if ($pos === false) {
+							$pos = strpos($descCours[$i], "TP");
+							if ($pos === false) {
+								$pos = strpos($descCours[$i], "CM");
+								if ($pos === false) {
+									$pos = strpos($descCours[$i], "01");
+								}
+							}
+						}
+    				$nomFiliere = substr($descCours[$i], 0, -$pos);
+
+						//Récupération de sa filière
+						$idFiliere = findFiliereByName($nomFiliere);
+
+						if($idFiliere == -1){
+							//Créer la filière
+						}
+
+						//insertGroupe($descCours[$i], $idFiliere);
+					} else {
+						//insertParticipe($idCours, $idGroupe);
+					}
+
 				}
 			}
 
@@ -90,21 +122,25 @@
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
 			$allSalles = explode(":", $salleTab[0][$j]);
 
-	  //recup de l'ensemble des salles
+	  	//recup de l'ensemble des salles
       $allsalles = explode("\,", $allSalles[1]);
 
       foreach ($allSalles as $salles) {
-        // Sépare le numéro de salle et sa descritpion
+        // Sépare le numéro de salle et sa description
   			$salle = explode(" ",$salles[1]);
   			//Recupère le num de la salle
   			$numSalle = $salle[0];
   			//Initialize la variable $descSalle a une chaine prédéfini si non de description
   			$descSalle = "";
   			if (sizeof($salle) > 1) {
-  				$descSalle = "(".$salle[1]." ".$salle[2].")";
+  				$descSalle = $salle[1]." ".$salle[2];
   			}
-      }
 
+				//On vérifie si la salle éxiste, sinon on l'a créer
+				if(!salleExiste($numSalle)){
+					createSalle($numSalle, $descSalle);
+				}
+      }
       unset($salles);
 
 			// format les données entre elles
@@ -117,7 +153,7 @@
 			$dateTimeF->setTime($heureF, $minF);
 
 			// ajoute le nouvel objet de cours au tableau de cours a return
-			$returnTab[$j] = new Cours($titreCours, $numSalle, $descSalle, $prof, $promo, $dateTimeD, $dateTimeF);;
+			$returnTab[$j] = new Cours($titreCours, $numSalle, $prof, $promo, $dateTimeD, $dateTimeF);;
 		}
 
 		return $returnTab;
