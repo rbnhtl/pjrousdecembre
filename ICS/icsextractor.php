@@ -82,34 +82,7 @@
 
 					//On recherche l'id du groupe
 					$idGroupe = findGroupeByName($descCours[$i]);
-
-					if($idGroupe==-1){
-						//Créer le groupe
-
-						//Récupération du nom de la filière
-						$pos = strpos($descCours[$i], "TD");
-						if ($pos === false) {
-							$pos = strpos($descCours[$i], "TP");
-							if ($pos === false) {
-								$pos = strpos($descCours[$i], "CM");
-								if ($pos === false) {
-									$pos = strpos($descCours[$i], "01");
-								}
-							}
-						}
-    				$nomFiliere = substr($descCours[$i], 0, -$pos);
-
-						//Récupération de sa filière
-						$idFiliere = findFiliereByName($nomFiliere);
-
-						if($idFiliere == -1){
-							//Créer la filière
-						}
-
-						//insertGroupe($descCours[$i], $idFiliere);
-					} else {
-						//insertParticipe($idCours, $idGroupe);
-					}
+				//insertParticipe($idCours, $idGroupe);
 
 				}
 			}
