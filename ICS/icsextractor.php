@@ -78,11 +78,11 @@
 				if(stripos($descCours[$i], " ") and preg_match('~[0-9]~', $descCours[$i]) === 0 and preg_match('~-~', $descCours[$i]) === 0) {
 					$prof[] = $descCours[$i];
 				} else {
-					$groupes .= $descCours[$i]."\\n";
+					$allGroupes .= $descCours[$i]."\\n";
 
 					//On recherche l'id du groupe
 					$idGroupe = findGroupeByName($descCours[$i]);
-				//insertParticipe($idCours, $idGroupe);
+					//insertParticipe($idCours, $idGroupe);
 
 				}
 			}
@@ -91,6 +91,26 @@
 			if(sizeof($prof) == 0) {
 				$prof[] = "non déterminé";
 			}
+
+			// format les données entre elles
+			$dateD = $anneeD."-".$moisD."-".$jourD;
+			$dateTimeD = new DateTime($dateD);
+			$dateTimeD->setTime($heureD, $minD);
+
+			$dateF = $anneeF."-".$moisF."-".$jourF;
+			$dateTimeF = new DateTime($dateF);
+			$dateTimeF->setTime($heureF, $minF);
+
+			// créer le nouvel objet de cours
+			$cours = new Cours();
+			$cours->save();
+
+			//Récupération de l'ID du cours qui vient d'être créé
+			$idCours = ???->findBy(array(), array('id' => 'desc'),1,0)
+
+			//
+			// Gestion des salles et de la table Occupe
+			//
 
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
 			$allSalles = explode(":", $salleTab[0][$j]);
@@ -112,24 +132,37 @@
 				//On vérifie si la salle éxiste, sinon on l'a créer
 				if(!salleExiste($numSalle)){
 					createSalle($numSalle, $descSalle);
+				} else {
+					$occupe = new Occupe();
+					$occupe->numSalle = $numSalle;
+					$occupe->idCours = $idCours;
+					$occupe->save();
 				}
       }
       unset($salles);
 
-			// format les données entre elles
-			$dateD = $anneeD."-".$moisD."-".$jourD;
-			$dateTimeD = new DateTime($dateD);
-			$dateTimeD->setTime($heureD, $minD);
+			//
+			// Gestion des groupes et de la table Participe
+			//
+      $groupes = explode("\\n,", $allGroupes);
 
-			$dateF = $anneeF."-".$moisF."-".$jourF;
-			$dateTimeF = new DateTime($dateF);
-			$dateTimeF->setTime($heureF, $minF);
+      foreach ($groupes as $groupe) {
+  			//Recupère le nom du groupe
+  			$nomGroupe = $groupe[0];
 
-			// ajoute le nouvel objet de cours au tableau de cours a return
-			$returnTab[$j] = new Cours($titreCours, $numSalle, $prof, $promo, $dateTimeD, $dateTimeF);;
+				//On vérifie si la salle éxiste, sinon on l'a créer
+				if(!salleExiste($numSalle)){
+					createSalle($numSalle, $descSalle);
+				} else {
+					$participe = new Particpe();
+					$participe->$idGroupe = ???->findOneBy(array('nom' => $nomGroupe));;
+					$participe->idCours = $idCours;
+					$participe->save();
+				}
+      }
+      unset($groupe);
+
 		}
-
-		return $returnTab;
 	}
 
 		// Affichage du test d'extraction ICS
