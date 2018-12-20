@@ -1,6 +1,10 @@
 <?php
 	include '../src/Cours.php';
-  include '../fonction.php';
+	include '../src/Matiere.php';
+	include '../src/Groupe.php';
+	include '../src/Salle.php';
+	include '../src/Occupe.php';
+	include '../src/Participe.php';
 
 	// On initialise la timezone
 	// On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
@@ -96,16 +100,20 @@
 			$dateTimeF = new DateTime($dateF);
 			$dateTimeF->setTime($heureF, $minF);
 
-			// créer le nouvel objet de cours
+			//Récupération de l'id de la matière
+			$matiereManager = $this->getDoctrine()->getRepository(Matiere::class);
+			// Recherche du groupe correspondant au nom
+			$matiereDB = $matiereManager->findOneBy(['libelle' => "$matiere"]);
 
-			/***************************************************/
+			// créer le nouvel objet de cours
 			$cours = new Cours();
+			$cours->dateDebut = $dateTimeD;
+			$cours->dateFin = $dateTimeF;
+			$cours->idMatiere = $matiereDB.id;
 			$cours->save();
 
-
-			/***************************************************/
 			//Récupération de l'ID du cours qui vient d'être créé
-			$idCours = ???->findBy(array(), array('id' => 'desc'),1,0)
+			$idCours = $cours->getId();
 
 
 			//******************************************//
@@ -129,9 +137,17 @@
   				$descSalle = $salle[1]." ".$salle[2];
   			}
 
+				$salleManager = $this->getDoctrine()->getRepository(Salle::class);
+
+				// Recherche de la Salle correspondante au numero de salle
+				$salleDB = $salleManager->find("$numSalle");
+
 				//On vérifie si la salle éxiste, sinon on l'a créer
-				if(!salleExiste($numSalle)){
-					createSalle($numSalle, $descSalle);
+				if($salleDB.isNull())){
+					$newSalle = new Salle();
+					$newSalle->numSalle = $numSalle;
+					$newSalle->description = $descSalle;
+					$newSalle->save();
 				} else {
 					$occupe = new Occupe();
 					$occupe->numSalle = $numSalle;
@@ -151,9 +167,12 @@
   			$nomGroupe = $groupe[0];
 
 				$participe = new Particpe();
-				
-				/***************************************************/
-				$participe->$idGroupe = ???->findBy(array('nom' => $nomGroupe));; //Récup de l'ID du groupe en fonction du nom
+
+				$groupeManager = $this->getDoctrine()->getRepository(Groupe::class);
+				// Recherche du groupe correspondant au nom
+				$grpDB = $groupeManager->findOneBy(['libelle' => "$nomGroupe"]);
+
+				$participe->$idGroupe = $grpDB.id;
 				$participe->idCours = $idCours;
 				$participe->save();
       }
@@ -161,6 +180,3 @@
 
 		}
 	}
-
-		// Affichage du test d'extraction ICS
-	 	// var_dump(icsExtractor(file_get_contents("ICS/QLIO.ics")));
