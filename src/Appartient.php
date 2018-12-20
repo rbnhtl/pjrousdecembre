@@ -6,9 +6,9 @@
  */
 
  /**
-  * @Entity @Table(name="participe")
+  * @Entity @Table(name="appartient")
   **/
-class Participe
+class Appartient
 {
     /**
      * @Id
@@ -19,16 +19,16 @@ class Participe
 
     /**
      * @Id
-     * @ManyToOne(targetEntity="Cours")
-     * @JoinColumn(name="cours", referencedColumnName="id")
+     * @ManyToOne(targetEntity="Etudiant")
+     * @JoinColumn(name="etudiant", referencedColumnName="ine")
      **/
-    private $cours;
+    private $etudiant;
 
     // Constructeur de la classe
-    public function Role($groupe, $cours)
+    public function Role($groupe, $etudiant)
     {
         $this->groupe = $groupe;
-        $this->cours = $cours;
+        $this->etudiant = $etudiant;
     }
 
     /* Getter et Setter GROUPE */
@@ -36,10 +36,10 @@ class Participe
 
     public function setGroupe($groupe){ $this->groupe = $groupe; }
 
-    /* Getter et Setter COURS */
-    public function getCours(){ return $this->cours; }
+    /* Getter et Setter ETUDIANT */
+    public function getEtudiant(){ return $this->etudiant; }
 
-    public function setCours($cours){ $this->cours = $cours; }
+    public function setEtudiant($etudiant){ $this->etudiant = $etudiant; }
 }
 
 ?>

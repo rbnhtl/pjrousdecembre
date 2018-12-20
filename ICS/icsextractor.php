@@ -6,65 +6,82 @@
 	include '../src/Occupe.php';
 	include '../src/Participe.php';
 
+	// On récupère l'entity manager de l'orm doctrine
+	require_once "../bootstrap.php";
+
 	// On initialise la timezone
 	// On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
 	// On récupère la liste des timeZone UTC et prend la première etant donné que l'on est en UTC + 0
 	date_default_timezone_set(DateTimeZone::listIdentifiers(DateTimeZone::UTC)[0]);
 
-  /*
-	 * Recupère un fichier .ics, le parse et en ressors un objet php
+    /*
+	 * Recupère un fichier .ics, le parse et en ressort un objet php
 	 * Cet objet contient toutes les infos permettant de devenir un cours
-   */
+     */
 	function icsExtractor($file) {
-		$calendar = $file;
+		global $entityManager;
+		//Tableau qui contient toutes les lignes du fichier ics lu
+		$calendar = file($file);
 
-		//Préparation des recherche dans le fichier ics
-		$intituleCours = "/SUMMARY:(.*)/";
-		$dateCours = "/DTSTART:(.*)/";
-		$dateCoursFin = "/DTEND:(.*)/";
-		$descCours = "/DESCRIPTION:(.*)/";
-		$location = "/LOCATION:(.*)/";
+		//Préparation des recherches dans le fichier ics
+		$intituleCours = "SUMMARY:";
+		$dateCours = "DTSTART:";
+		$dateCoursFin = "DTEND:";
+		$descCours = "DESCRIPTION:";
+		$location = "LOCATION:";
 
-		// n sera le nombre d'élément du fichier ICS
-		// recupère dans le tableau $coursTab tout les noms de cours
-		$n = preg_match_all($intituleCours, $calendar, $coursTab, PREG_PATTERN_ORDER);
+		// Nombre d'objets cours
+		$n = 0;
 
-		// récupère dans le tableau dateTab tout les élements composant de la date début
-		preg_match_all($dateCours, $calendar, $dateTab, PREG_PATTERN_ORDER);
+		//Tableaux pour stocker les lignes de chaque cours
+		$coursTab = array();
+		$dateTab = array();
+		$dateTabEnd = array();
+		$descTab = array();
+		$salleTab = array();
 
-		// recupère dans le tableau dateTabEnd tout les éléments composant de la date de fin
-		preg_match_all($dateCoursFin, $calendar, $dateTabEnd, PREG_PATTERN_ORDER);
+		// Parcours le fichier et range toutes les lignes dans des tableaux spécifiques
+		foreach($calendar as $ligne){
+			// Compte le nombre total d'objets dans le fichier
+			// Chaque ligne contenant la chaine "SUMMARY:" est ajoutée au tableau coursTab
+			if(strpos($ligne, $intituleCours) !== FALSE){
+				array_push($coursTab, $ligne);
+				$n++;
+			// Chaque ligne contenant la chaine "DTSTART:" est ajoutée au tableau dateTab
+			} else if (strpos($ligne, $dateCours) !== FALSE) {
+				array_push($dateTab, $ligne);
+			// Chaque ligne contenant la chaine "DTEND:" est ajoutée au tableau dateTabEnd
+			} else if (strpos($ligne, $dateCoursFin) !== FALSE) {
+				array_push($dateTabEnd, $ligne);
+			// Chaque ligne contenant la chaine "DESCRIPTION:" est ajoutée au tableau descTab
+			} else if (strpos($ligne, $descCours) !== FALSE) {
+				array_push($descTab, $ligne);
+			// Chaque ligne contenant la chaine "LOCATION:" est ajoutée au tableau salleTab
+			} else if (strpos($ligne, $location) !== FALSE) {
+				array_push($salleTab, $ligne);
+			}
+		}
 
-		// récupère dans le tableau descTab tout les éléments composant la description des cours (nomProf, promo)
-		preg_match_all($descCours, $calendar, $descTab, PREG_PATTERN_ORDER);
-
-		//recupère la salle de cours
-		preg_match_all($location, $calendar, $salleTab, PREG_PATTERN_ORDER);
-
-		$returnTab = array();
-		// Parcours de tout le tableau
+		// Parcours de tout les tableaux en fonction du nombre de cours trouvés
 		for ($j=0 ; $j < $n ; ++$j) {
-			/*
-			* Recupère les données de la fonction en preg_match_all
-			*/
 
 			// Découpe la date de début
-			$anneeD = substr($dateTab[0][$j], 8, 4);
-			$moisD = substr($dateTab[0][$j], 12, 2);
-			$jourD = substr($dateTab[0][$j], 14, 2);
-			$heureD = substr($dateTab[0][$j], 17, 2);
-			$minD = substr($dateTab[0][$j], 19, 2);
+			$anneeD = substr($dateTab[$j], 8, 4);
+			$moisD = substr($dateTab[$j], 12, 2);
+			$jourD = substr($dateTab[$j], 14, 2);
+			$heureD = substr($dateTab[$j], 17, 2);
+			$minD = substr($dateTab[$j], 19, 2);
 
 			// Découpe la date de fin
-			$anneeF = substr($dateTabEnd[0][$j], 6, 4);
-			$moisF = substr($dateTabEnd[0][$j], 10, 2);
-			$jourF = substr($dateTabEnd[0][$j], 12, 2);
-			$heureF = substr($dateTabEnd[0][$j], 15, 2);
-			$minF = substr($dateTabEnd[0][$j], 17, 2);
+			$anneeF = substr($dateTabEnd[$j], 6, 4);
+			$moisF = substr($dateTabEnd[$j], 10, 2);
+			$jourF = substr($dateTabEnd[$j], 12, 2);
+			$heureF = substr($dateTabEnd[$j], 15, 2);
+			$minF = substr($dateTabEnd[$j], 17, 2);
 
 			//Gestion des données du cours
-			$matiere = substr($coursTab[0][$j], 8);
-			$descCours = explode("\\n",substr($descTab[0][$j], 12));
+			$matiere = substr($coursTab[$j], 8);
+			$descCours = explode("\\n",substr($descTab[$j], 12));
 
 			// Retire le premier element du tableau, qui est une chaine vide
 			array_splice($descCours, 0, 1);
@@ -75,14 +92,14 @@
 			//Intialisation des chaines de caractère pour catégoriser les cours
 			$groupes = "";
 			$prof = array();
-			// Si il manque des infos alors on rajoutera les informations qui en découle
+			// Si il manque des infos alors on rajoutera les informations qui en découlent
 			for ($i = 0; $i < sizeof($descCours); $i++) {
 
-				// Si il n'y a pas de chiffre ni de - et qu'il y a un espace alors c'est bien un prof
-				if(stripos($descCours[$i], " ") and preg_match('~[0-9]~', $descCours[$i]) === 0 and preg_match('~-~', $descCours[$i]) === 0) {
+				// Si il n'y a pas de chiffre  alors c'est bien un prof
+				if(stripos($descCours[$i], " ") and preg_match('~[0-9]~', $descCours[$i]) === 0) {
 					$prof[] = $descCours[$i];
 				} else {
-					$allGroupes .= $descCours[$i]."\\n";
+					$allGroupes = $descCours[$i]."\\n";
 				}
 			}
 
@@ -91,7 +108,7 @@
 				$prof[] = "non déterminé";
 			}
 
-			// format les données entre elles
+			// format des dates
 			$dateD = $anneeD."-".$moisD."-".$jourD;
 			$dateTimeD = new DateTime($dateD);
 			$dateTimeD->setTime($heureD, $minD);
@@ -100,83 +117,92 @@
 			$dateTimeF = new DateTime($dateF);
 			$dateTimeF->setTime($heureF, $minF);
 
-			//Récupération de l'id de la matière
-			$matiereManager = $this->getDoctrine()->getRepository(Matiere::class);
-			// Recherche du groupe correspondant au nom
-			$matiereDB = $matiereManager->findOneBy(['libelle' => "$matiere"]);
+			// Recherche de la matiere
+			$newMatiere = $entityManager->getRepository('Matiere')->findOneBy(array('libelle' => "$matiere"));
+
+			//On vérifie si la matière existe, sinon on la créée
+			if($newMatiere === null){
+				$newMatiere = new Matiere($matiere);
+				$entityManager->persist($newMatiere);
+				$entityManager->flush();
+
+				print_r("<h1>Nouvelle Matière :</h1>".$newMatiere->getId()."<br>".$newMatiere->getLibelle()."<br><br>");
+			}
 
 			// créer le nouvel objet de cours
-			$cours = new Cours();
-			$cours->dateDebut = $dateTimeD;
-			$cours->dateFin = $dateTimeF;
-			$cours->idMatiere = $matiereDB.id;
-			$cours->save();
+			$newCours = new Cours($newMatiere, $dateTimeD, $dateTimeF);
+			$entityManager->persist($newCours);
+			$entityManager->flush();
 
-			//Récupération de l'ID du cours qui vient d'être créé
-			$idCours = $cours->getId();
-
+			print_r("<h1>Nouveau cours :</h1>".$newCours->getId()."<br>".$newCours->getMatiere()->getLibelle()."<br><br>");
 
 			//******************************************//
 			// Gestion des salles et de la table Occupe //
 			//******************************************//
 
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
-			$allSalles = explode(":", $salleTab[0][$j]);
+			$nomDescSalle = explode(":", $salleTab[$j]);
 
-	  	//recup de l'ensemble des salles
-      $allsalles = explode("\,", $allSalles[1]);
+			// Recupération de l'ensemble des salles et suppression de 'LOCATION:'
+			$nomDescSalle = explode("\,", $nomDescSalle[1]);
 
-      foreach ($allSalles as $salles) {
-        // Sépare le numéro de salle et sa description
-  			$salle = explode(" ",$salles[1]);
-  			//Recupère le num de la salle
-  			$numSalle = $salle[0];
-  			//Initialize la variable $descSalle a une chaine prédéfini si non de description
-  			$descSalle = "";
-  			if (sizeof($salle) > 1) {
-  				$descSalle = $salle[1]." ".$salle[2];
-  			}
-
-				$salleManager = $this->getDoctrine()->getRepository(Salle::class);
-
-				// Recherche de la Salle correspondante au numero de salle
-				$salleDB = $salleManager->find("$numSalle");
-
-				//On vérifie si la salle éxiste, sinon on l'a créer
-				if($salleDB.isNull())){
-					$newSalle = new Salle();
-					$newSalle->numSalle = $numSalle;
-					$newSalle->description = $descSalle;
-					$newSalle->save();
-				} else {
-					$occupe = new Occupe();
-					$occupe->numSalle = $numSalle;
-					$occupe->idCours = $idCours;
-					$occupe->save();
+			// Sépare le numéro de salle et sa description
+			$salle = explode(" ",$nomDescSalle[0]);
+			
+			//Recupère le num de la salle
+			$numSalle = $salle[0];
+			
+			//Initialize la variable $descSalle a une chaine prédéfini si non de description
+			$descSalle = "";
+			// On remplit la description de la salle
+			if (sizeof($salle) > 1) {
+				for($i = 1; $i < sizeof($salle); $i++){
+					$descSalle .= " ";
+					$descSalle .= $salle[$i];
 				}
-      }
-      unset($salles);
+			}
+
+			// Recherche de la Salle correspondante au numero de salle
+			$newSalle = $entityManager->getRepository('Salle')->findOneBy(array('num' => "$numSalle"));
+
+			//On vérifie si la salle existe, sinon on la créée
+			if(!$newSalle){
+				$newSalle = new Salle($numSalle, $descSalle);
+				$entityManager->persist($newSalle);
+				$entityManager->flush();
+
+				print_r("<h1>Nouvelle salle :</h1>".$newSalle->getNum()."<br>".$newSalle->getDescription()."<br><br>");
+			}
+
+			// On créé un lien entre la salle et le cours dans la BD
+			$occupe = new Occupe($newSalle, $newCours);
+			$entityManager->persist($occupe);
+			$entityManager->flush();
+
+			//print_r("<h1>Relation occupe :</h1>".$occupe->getSalle()->getNum()."<br>".$occupe->getCours()->getId()."<br><br>");
+			unset($salles);
 
 			//**********************************************//
 			// Gestion des groupes et de la table Participe //
 			//**********************************************//
-      $groupes = explode("\\n,", $allGroupes);
+			$groupes = explode("\\n,", $allGroupes);
 
-      foreach ($groupes as $groupe) {
-  			//Recupère le nom du groupe
-  			$nomGroupe = $groupe[0];
+			//Recupère le nom du groupe
+			$nomGroupe = $groupes[0];
 
-				$participe = new Particpe();
+			// Recherche d'un groupe par nom
+			$newGroupe = $entityManager->getRepository('Groupe')->findOneBy(array('libelle' => $nomGroupe));
 
-				$groupeManager = $this->getDoctrine()->getRepository(Groupe::class);
-				// Recherche du groupe correspondant au nom
-				$grpDB = $groupeManager->findOneBy(['libelle' => "$nomGroupe"]);
+			$participe = new Participe($newGroupe, $newCours);
+			$entityManager->persist($participe);
+			$entityManager->flush();
 
-				$participe->$idGroupe = $grpDB.id;
-				$participe->idCours = $idCours;
-				$participe->save();
-      }
-      unset($groupe);
+			echo("<h1>Relation participe :</h1>".$participe->getGroupe()."<br>".$participe->getCours()."<br><br>");
 
-		}
+			unset($groupe);
+
+		}	
 	}
+
+	icsExtractor("Informatique.ics");
+?>

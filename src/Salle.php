@@ -10,18 +10,24 @@
   **/
 class Salle
 {
-    /** @Id @Column(type="string",length=5) **/
+    /** @Id @Column(type="integer") @GeneratedValue **/
+    private $id;
+
+    /** @Column(type="string",length=5) **/
     private $num;
 
     /** @Column(type="string") **/
     private $description;
 
     // Constructeur de la classe
-    public function Salle($num)
+    public function Salle($num, $description)
     {
         $this->num = $num;
         $this->description = $description;
     }
+
+    /* Getter ID */
+    public function getId(){ return $this->id; }
 
     /* Getter et Setter NUM */
     public function getNum(){ return $this->num; }

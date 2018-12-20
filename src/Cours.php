@@ -14,10 +14,10 @@ class Cours
     private $id;
 
     /**
-     * @ManyToOne(targetEntity="Matiere")
-     * @JoinColumn(name="idMatiere", referencedColumnName="id")
+     * @ManyToOne(targetEntity="matiere")
+     * @JoinColumn(name="matiere", referencedColumnName="id")
      **/
-    private $idMatiere;
+    private $matiere;
 
     /** @Column(type="datetime") **/
     private $dateDebut;
@@ -26,9 +26,9 @@ class Cours
     private $dateFin;
 
     // Constructeur de la classe
-    public function Cours($idMatiere, $dateDebut, $dateFin)
+    public function Cours($matiere, $dateDebut, $dateFin)
     {
-        $this->idMatiere = $idMatiere;
+        $this->matiere = $matiere;
         $this->dateDebut = $dateDebut;
         $this->dateFin = $dateFin;
     }
@@ -36,10 +36,10 @@ class Cours
     /* Getter ID */
     public function getId(){ return $this->id; }
 
-    /* Getter et Setter ID_MATIERE */
-    public function getIdMatiere(){ return $this->idMatiere; }
+    /* Getter et Setter ID_matiere */
+    public function getMatiere(){ return $this->matiere; }
 
-    public function setIdMatiere($idMatiere){ $this->idMatiere = $idMatiere; }
+    public function setMatiere($matiere){ $this->matiere = matiere; }
 
     /* Getter et Setter DATE_DEBUT */
     public function getDateDebut(){ return $this->dateDebut; }
