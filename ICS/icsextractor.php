@@ -59,7 +59,7 @@
 			$minF = substr($dateTabEnd[0][$j], 17, 2);
 
 			//Gestion des données du cours
-			$titreCours = substr($coursTab[0][$j], 8);
+			$matiere = substr($coursTab[0][$j], 8);
 			$descCours = explode("\\n",substr($descTab[0][$j], 12));
 
 			// Retire le premier element du tableau, qui est une chaine vide
@@ -79,11 +79,6 @@
 					$prof[] = $descCours[$i];
 				} else {
 					$allGroupes .= $descCours[$i]."\\n";
-
-					//On recherche l'id du groupe
-					$idGroupe = findGroupeByName($descCours[$i]);
-					//insertParticipe($idCours, $idGroupe);
-
 				}
 			}
 
@@ -102,15 +97,20 @@
 			$dateTimeF->setTime($heureF, $minF);
 
 			// créer le nouvel objet de cours
+
+			/***************************************************/
 			$cours = new Cours();
 			$cours->save();
 
+
+			/***************************************************/
 			//Récupération de l'ID du cours qui vient d'être créé
 			$idCours = ???->findBy(array(), array('id' => 'desc'),1,0)
 
-			//
-			// Gestion des salles et de la table Occupe
-			//
+
+			//******************************************//
+			// Gestion des salles et de la table Occupe //
+			//******************************************//
 
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
 			$allSalles = explode(":", $salleTab[0][$j]);
@@ -141,24 +141,21 @@
       }
       unset($salles);
 
-			//
-			// Gestion des groupes et de la table Participe
-			//
+			//**********************************************//
+			// Gestion des groupes et de la table Participe //
+			//**********************************************//
       $groupes = explode("\\n,", $allGroupes);
 
       foreach ($groupes as $groupe) {
   			//Recupère le nom du groupe
   			$nomGroupe = $groupe[0];
 
-				//On vérifie si la salle éxiste, sinon on l'a créer
-				if(!salleExiste($numSalle)){
-					createSalle($numSalle, $descSalle);
-				} else {
-					$participe = new Particpe();
-					$participe->$idGroupe = ???->findOneBy(array('nom' => $nomGroupe));;
-					$participe->idCours = $idCours;
-					$participe->save();
-				}
+				$participe = new Particpe();
+				
+				/***************************************************/
+				$participe->$idGroupe = ???->findBy(array('nom' => $nomGroupe));; //Récup de l'ID du groupe en fonction du nom
+				$participe->idCours = $idCours;
+				$participe->save();
       }
       unset($groupe);
 
