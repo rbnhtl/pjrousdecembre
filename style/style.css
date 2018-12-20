@@ -2,14 +2,14 @@
 
 /* Style global de la page avec image de fond */
 body {
-	background-color: #BCCCE5;
-	font-family: 'Baloo Bhaina';
-	line-height: 33px;
-	color: #233656;
+    background-color: #BCCCE5;
+    font-family: 'Baloo Bhaina';
+    line-height: 33px;
+    color: #233656;
     background-image: url("../img/IndexBackground.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-	text-align: center;
+    text-align: center;
 }
 
 /* Cadre pour les balise div */
@@ -42,17 +42,17 @@ body {
 
 /* Customisation des inputText */
 .inputText:hover, .inputText:focus {
-	border: 1px solid #415B76;
+    border: 1px solid #415B76;
 }
 
 /* Mise en forme du tableau de planning */
 .planning {
-	text-align: center;
+    text-align: center;
 }
 
 /* Menu de recherche pour le planning */
 .menuPlanning {
-	padding: 10px 0px 10px 12px;
+    padding: 10px 0px 10px 12px;
 }
 
 /* Sous partie du menu de planning */
@@ -60,51 +60,75 @@ body {
     border: solid #7B9BA6 2px;
     border-radius: 5px;
     background-color: #EEF4F2;
-	margin-top: 22px;
-	padding-top: 20px;
+    margin-top: 22px;
+    padding-top: 20px;
 }
 
 /* Affiche la liste des élèves */
 .listeEleves {
-	overflow: auto;
-	height: 165px;
-	padding: 0px;
+    overflow: auto;
+    height: 165px;
+    padding: 0px;
 }
 
-/* Rend invisible les barre de scroll */
+/* Rend invisible les barres de scroll */
 ::-webkit-scrollbar {
-	width: 0px;
+    width: 0px;
 }
 
 /* Style des éléments de la liste d'élèves */
 div[class *="listeEleves"] div {
     border-radius: 5px;
     background-color: #CDD6D5;
-	margin: 2px;
-	width: 270px
+    margin: 2px;
+    width: 270px
 }
 
 /* Centre les radios de la liste des élèves */
 div[class *="listeEleves"] div input {
-	float: right;
-	margin-top: 10px;
-	margin-right: 50px;
-	border-radius: 7px;
-	border: solid 5px black;
+    float: right;
+    margin-top: 10px;
+    margin-right: 50px;
+    border-radius: 7px;
+    border: solid 5px black;
 }
 
 /* Alterne les couleurs des élèves */
 div[class *="listeEleves"] div:nth-child(even) {
-	background: #7B9BA6;
+    background: #7B9BA6;
 }
 
 /* Cellule du tableau d'affichage du planning */
 table[class *="planning"] td {
-	height: 40px;
-	width: 140px;
+    height: 40px;
+    width: 140px;
 }
 
 /* Ajout de la bordure sous la dernière ligne du tableau */
 .derniereLigneTableau {
     border-bottom: 1px solid #ddd
+}
+
+/******************************************************************************/
+/* Cadre de formulaire */
+.cadreFormulaire {
+    border: solid #7B9BA6 2px;
+    border-radius: 5px;
+    background-color: #EEF4F2;
+    margin-top: 22px;
+    min-height: 285px;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
 }
