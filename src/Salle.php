@@ -10,10 +10,7 @@
   **/
 class Salle
 {
-    /** @Id @Column(type="integer") @GeneratedValue **/
-    private $id;
-
-    /** @Column(type="string",length=5) **/
+    /** @Id @Column(type="string",length=5) **/
     private $num;
 
     /** @Column(type="string") **/

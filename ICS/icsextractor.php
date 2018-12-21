@@ -121,7 +121,7 @@
 			$newMatiere = $entityManager->getRepository('Matiere')->findOneBy(array('libelle' => "$matiere"));
 
 			//On vérifie si la matière existe, sinon on la créée
-			if($newMatiere === null){
+			if(!$newMatiere){
 				$newMatiere = new Matiere($matiere);
 				$entityManager->persist($newMatiere);
 				$entityManager->flush();
@@ -151,6 +151,7 @@
 			
 			//Recupère le num de la salle
 			$numSalle = $salle[0];
+			$numSalle = trim($numSalle);
 			
 			//Initialize la variable $descSalle a une chaine prédéfini si non de description
 			$descSalle = "";
@@ -161,9 +162,8 @@
 					$descSalle .= $salle[$i];
 				}
 			}
-
 			// Recherche de la Salle correspondante au numero de salle
-			$newSalle = $entityManager->getRepository('Salle')->findOneBy(array('num' => "$numSalle"));
+			$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
 
 			//On vérifie si la salle existe, sinon on la créée
 			if(!$newSalle){

@@ -13,7 +13,7 @@ class Occupe
     /**
      * @Id
      * @ManyToOne(targetEntity="Salle")
-     * @JoinColumn(name="salle", referencedColumnName="id")
+     * @JoinColumn(name="salle", referencedColumnName="num")
      **/
     private $salle;
 
