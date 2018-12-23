@@ -62,6 +62,8 @@
 			}
 		}
 
+
+		echo("<table border='1px solid black'><tr><td>Matiere</td><td>Id cours</td><td>Salles (S) et Groupes (G)</td>");
 		// Parcours de tout les tableaux en fonction du nombre de cours trouvés
 		for ($j=0 ; $j < $n ; ++$j) {
 
@@ -90,8 +92,8 @@
 
 
 			//Intialisation des chaines de caractère pour catégoriser les cours
-			$groupes = "";
 			$prof = array();
+			$allGroupes = "";
 			// Si il manque des infos alors on rajoutera les informations qui en découlent
 			for ($i = 0; $i < sizeof($descCours); $i++) {
 
@@ -99,7 +101,10 @@
 				if(stripos($descCours[$i], " ") and preg_match('~[0-9]~', $descCours[$i]) === 0) {
 					$prof[] = $descCours[$i];
 				} else {
-					$allGroupes = $descCours[$i]."\\n";
+					if($i > 0){
+						$allGroupes .= " ";
+					}
+					$allGroupes .= $descCours[$i];
 				}
 			}
 
@@ -127,14 +132,12 @@
 				$entityManager->flush();
 			}
 
-			print_r("<h1>Nouvelle Matière :</h1>Id : ".$newMatiere->getId()."<br>Libelle : ".$newMatiere->getLibelle()."<br><br>");
-
 			// créer le nouvel objet de cours
 			$newCours = new Cours($newMatiere, $dateTimeD, $dateTimeF);
 			$entityManager->persist($newCours);
 			$entityManager->flush();
 
-			print_r("<h1>Nouveau cours :</h1>Id : ".$newCours->getId()."<br>Matiere : ".$newCours->getMatiere()->getLibelle()."<br><br>");
+			echo("</tr><tr><td>".$newCours->getMatiere()->getLibelle()."</td><td>".$newCours->getId()."</td>");
 
 			//******************************************//
 			// Gestion des salles et de la table Occupe //
@@ -145,63 +148,72 @@
 
 			// Recupération de l'ensemble des salles et suppression de 'LOCATION:'
 			$nomDescSalle = explode("\,", $nomDescSalle[1]);
+			
+			// On traite la liste des salles du cours
+			foreach($nomDescSalle as $salle){
+				// Sépare le numéro de salle et sa description
+				$salle = explode(" ",$salle);
 
-			// Sépare le numéro de salle et sa description
-			$salle = explode(" ",$nomDescSalle[0]);
-			
-			//Recupère le num de la salle
-			$numSalle = $salle[0];
-			$numSalle = trim($numSalle);
-			
-			//Initialize la variable $descSalle a une chaine prédéfini si non de description
-			$descSalle = "";
-			// On remplit la description de la salle
-			if (sizeof($salle) > 1) {
-				for($i = 1; $i < sizeof($salle); $i++){
-					$descSalle .= " ";
-					$descSalle .= $salle[$i];
+				//Recupère le num de la salle
+				$numSalle = $salle[0];
+				$numSalle = trim($numSalle);
+
+				//Initialize la variable $descSalle a une chaine prédéfini si non de description
+				$descSalle = "";
+				// On remplit la description de la salle
+				if (sizeof($salle) > 1) {
+					for($i = 1; $i < sizeof($salle); $i++){
+						$descSalle .= " ";
+						$descSalle .= $salle[$i];
+					}
 				}
-			}
-			// Recherche de la Salle correspondante au numero de salle
-			$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
 
-			//On vérifie si la salle existe, sinon on la créée
-			if($newSalle === null){
-				$newSalle = new Salle($numSalle, $descSalle);
-				$entityManager->persist($newSalle);
+				// Recherche de la Salle correspondante au numero de salle
+				$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
+
+				//On vérifie si la salle existe, sinon on la créée
+				if($newSalle === null){
+					$newSalle = new Salle($numSalle, $descSalle);
+					$entityManager->persist($newSalle);
+					$entityManager->flush();
+				}
+
+				// On créé un lien entre la salle et le cours dans la BD
+				$newOccupe = new Occupe();
+				$newOccupe->setSalle($newSalle);
+				$newOccupe->setCours($newCours);
+				// On ajoute l'objet occupe en BD
+				$entityManager->persist($newOccupe);
 				$entityManager->flush();
+			
+				echo("<td>(S): ".$newOccupe->getSalle()->getNum()." ".$newOccupe->getSalle()->getDescription()."</td>");
 			}
-
-			print_r("<h1>Nouvelle salle :</h1>Num : ".$newSalle->getNum()."<br>Desc : ".$newSalle->getDescription()."<br><br>");
-
-			// On créé un lien entre la salle et le cours dans la BD
-			$occupe = new Occupe($newSalle, $newCours);
-			$entityManager->persist($occupe);
-			$entityManager->flush();
-
-			//print_r("<h1>Relation occupe :</h1>".$occupe->getSalle()->getNum()."<br>".$occupe->getCours()->getId()."<br><br>");
-			unset($salles);
 
 			//**********************************************//
 			// Gestion des groupes et de la table Participe //
 			//**********************************************//
-			$groupes = explode("\\n,", $allGroupes);
+			$groupes = explode(" ", $allGroupes);
 
-			//Recupère le nom du groupe
-			$nomGroupe = $groupes[0];
+			// Traite chaque groupe un après l'autre
 
-			// Recherche d'un groupe par nom
-			$newGroupe = $entityManager->getRepository('Groupe')->findOneBy(array('libelle' => $nomGroupe));
-
-			$participe = new Participe($newGroupe, $newCours);
-			$entityManager->persist($participe);
-			$entityManager->flush();
-
-			echo("<h1>Relation participe :</h1>".$participe->getGroupe()."<br>".$participe->getCours()."<br><br>");
-
-			unset($groupe);
+			foreach($groupes as $nomGroupe){
+				// Recherche d'un groupe par nom
+				$newGroupe = $entityManager->getRepository('Groupe')->findOneBy(array('libelle' => $nomGroupe));
+	
+				// On créé un lien entre le groupe et le cours dans la BD
+				$newParticipe = new Participe();
+				$newParticipe->setGroupe($newGroupe);
+				$newParticipe->setCours($newCours);
+				// // On ajoute l'objet Participe en BD
+				$entityManager->persist($newParticipe);
+				$entityManager->flush();
+			
+				echo("<td>(G): ".$newParticipe->getGroupe()->getLibelle()."</td>");
+			}
 
 		}	
+
+		echo("</tr></table>");
 	}
 
 	icsExtractor("Informatique.ics");

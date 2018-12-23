@@ -12,7 +12,7 @@ class Groupe
 {
     /** @Id @Column(type="integer") @GeneratedValue **/
     private $id;
-
+    
     /**
      * @ManyToOne(targetEntity="Filiere")
      * @JoinColumn(name="filiere", referencedColumnName="id")
