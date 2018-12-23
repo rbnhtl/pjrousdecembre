@@ -121,20 +121,20 @@
 			$newMatiere = $entityManager->getRepository('Matiere')->findOneBy(array('libelle' => "$matiere"));
 
 			//On vérifie si la matière existe, sinon on la créée
-			if(!$newMatiere){
+			if($newMatiere === null){
 				$newMatiere = new Matiere($matiere);
 				$entityManager->persist($newMatiere);
 				$entityManager->flush();
-
-				print_r("<h1>Nouvelle Matière :</h1>".$newMatiere->getId()."<br>".$newMatiere->getLibelle()."<br><br>");
 			}
+
+			print_r("<h1>Nouvelle Matière :</h1>Id : ".$newMatiere->getId()."<br>Libelle : ".$newMatiere->getLibelle()."<br><br>");
 
 			// créer le nouvel objet de cours
 			$newCours = new Cours($newMatiere, $dateTimeD, $dateTimeF);
 			$entityManager->persist($newCours);
 			$entityManager->flush();
 
-			print_r("<h1>Nouveau cours :</h1>".$newCours->getId()."<br>".$newCours->getMatiere()->getLibelle()."<br><br>");
+			print_r("<h1>Nouveau cours :</h1>Id : ".$newCours->getId()."<br>Matiere : ".$newCours->getMatiere()->getLibelle()."<br><br>");
 
 			//******************************************//
 			// Gestion des salles et de la table Occupe //
@@ -166,13 +166,13 @@
 			$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
 
 			//On vérifie si la salle existe, sinon on la créée
-			if(!$newSalle){
+			if($newSalle === null){
 				$newSalle = new Salle($numSalle, $descSalle);
 				$entityManager->persist($newSalle);
 				$entityManager->flush();
-
-				print_r("<h1>Nouvelle salle :</h1>".$newSalle->getNum()."<br>".$newSalle->getDescription()."<br><br>");
 			}
+
+			print_r("<h1>Nouvelle salle :</h1>Num : ".$newSalle->getNum()."<br>Desc : ".$newSalle->getDescription()."<br><br>");
 
 			// On créé un lien entre la salle et le cours dans la BD
 			$occupe = new Occupe($newSalle, $newCours);
