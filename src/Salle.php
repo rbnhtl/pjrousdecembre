@@ -10,7 +10,7 @@
   **/
 class Salle
 {
-    /** @Id @Column(type="string",length=5) **/
+    /** @Id @Column(type="string",length=30) **/
     private $num;
 
     /** @Column(type="string") **/

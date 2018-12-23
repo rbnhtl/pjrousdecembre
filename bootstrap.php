@@ -19,6 +19,7 @@
 		'user' => 'root',
 		'password' => 'root',
 		'driver' => 'pdo_mysql',
+		'charset' => 'utf8',
 	);
 
 	// obtaining the entity manager

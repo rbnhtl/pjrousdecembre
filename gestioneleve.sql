@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 22, 2018 at 05:14 PM
+-- Generation Time: Dec 23, 2018 at 01:33 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -293,7 +293,7 @@ CREATE TABLE `matiere` (
 --
 
 CREATE TABLE `occupe` (
-  `salle` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `salle` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `cours` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -351,7 +351,7 @@ CREATE TABLE `role` (
 --
 
 CREATE TABLE `salle` (
-  `num` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `num` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
