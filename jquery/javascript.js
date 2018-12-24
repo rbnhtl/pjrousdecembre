@@ -1,4 +1,3 @@
-
 //Fonction de démarrage de la page
 $(function() {
 
@@ -9,6 +8,9 @@ $(function() {
     $('.afficheMdp').mouseup(function(){
         $('#mdpProf').attr('type', 'password');
     });
+
+    $('#dpmin').attr({format: "dd/mm/yyyy"});
+    $('#dpmax').attr({format: "dd/mm/yyyy"});
 
 });
 

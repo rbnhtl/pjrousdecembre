@@ -116,7 +116,15 @@ table[class *="planning"] td {
     border-radius: 5px;
     background-color: #EEF4F2;
     margin-top: 22px;
-    min-height: 285px;
+    min-height: 435px;
+}
+
+/* Cadre de formulaire */
+.cadreFormulaireRow2 {
+    border: solid #7B9BA6 2px;
+    border-radius: 5px;
+    background-color: #EEF4F2;
+    min-height: 435px;
 }
 
 .upload-btn-wrapper {
@@ -131,4 +139,15 @@ table[class *="planning"] td {
     left: 0;
     top: 0;
     opacity: 0;
+}
+
+/* Cadre pour les balise div */
+.blocScroll {
+    border: solid #7B9BA6 5px;
+    border-radius: 10px;
+    background-color: #EEF4F2;
+    box-shadow: 0px 0px 30px 5px #CDD6D5;
+    margin-top: 8%;
+    overflow: scroll;
+    height: 700px;
 }

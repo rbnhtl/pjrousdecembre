@@ -8,7 +8,7 @@
 </head>
 <body>
 	<!-- Début du contenu de la page -->
-	<div class="container bloc">
+	<div class="container blocScroll">
 
 		<!-- Ligne d'entête -->
 		<div class="row enteteRubrique">
@@ -28,7 +28,7 @@
 						<!-- Nom du département -->
 						<label for="nomDep">Nom du département :</label><br>
 						<input type="text" class="form-control" id="nomDep" name="nomDep" minlength="3" placeholder="Entrez un nom" required><br>
-						<button type="submit" class="btn btn-default">Valider</button>
+						<button type="submit" class="btn btn-default bouton">Valider</button>
 					</form>
 				</div>
 
@@ -52,7 +52,7 @@
 						<label for="nomFiliere">Nom de la filière :</label><br>
 						<input type="text" class="form-control" id="nomFiliere" name="nomFiliere" minlength="3" placeholder="Entrez un nom" required><br>
 
-						<button type="submit" class="btn btn-default">Valider</button>
+						<button type="submit" class="btn btn-default bouton">Valider</button>
 					</form>
 				</div>
 
@@ -64,15 +64,15 @@
 					<form class="form" action="adminif.php" method="post">
 						<!-- Nom du prof -->
 						<label for="nomProf">Nom :</label><br>
-						<input type="text" class="form-control" id="nomProf" name="nomProf" minlength="2" placeholder="Entrez un nom" required><br>
+						<input type="text" class="form-control" id="nomProf" name="nomProf" minlength="2" placeholder="Entrez un nom" required>
 
 						<!-- Prenom du prof -->
 						<label for="prenomProf">Prénom :</label><br>
-						<input type="text" class="form-control" id="prenomProf" name="prenomProf" minlength="2" placeholder="Entrez un prenom" required><br>
+						<input type="text" class="form-control" id="prenomProf" name="prenomProf" minlength="2" placeholder="Entrez un prenom" required>
 
 						<!-- Login du prof -->
 						<label for="loginProf">Login du professeur :</label><br>
-						<input type="text" class="form-control" id="loginProf" name="loginProf" minlength="2" placeholder="Entrez un login" required><br>
+						<input type="text" class="form-control" id="loginProf" name="loginProf" minlength="2" placeholder="Entrez un login" required>
 
 						<!-- Mdp du prof -->
 						<label for="mdpProf">Mot de passe du professeur (8 caractères minimum) :</label><br>
@@ -81,9 +81,9 @@
       				<span class="input-group-btn">
         			<button class="btn btn-default form-control afficheMdp" type="button"><i class="far fa-eye"></i></button>
       				</span>
-    				</div>
+    				</div><br>
 
-						<button type="submit" class="btn btn-default">Valider</button>
+						<button type="submit" class="btn btn-default bouton">Valider</button>
 					</form>
 				</div>
 			</div>
@@ -91,7 +91,8 @@
 
 			<!-- Ligne des imports/suppressions -->
 			<div class="row">
-				<div class="col-xs-4 cadreFormulaire">
+				<!-- Import des ICS -->
+				<div class="col-xs-4 cadreFormulaireRow2">
 					<div class="row">
 						<h3>Importer les élèves (fichier CSV)</h3>
 					</div>
@@ -100,15 +101,88 @@
 						<!-- Choix du fichier à importer -->
 						<label for="fichierCSV">Fichier CSV :</label><br>
 						<div class="upload-btn-wrapper">
-  						<button class="btn btn-default form-control">Choisir un fichier</button>
-  						<input type="file" id="fichierCSV" name="fichierCSV" accept=".csv" />
+							<button class="btn btn-default form-control bouton">Choisir un fichier</button>
+							<input type="file" id="fichierCSV" name="fichierCSV" accept=".csv" required />
 						</div><br><br>
 
-						<button type="submit" class="btn btn-default">Valider</button>
+						<button type="submit" class="btn btn-default bouton">Valider</button>
 					</form>
 				</div>
-				<div class="col-xs-4 sousMenuPlanning"></div>
-				<div class="col-xs-4 sousMenuPlanning"></div>
+
+				<!-- Import des CSV -->
+				<div class="col-xs-4 cadreFormulaireRow2">
+					<div class="row">
+						<h3>Importer les plannings (fichier ICS)</h3>
+					</div>
+					<form class="form" action="adminif.php" method="post" enctype="multipart/form-data">
+						<!-- Choix du département -->
+						<label for="choixDepartement">Département :</label><br>
+						<select class="form-control" name="choixDepartement" required>
+								<option value="defaut"></option>
+								<option value="dep1">Informatique</option>
+								<option value="dep2">QLIO</option>
+								<option value="dep3">Info-com</option>
+								<option value="dep4">GEA</option>
+								<option value="dep5">Carrière juridique</option>
+						</select>
+						<!-- Choix de la filière -->
+						<label for="choixFiliere">Filière :</label><br>
+						<select class="form-control" name="choixFiliere" required>
+								<option value="defaut"></option>
+								<option value="fil1">INFO1</option>
+								<option value="fil2">INFO2</option>
+								<option value="fil3">MMS</option>
+								<option value="fil4">MIAGE</option>
+						</select>
+						<!-- Choix du fichier à importer -->
+						<label for="fichierICS">Fichier ICS :</label><br>
+						<div class="upload-btn-wrapper">
+  						<button class="btn btn-default form-control bouton">Choisir un fichier</button>
+  						<input type="file" id="fichierICS" name="fichierICSV" accept=".ics" required />
+						</div><br><br>
+
+						<button type="submit" class="btn btn-default bouton">Valider</button>
+					</form>
+				</div>
+
+				<!-- Suppression d'un planning -->
+				<div class="col-xs-4 cadreFormulaireRow2">
+					<div class="row">
+						<h3>Supprimer un planning</h3>
+					</div>
+					<form class="form" action="adminif.php" method="post" enctype="multipart/form-data">
+						<!-- Choix du département -->
+						<label for="choixDepartement">Département :</label><br>
+						<select class="form-control" name="choixDepartement" required>
+								<option value="defaut"></option>
+								<option value="dep1">Informatique</option>
+								<option value="dep2">QLIO</option>
+								<option value="dep3">Info-com</option>
+								<option value="dep4">GEA</option>
+								<option value="dep5">Carrière juridique</option>
+						</select>
+						<!-- Choix de la filière -->
+						<label for="choixFiliere">Filière :</label><br>
+						<select class="form-control" name="choixFiliere" required>
+								<option value="defaut"></option>
+								<option value="fil1">INFO1</option>
+								<option value="fil2">INFO2</option>
+								<option value="fil3">MMS</option>
+								<option value="fil4">MIAGE</option>
+						</select>
+
+						<!-- Date de début -->
+						<label for="datemin">Date de début :</label><br>
+						<input type="date" class="form-control" id="datemin" required>
+
+						<!-- Date de fin -->
+						<label for="datemax">Date de fin :</label><br>
+						<input type="date" class="form-control" id="datemax" required><br>
+
+						<button type="submit" class="btn btn-default bouton">Valider</button>
+					</form>
+
+				</div>
 			</div>
 		</div>
 	</div>
