@@ -14,7 +14,7 @@ class Cours
     private $id;
 
     /**
-     * @ManyToOne(targetEntity="matiere")
+     * @ManyToOne(targetEntity="Matiere")
      * @JoinColumn(name="matiere", referencedColumnName="id")
      **/
     private $matiere;
