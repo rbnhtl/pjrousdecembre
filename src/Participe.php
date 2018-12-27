@@ -13,33 +13,26 @@ class Participe
     /**
      * @Id
      * @ManyToOne(targetEntity="Groupe")
-     * @JoinColumn(name="idGroupe", referencedColumnName="id")
+     * @JoinColumn(name="groupe", referencedColumnName="id")
      **/
-    private $idGroupe;
+    private $groupe;
 
     /**
      * @Id
      * @ManyToOne(targetEntity="Cours")
-     * @JoinColumn(name="idCours", referencedColumnName="id")
+     * @JoinColumn(name="cours", referencedColumnName="id")
      **/
-    private $idCours;
+    private $cours;
 
-    // Constructeur de la classe
-    public function Role($idGroupe, $idCours)
-    {
-        $this->idGroupe = $idGroupe;
-        $this->idCours = $idCours;
-    }
+    /* Getter et Setter GROUPE */
+    public function getGroupe(){ return $this->groupe; }
 
-    /* Getter et Setter ID_GROUPE */
-    public function getIdGroupe(){ return $this->idGroupe; }
+    public function setGroupe($groupe){ $this->groupe = $groupe; }
 
-    public function setIdGroupe($idGroupe){ $this->idGroupe = $idGroupe; }
+    /* Getter et Setter COURS */
+    public function getCours(){ return $this->cours; }
 
-    /* Getter et Setter ID_COURS */
-    public function getIdCours(){ return $this->idCours; }
-
-    public function setIdCours($idCours){ $this->idCours = $idCours; }
+    public function setCours($cours){ $this->cours = $cours; }
 }
 
 ?>

@@ -13,33 +13,33 @@ class Remplit
     /**
      * @Id
      * @ManyToOne(targetEntity="Personnel")
-     * @JoinColumn(name="idPersonnel", referencedColumnName="id")
+     * @JoinColumn(name="personnel", referencedColumnName="id")
      **/
-    private $idPersonnel;
+    private $personnel;
 
     /**
      * @Id
      * @ManyToOne(targetEntity="Role")
-     * @JoinColumn(name="idRole", referencedColumnName="id")
+     * @JoinColumn(name="role", referencedColumnName="id")
      **/
-    private $idRole;
+    private $role;
 
     // Constructeur de la classe
-    public function Role($idPersonnel, $idRole)
+    public function Role($personnel, $role)
     {
-        $this->idPersonnel = $idPersonnel;
-        $this->idRole = $idRole;
+        $this->personnel = $personnel;
+        $this->role = $role;
     }
 
     /* Getter et Setter ID_PERSONNEL */
-    public function getIdPersonnel(){ return $this->idPersonnel; }
+    public function getPersonnel(){ return $this->personnel; }
 
-    public function setIdPersonnel($idPersonnel){ $this->idPersonnel = $idPersonnel; }
+    public function setPersonnel($personnel){ $this->personnel = $personnel; }
 
     /* Getter et Setter ID_ROLE */
-    public function getIdRole(){ return $this->idRole; }
+    public function getRole(){ return $this->role; }
 
-    public function setIdRole($idRole){ $this->idRole = $idRole; }
+    public function setRole($role){ $this->role = $role; }
 }
 
 ?>

@@ -15,34 +15,34 @@ class Filiere
 
     /**
      * @ManyToOne(targetEntity="Departement")
-     * @JoinColumn(name="idDep", referencedColumnName="id")
+     * @JoinColumn(name="departement", referencedColumnName="id")
      **/
-    private $idDep;
+    private $departement;
 
     /** @Column(type="string") **/
     private $libelle;
 
     /**
      * @ManyToOne(targetEntity="Personnel")
-     * @JoinColumn(name="idAdministratif", referencedColumnName="id")
+     * @JoinColumn(name="administratif", referencedColumnName="id")
      **/
-    private $idAdministratif;
+    private $administratif;
 
     // Constructeur de la classe
-    public function Filiere($idDep,$libelle, $idAdministratif)
+    public function Filiere($departement,$libelle, $administratif)
     {
-        $this->idDep = $idDep;
+        $this->departement = $departement;
         $this->libelle = $libelle;
-        $this->idAdministratif = $idAdministratif;
+        $this->administratif = $administratif;
     }
 
     /* Getter ID */
     public function getIdFiliere(){ return $this->id; }
 
     /* Getter et Setter ID_DEPARTEMENT */
-    public function getIdDep(){ return $this->idDep; }
+    public function getDepartement(){ return $this->departement; }
 
-    public function setIdDep($idDep) { $this->idDep = $idDep; }
+    public function setDepartement($departement) { $this->departement = $departement; }
 
     /* Getter et Setter LIBELLE */
     public function getLibelle() { return $this->libelle; }
@@ -50,9 +50,9 @@ class Filiere
     public function setLibelle($libelle){ $this->libelle = $libelle; }
 
     /* Getter et Setter ID_ADMINISTRATIF */
-    public function getIdAdministratif(){ return $this->idAdministratif; }
+    public function getAdministratif(){ return $this->administratif; }
 
-    public function setIdAdministratif($idAdministratif){ $this->idAdministratif = $idAdministratif; }
+    public function setAdministratif($administratif){ $this->administratif = $administratif; }
 
 }
 

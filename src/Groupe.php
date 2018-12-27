@@ -12,20 +12,20 @@ class Groupe
 {
     /** @Id @Column(type="integer") @GeneratedValue **/
     private $id;
-
+    
     /**
      * @ManyToOne(targetEntity="Filiere")
-     * @JoinColumn(name="idFiliere", referencedColumnName="id")
+     * @JoinColumn(name="filiere", referencedColumnName="id")
      **/
-    private $idFiliere;
+    private $filiere;
 
     /** @Column(type="string") **/
     private $libelle;
 
     // Constructeur de la classe
-    public function Groupe($idFiliere,$libelle)
+    public function Groupe($filiere,$libelle)
     {
-        $this->idFiliere = $idFiliere;
+        $this->filiere = $filiere;
         $this->libelle = $libelle;
     }
 
@@ -38,9 +38,9 @@ class Groupe
     public function setLibelle($libelle){ $this->libelle = $libelle; }
 
     /* Getter et Setter ID_FILIERE */
-    public function getIdFiliere(){ return $this->idFiliere; }
+    public function getFiliere(){ return $this->filiere; }
 
-    public function setIdFiliere($idFiliere){ $this->idFiliere = $idFiliere; }
+    public function setFiliere($filiere){ $this->filiere = $filiere; }
 }
 
 ?>

@@ -13,33 +13,33 @@ class Anime
     /**
      * @Id
      * @ManyToOne(targetEntity="Personnel")
-     * @JoinColumn(name="idProf", referencedColumnName="id")
+     * @JoinColumn(name="prof", referencedColumnName="id")
      **/
-    private $idProf;
+    private $prof;
 
     /**
      * @Id
      * @ManyToOne(targetEntity="Cours")
-     * @JoinColumn(name="idCours", referencedColumnName="id")
+     * @JoinColumn(name="cours", referencedColumnName="id")
      **/
-    private $idCours;
+    private $cours;
 
     // Constructeur de la classe
-    public function Role($idProf, $idCours)
+    public function Role($prof, $cours)
     {
-        $this->idProf = $idProf;
-        $this->idCours = $idCours;
+        $this->prof = $prof;
+        $this->cours = $cours;
     }
 
     /* Getter et Setter ID_PROF */
-    public function getIdProf(){ return $this->idProf; }
+    public function getProf(){ return $this->prof; }
 
-    public function setIdProf($idProf){ $this->idProf = $idProf; }
+    public function setProf($prof){ $this->prof = $prof; }
 
     /* Getter et Setter ID_COURS */
-    public function getIdCours(){ return $this->idCours; }
+    public function getCours(){ return $this->cours; }
 
-    public function setIdCours($idCours){ $this->idCours = $idCours; }
+    public function setCours($cours){ $this->cours = $cours; }
 }
 
 ?>

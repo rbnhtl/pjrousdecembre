@@ -13,33 +13,26 @@ class Occupe
     /**
      * @Id
      * @ManyToOne(targetEntity="Salle")
-     * @JoinColumn(name="numSalle", referencedColumnName="num")
+     * @JoinColumn(name="salle", referencedColumnName="num")
      **/
-    private $numSalle;
+    private $salle;
 
     /**
      * @Id
      * @ManyToOne(targetEntity="Cours")
-     * @JoinColumn(name="idCours", referencedColumnName="id")
+     * @JoinColumn(name="cours", referencedColumnName="id")
      **/
-    private $idCours;
+    private $cours;
 
-    // Constructeur de la classe
-    public function Role($numSalle, $idCours)
-    {
-        $this->numSalle = $numSalle;
-        $this->idCours = $idCours;
-    }
+    /* Getter et Setter SALLE */
+    public function getSalle(){ return $this->salle; }
 
-    /* Getter et Setter NUM_SALLE */
-    public function getNumSalle(){ return $this->numSalle; }
+    public function setSalle($salle){ $this->salle = $salle; }
 
-    public function setNumSalle($numSalle){ $this->numSalle = $numSalle; }
+    /* Getter et Setter COURS */
+    public function getCours(){ return $this->cours; }
 
-    /* Getter et Setter ID_COURS */
-    public function getIdCours(){ return $this->idCours; }
-
-    public function setIdCours($idCours){ $this->idCours = $idCours; }
+    public function setCours($cours){ $this->cours = $cours; }
 }
 
 ?>

@@ -15,35 +15,35 @@ class Abscence
 
     /**
      * @ManyToOne(targetEntity="Etudiant")
-     * @JoinColumn(name="ineEtud", referencedColumnName="ine")
+     * @JoinColumn(name="etudiant", referencedColumnName="ine")
      **/
-    private $ineEtud;
+    private $etudiant;
 
     /**
      * @ManyToOne(targetEntity="Cours")
-     * @JoinColumn(name="idCours", referencedColumnName="id")
+     * @JoinColumn(name="cours", referencedColumnName="id")
      **/
-    private $idCours;
+    private $cours;
 
     // Constructeur de la classe
-    public function Abscence($ineEtud,$idCours)
+    public function Abscence($etudiant,$cours)
     {
-        $this->ineEtud = $ineEtud;
-        $this->idCours = $idCours;
+        $this->etudiant = $etudiant;
+        $this->cours = $cours;
     }
 
     /* Getter ID */
     public function getId(){ return $this->id; }
 
     /* Getter et Setter INE_ETUD */
-    public function getIneEtud(){ return $this->ineEtud; }
+    public function getEtud(){ return $this->etudiant; }
 
-    public function setINE($ineEtud){ $this->ineEtud = $ineEtud; }
+    public function setEtud($etudiant){ $this->etudiant = $etudiant; }
 
         /* Getter et Setter ID_COURS */
-    public function getIdCours(){ return $this->idCours; }
+    public function getCours(){ return $this->cours; }
 
-    public function setIdCours($idCours){ $this->idCours = $idCours; }
+    public function setCours($cours){ $this->cours = $cours; }
 }
 
 ?>
