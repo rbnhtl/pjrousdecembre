@@ -1,3 +1,12 @@
+<?php session_start() ?>
+<?php
+
+//Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
+if ($_SESSION['connexion']!=1 && ($_SESSION['admin']!=1 || $_SESSION['adminif']!=1)) {
+		header('Location: ../index.php');
+		exit();
+}
+
 <html>
 <head>
 	<meta charset="utf-8" />
