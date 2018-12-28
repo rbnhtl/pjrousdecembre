@@ -5,7 +5,7 @@ INSERT INTO `departement` (`id`, `libelle`) VALUES
 (NULL, 'Informatique'),
 (NULL, 'QLIO');
 
-INSERT INTO `filiere` (`idDep`, `libelle`) VALUES
+INSERT INTO `filiere` (`departement`, `libelle`) VALUES
 ('11', 'DUT-1A-Carrières juridiques'),
 ('11', 'DUT-2A-Carrières juridiques'),
 ('12', 'DUT-1A-GEA'),

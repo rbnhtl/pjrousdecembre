@@ -25,7 +25,7 @@ class Remplit
     private $role;
 
     // Constructeur de la classe
-    public function Role($personnel, $role)
+    public function Remplit($personnel, $role)
     {
         $this->personnel = $personnel;
         $this->role = $role;

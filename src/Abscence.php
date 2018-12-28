@@ -10,16 +10,15 @@
   **/
 class Abscence
 {
-    /** @Id @Column(type="integer") @GeneratedValue **/
-    private $id;
-
     /**
+     * @Id
      * @ManyToOne(targetEntity="Etudiant")
      * @JoinColumn(name="etudiant", referencedColumnName="ine")
      **/
     private $etudiant;
 
     /**
+     * @Id
      * @ManyToOne(targetEntity="Cours")
      * @JoinColumn(name="cours", referencedColumnName="id")
      **/
@@ -31,9 +30,6 @@ class Abscence
         $this->etudiant = $etudiant;
         $this->cours = $cours;
     }
-
-    /* Getter ID */
-    public function getId(){ return $this->id; }
 
     /* Getter et Setter INE_ETUD */
     public function getEtud(){ return $this->etudiant; }

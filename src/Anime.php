@@ -2,7 +2,7 @@
 
 /**
  * @author robin.hortala
- *
+ * 
  */
 
  /**
@@ -25,7 +25,7 @@ class Anime
     private $cours;
 
     // Constructeur de la classe
-    public function Role($prof, $cours)
+    public function Anime($prof, $cours)
     {
         $this->prof = $prof;
         $this->cours = $cours;

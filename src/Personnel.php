@@ -35,7 +35,7 @@ class Personnel
     }
 
     /* Getter ID */
-    public function getIdPersonnel(){ return $this->id; }
+    public function getId(){ return $this->id; }
 
     /* Getter et Setter NOM */
     public function getNom(){ return $this->nom; }

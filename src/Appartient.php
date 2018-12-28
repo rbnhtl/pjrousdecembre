@@ -2,7 +2,7 @@
 
 /**
  * @author robin.hortala
- *
+ * 
  */
 
  /**
@@ -25,7 +25,7 @@ class Appartient
     private $etudiant;
 
     // Constructeur de la classe
-    public function Role($groupe, $etudiant)
+    public function Appartient($groupe, $etudiant)
     {
         $this->groupe = $groupe;
         $this->etudiant = $etudiant;
@@ -37,9 +37,9 @@ class Appartient
     public function setGroupe($groupe){ $this->groupe = $groupe; }
 
     /* Getter et Setter ETUDIANT */
-    public function getEtudiant(){ return $this->etudiant; }
+    public function getEtud(){ return $this->etudiant; }
 
-    public function setEtudiant($etudiant){ $this->etudiant = $etudiant; }
+    public function setEtud($etudiant){ $this->etudiant = $etudiant; }
 }
 
 ?>

@@ -24,6 +24,13 @@ class Occupe
      **/
     private $cours;
 
+    // Constructeur de la classe
+    public function Occupe($salle, $cours)
+    {
+        $this->salle = $salle;
+        $this->cours = $cours;
+    }
+
     /* Getter et Setter SALLE */
     public function getSalle(){ return $this->salle; }
 

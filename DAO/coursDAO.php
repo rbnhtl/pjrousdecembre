@@ -8,16 +8,31 @@
 
     // On récupère l'entity manager de l'orm doctrine
     require_once "../bootstrap.php";
+
+    /*
+     * @param matiere l'id de la matiere du cours à créer
+     * @param dateDebut un objet DateTime correspondant à la date de début du cours
+     * @param dateFin un objet DateTime correspondant à la date de fin du cours
+     * @return l'id du nouveau cours
+     */
+    function createCours($matiere, $dateDebut, $dateFin){
+        global $em;
+
+        $cours = new Cours($matiere, $dateDebut, $dateFin);
+
+        $em->persist($cours);
+        $em->flush();
+        return $cours->getId();
+    }
     
     /*
      * @param id l'id du cours à rechercher
-     * @return un objet cours correspondant à l'id ou null si le cours avec
-     * cet id n'existe pas
+     * @return un objet cours correspondant à l'id ou null si le cours avec cet id n'existe pas
      */
     function findCours($id){
-        global $entityManager;
+        global $em;
 
-        $cours = $entityManager->getRepository('Cours')->find($id);
+        $cours = $em->getRepository('Cours')->find($id);
 
         return $cours;
     }
@@ -26,10 +41,21 @@
      * @return la liste de tous les cours de la base de données
      */
     function findAllCours(){
-        global $entityManager;
+        global $em;
 
-        $allCours = $entityManager->getRepository('Cours')->findAll();
+        $allCours = $em->getRepository('Cours')->findAll();
 
         return $allCours;
+    }
+    /*
+     * @param id l'id du cours à supprimer
+     */
+    function removeCours($id){
+        global $em;
+
+        $cours = $em->getReference('Cours', $id);
+
+        $em->remove($cours);
+        $em->flush();
     }
 ?>

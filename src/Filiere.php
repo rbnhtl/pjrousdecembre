@@ -37,7 +37,7 @@ class Filiere
     }
 
     /* Getter ID */
-    public function getIdFiliere(){ return $this->id; }
+    public function getId(){ return $this->id; }
 
     /* Getter et Setter ID_DEPARTEMENT */
     public function getDepartement(){ return $this->departement; }

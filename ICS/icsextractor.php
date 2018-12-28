@@ -30,17 +30,17 @@
 	 * ajoutant à la base de données les matières qui n'y sont pas déjà
 	 */
 	function traiteMatieres($tabMatieres){
-		global $entityManager;
+		global $em;
 		foreach($tabMatieres as $ligneMatiere){
 			// Recherche de la matiere
 			$matiere = substr($ligneMatiere, 8);
-			$newMatiere = $entityManager->getRepository('Matiere')->findOneBy(array('libelle' => $matiere));
+			$newMatiere = $em->getRepository('Matiere')->findOneBy(array('libelle' => $matiere));
 	
 			//On vérifie si la matière existe, sinon on la créée
 			if($newMatiere === null){
 				$newMatiere = new Matiere($matiere);
-				$entityManager->persist($newMatiere);
-				$entityManager->flush();
+				$em->persist($newMatiere);
+				$em->flush();
 			}
 		}
 	}
@@ -50,7 +50,7 @@
 	 * ajoutant à la base de données les salles qui n'y sont pas déjà
 	 */
 	function traiteSalles($tabSalles){
-		global $entityManager;
+		global $em;
 		foreach($tabSalles as $ligneSalle){
 			// Recupère le nom de la salle et sa description, en le détachant de LOCATION
 			$nomDescSalle = explode(":", $ligneSalle);
@@ -84,13 +84,13 @@
 					}
 	
 					// Recherche de la Salle correspondante au numero de salle
-					$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
+					$newSalle = $em->getRepository('Salle')->find($numSalle);
 	
 					//On vérifie si la salle existe, sinon on la créée
 					if($newSalle === null){
 						$newSalle = new Salle($numSalle, $descSalle);
-						$entityManager->persist($newSalle);
-						$entityManager->flush();
+						$em->persist($newSalle);
+						$em->flush();
 					}
 				}
 			}
@@ -105,7 +105,7 @@
 	 * @param $n le nombre de cours à traiter
      */
 	function traiteCours($n, $matiereTab, $salleTab, $descTab, $dateTab, $dateTabEnd) {
-		global $entityManager;
+		global $em;
 
 		// Informations sur le progrès de l'opération affichées au dessus du tableau de résultats
 		echo("Cours traités : ");
@@ -199,11 +199,11 @@
 
 			// Recherche de la matière dans la base de données
 			$matiere = substr($matiereTab[$j], 8);
-			$newMatiere = $entityManager->getRepository('Matiere')->findOneBy(array('libelle' => $matiere));
+			$newMatiere = $em->getRepository('Matiere')->findOneBy(array('libelle' => $matiere));
 
 			// créer le nouvel objet de cours
 			$newCours = new Cours($newMatiere, $dateTimeD, $dateTimeF);
-			$entityManager->persist($newCours);
+			$em->persist($newCours);
 			
 			echo("</tr><tr><td>".$newCours->getMatiere()->getLibelle()."</td><td>".$newCours->getDateDebut()->format("Y-m-d H:i")."</td>");
 
@@ -243,14 +243,14 @@
 					}
 	
 					// Recherche de la Salle correspondante au numero de salle
-					$newSalle = $entityManager->getRepository('Salle')->find($numSalle);
+					$newSalle = $em->getRepository('Salle')->find($numSalle);
 	
 					// On créé un lien entre la salle et le cours dans la BD
 					$newOccupe = new Occupe();
 					$newOccupe->setSalle($newSalle);
 					$newOccupe->setCours($newCours);
 					// On ajoute l'objet occupe en BD
-					$entityManager->persist($newOccupe);
+					$em->persist($newOccupe);
 	
 					echo("<td>(S): ".$newOccupe->getSalle()->getNum()." ".$newOccupe->getSalle()->getDescription()."</td>");
 				}
@@ -264,20 +264,20 @@
 
 			foreach($groupes as $nomGroupe){
 				// Recherche d'un groupe par nom
-				$newGroupe = $entityManager->getRepository('Groupe')->findOneBy(array('libelle' => $nomGroupe));
+				$newGroupe = $em->getRepository('Groupe')->findOneBy(array('libelle' => $nomGroupe));
 	
 				// On créé un lien entre le groupe et le cours dans la BD
 				$newParticipe = new Participe();
 				$newParticipe->setGroupe($newGroupe);
 				$newParticipe->setCours($newCours);
 				// // On ajoute l'objet Participe en BD
-				$entityManager->persist($newParticipe);
+				$em->persist($newParticipe);
 			
 				echo("<td>(G): ".$newParticipe->getGroupe()->getLibelle()."</td>");
 			}
 		}
 
-		$entityManager->flush();
+		$em->flush();
 
 		// Affichage du temps à la fin du traitement
 		$t = microtime(true);
