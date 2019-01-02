@@ -1,0 +1,119 @@
+/* Pour la div qui contient l'ensemble de l'emploi du temps */
+.scheduler-container {
+  font-family: Helvetica, ​Arial, ​sans-serif;
+  color: #233656;
+}
+
+.scheduler-container * {
+    box-sizing: content-box;
+}
+
+/* Pour la div qui présente les entêtes de colonne */
+.scheduler-headers {
+  border-left: 1px solid #7B9BA6;
+  display: flex;
+  padding-left: 50px;
+  position: relative;
+}
+/* Ajouter l'entête vide de la colonne de timeline */
+.scheduler-headers:before {
+  border-top: 1px solid #7B9BA6;
+  content: "";
+  width: 50px;
+  position: absolute;
+  left: 0;
+  background-color: #415B76;
+  height: 41px;
+}
+/* Pour toutes les entêtes de la ligne header */
+.scheduler-headers > div {
+  width: 200px;
+  height: 30px;
+  padding-top: 10px;
+  background-color: #415B76;
+  border-left: 1px solid #7B9BA6;
+  border-bottom: 1px solid #7B9BA6;
+  border-top: 1px solid #7B9BA6;
+  text-align: center;
+  font-weight: bold;
+  line-height: normal;
+}
+
+.scheduler-headers > div:last-child,
+.scheduler-main-body > div > div.scheduler-cell  {
+  border-right: 1px solid #7B9BA6;
+}
+
+/* Pour toute la partie non-header */
+.scheduler-main {
+  display: flex;
+}
+
+/* Pour la colonne de la timeline */
+.scheduler-main-timeline {
+  margin-top: -1px;
+}
+/* Et chaque horaires de celle-ci */
+.scheduler-main-timeline div {
+  width: 50px;
+  height: 27px;
+  text-align: center;
+  padding-top: 3px;
+  border-right: 1px solid #7B9BA6;
+  border-left: 1px solid #7B9BA6;
+  line-height: normal;
+}
+
+.scheduler-main-timeline div:first-child {
+    border-top: 1px solid #7B9BA6;
+}
+
+/* Pour la partie qui contient les autres colonnes */
+.scheduler-main-body {
+  display: flex;
+}
+
+.scheduler-main-timeline div,
+.scheduler-main-body > div > div.scheduler-cell {
+  background-color: #EEF4F2;
+}
+
+.scheduler-main-timeline div:nth-child(even),
+.scheduler-main-body > div > div.scheduler-cell:nth-child(odd) {
+  border-top: 1px dotted #7B9BA6;
+  border-bottom: 1px solid #7B9BA6;
+}
+
+.scheduler-cell {
+  width: 200px;
+  height: 30px;
+}
+
+/* Pour le placeholder qui présente les tâches d'une colonne */
+.scheduler-main-body > div > .scheduler-task-placeholder {
+  height: 0;
+  position: relative;
+}
+
+/* Et pour chaque tâches de la colonne */
+.scheduler-main-body > div > .scheduler-task-placeholder > div {
+  position: absolute;
+  overflow: hidden;
+  background-color: #7B9BA6;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px .125em .25em rgba(0,0,0,.25);
+  margin-top: 2px;
+  cursor: pointer;
+  color: #FFFFFF;
+  word-wrap: break-word;
+  transition: all .4s;
+  text-align: left;
+  line-height: normal;
+}
+
+/* Lors du survol d'une tâche */
+.scheduler-main-body > div > .scheduler-task-placeholder > div:hover {
+  box-shadow: 0 .25em .5em rgba(0,0,0,.5);
+  background-color: #415B76;
+}
