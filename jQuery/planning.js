@@ -39,7 +39,7 @@ function generate() {
     }
 
     $("#scheduler-container").scheduler({
-        headers: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
+        headers: ["Lundi 01/01", "Mardi 02/01", "Mercredi 03/01", "Jeudi 04/01", "Vendredi 05/01"],
         tasks: tasks,
         cardTemplate: '<div>${title}</div><div>${teacher}</div>',
         onClick: function (e, t) { affichePopup(); }

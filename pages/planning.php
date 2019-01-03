@@ -1,3 +1,33 @@
+<?php
+	// Démarrage des sessions
+ 	session_start();
+
+	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
+    if ( !isset($_SESSION["user"]) ) {
+        header('Location: ../index.php');
+    }
+
+	// Initialisation des variables
+	$dep = $grp = $week = 0;
+
+	// Si le formulaire de sélection des étudiants est validé, on les enregistres
+    if ( isset($_POST["valide"]) ) {
+
+		$dep = $_POST["departement"];
+		$grp = $_POST["groupe"];
+		$week = $_POST["semaine"];
+
+		if (!empty($_POST["absents"])) {
+			echo 'Les étudiants absents sont :<br />';
+			foreach($_POST['absents'] as $val) {
+				echo $val,'<br />';
+			}
+
+			unset($_POST["valide"]);
+		}
+	}
+?>
+
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -15,22 +45,21 @@
 		<!-- DEBUT DU CONTENU DE LA POPUP -->
         <div class="modalWindow blur-effect" id="popup">
 			<div class="popup">
-    			<h1>Qui sont les abscents ?</h1>
+    			<h1>Qui sont les absents ?</h1>
 
                 <!-- Menu de sélection des étudiants -->
-				<form action="#" method="post">
+				<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
 					<div class="row listeEleves">
-	                    <div>Norbert <input type="checkbox"/><br/></div>
-	                    <div>Roger <input type="checkbox"/><br/></div>
-	                    <div>Jean-Pierre <input type="checkbox"/><br/></div>
-	                    <div>Louis <input type="checkbox"/><br/></div>
-	                    <div>André <input type="checkbox"/><br/></div>
-	                    <div>Paul <input type="checkbox"/><br/></div>
-	                    <div>Claude <input type="checkbox"/><br/></div>
-	                    <div>Michel <input type="checkbox"/><br/></div>
+	                    <div>Norbert <input type="checkbox" name="absents[]" value="Norbert"/><br/></div>
+	                    <div>Roger <input type="checkbox" name="absents[]" value="Roger"/><br/></div>
+	                    <div>Jean-Pierre <input type="checkbox" name="absents[]" value="Jean-Pierre"/><br/></div>
+	                    <div>Louis <input type="checkbox" name="absents[]" value="Louis"/><br/></div>
+	                    <div>André <input type="checkbox" name="absents[]" value="André"/><br/></div>
+	                    <div>Paul <input type="checkbox" name="absents[]" value="Paul"/><br/></div>
+	                    <div>Claude <input type="checkbox" name="absents[]" value="Claude"/><br/></div>
+	                    <div>Michel <input type="checkbox" name="absents[]" value="Michel"/><br/></div>
 	                </div>
-	                <button type="submit" class="btn bouton">Valider</button>
-				</form>
+	                <button type="submit" name='valide' class="btn bouton">Valider</button>
 
                 <!-- Bouton pour fermer la popup -->
 				<div class="close"></div>
@@ -48,43 +77,44 @@
 			</div>
 
 			<!-- Menu de sélection du groupe et de la semaine -->
-			<form action="#" method="post">
 	            <div class="row menu">
 					<div class="col-md-4 col-sm-12">
 						Département :
 	                    <select class="liste" name="departement">
-	                        <option value="defaut"></option>
-	                        <option value="dep1">Informatique</option>
-	                        <option value="dep2">QLIO</option>
-	                        <option value="dep3">Info-com</option>
-	                        <option value="dep4">GEA</option>
-	                        <option value="dep5">Carrière juridique</option>
+	                        <option <?php if($dep == "defaut") echo "selected"; ?> value="defaut"></option>
+	                        <option <?php if($dep == "dep1") echo "selected"; ?> value="dep1">Informatique</option>
+	                        <option <?php if($dep == "dep2") echo "selected"; ?> value="dep2">QLIO</option>
+	                        <option <?php if($dep == "dep3") echo "selected"; ?> value="dep3">Info-com</option>
+	                        <option <?php if($dep == "dep4") echo "selected"; ?> value="dep4">GEA</option>
+	                        <option <?php if($dep == "dep5") echo "selected"; ?> value="dep5">Carrière juridique</option>
 	                    </select>
 					</div>
 
 					<div class="col-md-4 col-sm-12">
 						Groupe :
 	                    <select class="liste" name="groupe">
-	                        <option value="defaut"></option>
-	                        <option value="gr1">DUT 1</option>
-	                        <option value="gr2">DUT 2</option>
-	                        <option value="gr3">LP MMS</option>
+	                        <option <?php if($grp == "defaut") echo "selected"; ?> value="defaut"></option>
+	                        <option <?php if($grp == "gr1") echo "selected"; ?> value="gr1">DUT 1</option>
+	                        <option <?php if($grp == "gr2") echo "selected"; ?> value="gr2">DUT 2</option>
+	                        <option <?php if($grp == "gr3") echo "selected"; ?> value="gr3">LP MMS</option>
 	                    </select>
 					</div>
 
 					<div class="col-md-4 col-sm-12">
 						Semaine :
 	                    <select class="liste" name="semaine">
-	                        <option value="defaut"></option>
-	                        <option value="sem1">Semaine 48</option>
-	                        <option value="sem2">Semaine 49</option>
-	                        <option value="sem3">Semaine 50</option>
-	                        <option value="sem4">Semaine 51</option>
-	                        <option value="sem5">Semaine 52</option>
+							<option <?php if($week == "defaut") echo "selected"; ?> value="defaut"></option>
+							<?php
+								for ($i = 0; $i <= 52; $i++) {
+									echo "<option ";
+									if($week == "sem".$i) echo "selected";
+									echo " value='sem".$i."'>Semaine ".$i."</option>";
+								}
+							?>
 	                    </select>
 					</div>
 	            </div>
-			</form><!-- Fin menu -->
+			</form><!-- Fin formulaire -->
 
 			<div class="row menu">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
