@@ -3,7 +3,7 @@
  	session_start();
 
 	global $em;
-	
+
 	// Détruit la session si elle est déjà ouverte
 	if (isset($_POST["deco"])) {
 		session_unset();
@@ -23,24 +23,24 @@
 			'mdp' => $_POST["passwd"]
 		));
 		$personnel = $query->getResult();
-		
+
 		$query = $em->createQuery('SELECT r FROM src/Remplit r WHERE r.personnel = ":personnel"');
-		$query->setParameters('login' => $personnel));
+		$query->setParameters('login', $personnel);
 		$remplit = $query->getResult();
-		
+
 		$_SESSION["nom"] = $personnel->getNom();
 		$_SESSION["prenom"] = $personnel->getPrenom();
 		$_SESSION["droit"] = $remplit->getRole()->getId();
-		
-		if($_SESSION["droit"] == 1){		
+
+		if($_SESSION["droit"] == 1){
 			// Et on redirige vers la page admin
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/admin.php');
 			exit();
-		} elseif($_SESSION["droit"] == 2){		
+		} elseif($_SESSION["droit"] == 2){
 			// Et on redirige vers la page adminif
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/adminif.php');
 			exit();
-		} elseif($_SESSION["droit"] == 3){		
+		} elseif($_SESSION["droit"] == 3){
 			// Et on redirige vers la page du Planning
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/planning.php');
 			exit();
