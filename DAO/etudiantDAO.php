@@ -67,7 +67,7 @@
     function getEtudiantsFromGroupe($groupe){
         global $em;
 
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = $em->createQueryBuilder();
         $qb->select("IDENTITY(ap.etudiant)");
         $qb->from("Appartient", "ap");
         $qb->join("Groupe", "grp", \Doctrine\ORM\Query\Expr\Join::WITH, "ap.groupe = grp.id");
