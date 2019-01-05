@@ -109,24 +109,17 @@
 							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
                                 // Récupération des filières en BD pour remplir la liste
-                                $filieres = findAllFiliere();
                                 if (isset($dep) and $dep != 'defaut') {
-                                    foreach ($filieres as $value) {
-                                        $idDep = $value->getDepartement()->getId();
-                                        if ($idDep == $dep) {
-                                            $lib = $value->getLibelle(); // Le libelle de la filière
-                                            echo "<option ";
-                                            if(isset($fil) and $fil == $lib) echo "selected";
-                                            echo " value='".$lib."'>".$lib."</option>";
-                                        }
-                                    }
+                                    $filieres = getFilieresFromDepartement($dep);
                                 } else {
-                                    foreach ($filieres as $value) {
-                                        $lib = $value->getLibelle(); // Le libelle de la filière
-                                        echo "<option ";
-                                        if(isset($fil) and $fil == $lib) echo "selected";
-                                        echo " value='".$lib."'>".$lib."</option>";
-                                    }
+                                    $filieres = findAllFiliere();
+                                }
+                                foreach ($filieres as $value) {
+                                    $lib = $value->getLibelle(); // Le libelle de la filière
+                                    $id = $value->getId();       // L'id de la filière
+                                    echo "<option ";
+                                    if(isset($fil) and $fil == $id) echo "selected";
+                                    echo " value='".$id."'>".$lib."</option>";
                                 }
 							?>
                         </select>
@@ -139,24 +132,16 @@
 	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"></option>
                             <?php
                                 // Récupération des groupes en BD pour remplir la liste
-                                $groupes = findAllGroupe();
                                 if (isset($fil) and $fil != 'defaut') {
-                                    foreach ($groupes as $value) {
-                                        $idFil = $value->getFiliere()->getId();
-                                        if ($idFil == $fil) {
-                                            $lib = $value->getLibelle(); // Le libelle du groupe
-                                            echo "<option ";
-        									if(isset($grp) and $grp == $lib) echo "selected";
-        									echo " value='".$lib."'>".$lib."</option>";
-                                        }
-                                    }
+                                    $groupes = getGroupesFromFiliere($fil);
                                 } else {
-                                    foreach ($groupes as $value) {
-                                        $lib = $value->getLibelle(); // Le libelle du groupe
-                                        echo "<option ";
-    									if(isset($grp) and $grp == $lib) echo "selected";
-    									echo " value='".$lib."'>".$lib."</option>";
-                                    }
+                                    $groupes = findAllGroupe();
+                                }
+                                foreach ($groupes as $value) {
+                                    $lib = $value->getLibelle(); // Le libelle du groupe
+                                    echo "<option ";
+									if(isset($grp) and $grp == $lib) echo "selected";
+									echo " value='".$lib."'>".$lib."</option>";
                                 }
                             ?>
 	                    </select>
