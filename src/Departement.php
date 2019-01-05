@@ -17,9 +17,8 @@ class Departement
     private $libelle;
 
     // Constructeur de la classe
-    public function Departement($id,$libelle)
+    public function Departement($libelle)
     {
-        $this->id = $id;
         $this->libelle = $libelle;
     }
 

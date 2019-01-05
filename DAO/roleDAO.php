@@ -35,6 +35,18 @@
         return $role;
     }
 
+    /** 
+    * @param libelle le libelle du role à rechercher
+    * @return un objet role correspondant au libelle ou null si l'objet avec ce libelle n'existe pas
+    */
+    function findRoleByLibelle($libelle){
+        global $em;
+
+        $role = $em->getRepository("Role")->findOneBy(array("libelle" => $libelle));
+
+        return $role;
+    }
+
     /*
     * @return la liste de tous les role de la base de données
     */

@@ -4,12 +4,12 @@
 	 *
 	 */
 
-	include '../src/Cours.php';
-	include '../src/Matiere.php';
-	include '../src/Groupe.php';
-	include '../src/Salle.php';
-	include '../src/Occupe.php';
-	include '../src/Participe.php';
+	require_once '../src/Cours.php';
+	require_once '../src/Matiere.php';
+	require_once '../src/Groupe.php';
+	require_once '../src/Salle.php';
+	require_once '../src/Occupe.php';
+	require_once '../src/Participe.php';
 
 	// On récupère l'entity manager de l'orm doctrine
 	require_once "../bootstrap.php";
@@ -24,6 +24,54 @@
 	// On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
 	// On récupère la liste des timeZone UTC et prend la première etant donné que l'on est en UTC + 0
 	date_default_timezone_set(DateTimeZone::listIdentifiers(DateTimeZone::UTC)[0]);
+
+	function icsExtractor($file){
+		//Tableau qui contient toutes les lignes du fichier ics lu
+		$calendar = file($file);
+
+		//Préparation des recherches dans le fichier ics
+		$matiereStamp = "SUMMARY:";
+		$dateDebutStamp = "DTSTART:";
+		$dateFinStamp = "DTEND:";
+		$descStamp = "DESCRIPTION:";
+		$salleStamp = "LOCATION:";
+
+		// Nombre d'objets cours
+		$n = 0;
+
+		//Tableaux pour stocker les lignes de chaque cours
+		$matiereTab = array();
+		$dateTab = array();
+		$dateTabEnd = array();
+		$descTab = array();
+		$salleTab = array();
+
+		// Parcours le fichier et range toutes les lignes dans des tableaux spécifiques
+		foreach($calendar as $ligne){
+			// Compte le nombre total d'objets dans le fichier
+			// Chaque ligne contenant la chaine "SUMMARY:" est ajoutée au tableau matiereTab
+			if(strpos($ligne, $matiereStamp) !== FALSE){
+				array_push($matiereTab, $ligne);
+				$n++;
+			// Chaque ligne contenant la chaine "DTSTART:" est ajoutée au tableau dateTab
+			} else if (strpos($ligne, $dateDebutStamp) !== FALSE) {
+				array_push($dateTab, $ligne);
+			// Chaque ligne contenant la chaine "DTEND:" est ajoutée au tableau dateTabEnd
+			} else if (strpos($ligne, $dateFinStamp) !== FALSE) {
+				array_push($dateTabEnd, $ligne);
+			// Chaque ligne contenant la chaine "DESCRIPTION:" est ajoutée au tableau descTab
+			} else if (strpos($ligne, $descStamp) !== FALSE) {
+				array_push($descTab, $ligne);
+			// Chaque ligne contenant la chaine "LOCATION:" est ajoutée au tableau salleTab
+			} else if (strpos($ligne, $salleStamp) !== FALSE) {
+				array_push($salleTab, $ligne);
+			}
+		}
+
+		traiteMatieres($matiereTab);
+		traiteSalles($salleTab);
+		traiteCours($n, $matiereTab, $salleTab, $descTab, $dateTab, $dateTabEnd);
+	}
 
 	/*
 	 * Prend en argument un tableau de matieres, traite le contenu en 
@@ -205,6 +253,7 @@
 			$newCours = new Cours($newMatiere, $dateTimeD, $dateTimeF);
 			$em->persist($newCours);
 			
+			// On affiche dans le tableau les infos sur le nouveau cours
 			echo("</tr><tr><td>".$newCours->getMatiere()->getLibelle()."</td><td>".$newCours->getDateDebut()->format("Y-m-d H:i")."</td>");
 
 			//******************************************//
@@ -287,54 +336,4 @@
 
 		echo("</tr></table>");
 	}
-
-	function icsExtractor($file){
-		//Tableau qui contient toutes les lignes du fichier ics lu
-		$calendar = file($file);
-
-		//Préparation des recherches dans le fichier ics
-		$matiereStamp = "SUMMARY:";
-		$dateDebutStamp = "DTSTART:";
-		$dateFinStamp = "DTEND:";
-		$descStamp = "DESCRIPTION:";
-		$salleStamp = "LOCATION:";
-
-		// Nombre d'objets cours
-		$n = 0;
-
-		//Tableaux pour stocker les lignes de chaque cours
-		$matiereTab = array();
-		$dateTab = array();
-		$dateTabEnd = array();
-		$descTab = array();
-		$salleTab = array();
-
-		// Parcours le fichier et range toutes les lignes dans des tableaux spécifiques
-		foreach($calendar as $ligne){
-			// Compte le nombre total d'objets dans le fichier
-			// Chaque ligne contenant la chaine "SUMMARY:" est ajoutée au tableau matiereTab
-			if(strpos($ligne, $matiereStamp) !== FALSE){
-				array_push($matiereTab, $ligne);
-				$n++;
-			// Chaque ligne contenant la chaine "DTSTART:" est ajoutée au tableau dateTab
-			} else if (strpos($ligne, $dateDebutStamp) !== FALSE) {
-				array_push($dateTab, $ligne);
-			// Chaque ligne contenant la chaine "DTEND:" est ajoutée au tableau dateTabEnd
-			} else if (strpos($ligne, $dateFinStamp) !== FALSE) {
-				array_push($dateTabEnd, $ligne);
-			// Chaque ligne contenant la chaine "DESCRIPTION:" est ajoutée au tableau descTab
-			} else if (strpos($ligne, $descStamp) !== FALSE) {
-				array_push($descTab, $ligne);
-			// Chaque ligne contenant la chaine "LOCATION:" est ajoutée au tableau salleTab
-			} else if (strpos($ligne, $salleStamp) !== FALSE) {
-				array_push($salleTab, $ligne);
-			}
-		}
-
-		traiteMatieres($matiereTab);
-		traiteSalles($salleTab);
-		traiteCours($n, $matiereTab, $salleTab, $descTab, $dateTab, $dateTabEnd);
-	}
-
-	icsExtractor("../ics/Informatique.ics");
 ?>
