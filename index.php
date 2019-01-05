@@ -25,27 +25,27 @@
 		$personnel = $query->getResult();
 
 		$query = $em->createQuery('SELECT r FROM src/Remplit r WHERE r.personnel = ":personnel"');
-		$query->setParameters('login', $personnel);
+		$query->setParameters('personnel', $personnel);
 		$remplit = $query->getResult();
 
 		$_SESSION["nom"] = $personnel->getNom();
 		$_SESSION["prenom"] = $personnel->getPrenom();
-		$_SESSION["droit"] = $remplit->getRole()->getId();
+		$_SESSION["role"] = $remplit->getRole()->getId();
 
-		if($_SESSION["droit"] == 1){
+		if($_SESSION["role"] == 1){
 			// Et on redirige vers la page admin
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/admin.php');
 			exit();
-		} elseif($_SESSION["droit"] == 2){
+		} elseif($_SESSION["role"] == 2){
 			// Et on redirige vers la page adminif
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/adminif.php');
 			exit();
-		} elseif($_SESSION["droit"] == 3){
+		} elseif($_SESSION["role"] == 3){
 			// Et on redirige vers la page du Planning
 			header('Location: http://localhost:8081/github/pjrousdecembre/pages/planning.php');
 			exit();
 		} else {
-			$_SESSION["droit"] == -1;
+			$_SESSION["role"] == -1;
 			echo "Identifiant ou Mot de passe incorrect";
 		}
 	}

@@ -66,7 +66,7 @@
 		</div>
 	</div>
 
-	<script src="../jquery/JQuery.js"></script>
+	<script src="../jquery/jquery-3.3.1.min.js"></script>
 	<script src="../jquery/javascript.js"></script>
 </body>
 </html>

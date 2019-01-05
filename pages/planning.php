@@ -3,16 +3,17 @@
  	session_start();
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
-    if ( !isset($_SESSION["user"]) ) {
-        header('Location: ../index.php');
-    }
+    // if ( !isset($_SESSION["user"]) ) {
+    //     header('Location: ../index.php');
+    // }
 
 	// Initialisation des variables
-	$dep = $grp = $week = 0;
+	$dep = $grp = 0;
 
 	// Si le formulaire de sélection des étudiants est validé, on les enregistres
-    if ( isset($_POST["valide"]) ) {
+    if (isset($_POST["valide"])) {
 
+        // Récupération des valeurs séléctionner pour les conserver
 		$dep = $_POST["departement"];
 		$grp = $_POST["groupe"];
 		$week = $_POST["semaine"];
@@ -22,17 +23,11 @@
 			foreach($_POST['absents'] as $val) {
 				echo $val,'<br />';
 			}
-
-			unset($_POST["valide"]);
 		}
+        unset($_POST["valide"]);
 	}
 ?>
 
-	//Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
-	if ($_SESSION['droit']!=1 || $_SESSION['droit']!=2 || $_SESSION['droit']!=3) {
-			header('Location: ../index.php');
-			exit();
-	}
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -108,11 +103,11 @@
 					<div class="col-md-4 col-sm-12">
 						Semaine :
 	                    <select class="liste" name="semaine">
-							<option <?php if($week == "defaut") echo "selected"; ?> value="defaut"></option>
+							<option <?php if(isset($week) and $week == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
 								for ($i = 0; $i <= 52; $i++) {
 									echo "<option ";
-									if($week == "sem".$i) echo "selected";
+									if(isset($week) and $week == "sem".$i) echo "selected";
 									echo " value='sem".$i."'>Semaine ".$i."</option>";
 								}
 							?>
@@ -134,10 +129,10 @@
 	</body>
 
 	<!-- Le script jQuery -->
-    <script src="../jQuery/jQuery-3.3.1.min.js"></script>
+    <script src="../jquery/jquery-3.3.1.min.js"></script>
     <!-- Les scripts qui gèrent l'emploi du temps -->
     <script src="../templates/scheduler/scheduler.js"></script>
-    <script src="../jQuery/planning.js"></script>
+    <script src="../jquery/planning.js"></script>
     <!-- Le script qui permet l'affichage de la popup -->
     <script src="../templates/popup/popup.js"></script>
 
