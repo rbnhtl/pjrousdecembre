@@ -8,6 +8,14 @@
     include "../DAO/groupeDAO.php";
     include "../DAO/etudiantDAO.php";
 
+    // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
+    function getWeekDates($year, $week) {
+        return [
+            (new DateTime())->setISODate($year, $week)->format('d-m-Y'),   // Date de début
+            (new DateTime())->setISODate($year, $week, 7)->format('d-m-Y') // et de fin de semaine
+        ];
+    }
+
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
     //     header('Location: ../index.php');
@@ -54,14 +62,20 @@
                 <!-- Menu de sélection des étudiants -->
 				<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
 					<div class="row listeEleves">
-	                    <div>Norbert <input type="checkbox" name="absents[]" value="Norbert"/><br/></div>
-	                    <div>Roger <input type="checkbox" name="absents[]" value="Roger"/><br/></div>
-	                    <div>Jean-Pierre <input type="checkbox" name="absents[]" value="Jean-Pierre"/><br/></div>
-	                    <div>Louis <input type="checkbox" name="absents[]" value="Louis"/><br/></div>
-	                    <div>André <input type="checkbox" name="absents[]" value="André"/><br/></div>
-	                    <div>Paul <input type="checkbox" name="absents[]" value="Paul"/><br/></div>
-	                    <div>Claude <input type="checkbox" name="absents[]" value="Claude"/><br/></div>
-	                    <div>Michel <input type="checkbox" name="absents[]" value="Michel"/><br/></div>
+                        <?php
+                            // Récupération des étudiants en BD pour remplir la liste
+                            // if (isset($grp) and $grp != 'defaut') {
+                            //     $etudiants = getEtudiantsFromGroupe($grp);
+                            // } else {
+                                $etudiants = findAllEtudiant();
+                            // }
+                            foreach ($etudiants as $value) {
+                                $nom = $value->getNom();       // Le nom de l'étudiant
+                                $prenom = $value->getPrenom(); // Le prenom de l'étudiant
+                                $ine = $value->getIne();       // L'ine de l'étudiant
+                                echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
+                            }
+                        ?>
 	                </div>
 	                <button type="submit" name='valide' class="btn bouton">Valider</button>
 
@@ -139,9 +153,10 @@
                                 }
                                 foreach ($groupes as $value) {
                                     $lib = $value->getLibelle(); // Le libelle du groupe
+                                    $id = $value->getId();       // L'id du groupe
                                     echo "<option ";
-									if(isset($grp) and $grp == $lib) echo "selected";
-									echo " value='".$lib."'>".$lib."</option>";
+									if(isset($grp) and $grp == $id) echo "selected";
+									echo " value='".$id."'>".$lib."</option>";
                                 }
                             ?>
 	                    </select>
@@ -153,7 +168,8 @@
 	                    <select class="liste" name="semaine">
 							<option <?php if(isset($week) and $week == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
-								for ($i = 0; $i <= 52; $i++) {
+								for ($i = 37; $i <= 52; $i++) {
+                                    $wk =  getWeekDates(2018, $i);
 									echo "<option ";
 									if(isset($week) and $week == "sem".$i) echo "selected";
 									echo " value='sem".$i."'>Semaine ".$i."</option>";
