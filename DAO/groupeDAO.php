@@ -58,4 +58,16 @@
         $em->remove($groupe);
         $em->flush();
     }
+
+    /*
+     * @param $filiere de laquelle on veut récupérer la liste des groupes
+     * @return la liste des groupes de la filière passée en paramètre
+     */
+    function getGroupesFromFiliere($filiere){
+        global $em;
+
+        $groupes = $em->getRepository("Groupe")->findBy(array("filiere" => $filiere));
+
+        return $groupes;
+    }
 ?>

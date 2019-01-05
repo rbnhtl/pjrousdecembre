@@ -59,4 +59,17 @@
         $em->remove($etudiant);
         $em->flush();
     }
+
+    /*
+     * @param $filiere de laquelle on veut récupérer la liste des groupes
+     * @return la liste des groupes de la filière passée en paramètre
+     */
+    function getEtudiantsFromGroupe($groupe){
+        global $em;
+
+        $rqt = $em->createQuery("SELECT a.etudiant FROM Appartient a JOIN a.groupe g WHERE g.id = '$groupe'");
+        $groupes = $rqt->getResult();
+
+        return $groupes;
+    }
 ?>
