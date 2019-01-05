@@ -2,19 +2,23 @@
 	// Démarrage des sessions
  	session_start();
 
+    //Inclusion des DAO nécessaires
+    include "../DAO/departementDAO.php";
+    include "../DAO/filiereDAO.php";
+    include "../DAO/groupeDAO.php";
+    include "../DAO/etudiantDAO.php";
+
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
     //     header('Location: ../index.php');
     // }
-
-	// Initialisation des variables
-	$dep = $grp = 0;
 
 	// Si le formulaire de sélection des étudiants est validé, on les enregistres
     if (isset($_POST["valide"])) {
 
         // Récupération des valeurs séléctionner pour les conserver
 		$dep = $_POST["departement"];
+        $fil = $_POST["filiere"];
 		$grp = $_POST["groupe"];
 		$week = $_POST["semaine"];
 
@@ -78,29 +82,88 @@
 
 			<!-- Menu de sélection du groupe et de la semaine -->
 	            <div class="row menu">
-					<div class="col-md-4 col-sm-12">
+
+                    <!-- Sélection du département -->
+					<div class="col-md-3 col-sm-12">
 						Département :
 	                    <select class="liste" name="departement">
-	                        <option <?php if($dep == "defaut") echo "selected"; ?> value="defaut"></option>
-	                        <option <?php if($dep == "dep1") echo "selected"; ?> value="dep1">Informatique</option>
-	                        <option <?php if($dep == "dep2") echo "selected"; ?> value="dep2">QLIO</option>
-	                        <option <?php if($dep == "dep3") echo "selected"; ?> value="dep3">Info-com</option>
-	                        <option <?php if($dep == "dep4") echo "selected"; ?> value="dep4">GEA</option>
-	                        <option <?php if($dep == "dep5") echo "selected"; ?> value="dep5">Carrière juridique</option>
+	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"></option>
+                            <?php
+                                // Récupération des départements en BD pour remplir la liste
+                                $departements = findAllDepartement();
+                                foreach ($departements as $value) {
+                                    $lib = $value->getLibelle(); // Le libelle du département
+                                    $id = $value->getId();       // L'id du département
+                                    echo "<option ";
+									if(isset($dep) and $dep == $id) echo "selected";
+									echo " value='".$id."'>".$lib."</option>";
+                                }
+                            ?>
 	                    </select>
-					</div>
+					</div><!-- Fin département -->
 
-					<div class="col-md-4 col-sm-12">
+                    <!-- Sélection de la filière -->
+                    <div class="col-md-3 col-sm-12">
+                        Filière :
+	                    <select class="liste" name="filiere">
+							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"></option>
+							<?php
+                                // Récupération des filières en BD pour remplir la liste
+                                $filieres = findAllFiliere();
+                                if (isset($dep) and $dep != 'defaut') {
+                                    foreach ($filieres as $value) {
+                                        $idDep = $value->getDepartement()->getId();
+                                        if ($idDep == $dep) {
+                                            $lib = $value->getLibelle(); // Le libelle de la filière
+                                            echo "<option ";
+                                            if(isset($fil) and $fil == $lib) echo "selected";
+                                            echo " value='".$lib."'>".$lib."</option>";
+                                        }
+                                    }
+                                } else {
+                                    foreach ($filieres as $value) {
+                                        $lib = $value->getLibelle(); // Le libelle de la filière
+                                        echo "<option ";
+                                        if(isset($fil) and $fil == $lib) echo "selected";
+                                        echo " value='".$lib."'>".$lib."</option>";
+                                    }
+                                }
+							?>
+                        </select>
+                    </div><!-- Fin filière -->
+
+                    <!-- Sélection du groupe -->
+					<div class="col-md-3 col-sm-12">
 						Groupe :
 	                    <select class="liste" name="groupe">
-	                        <option <?php if($grp == "defaut") echo "selected"; ?> value="defaut"></option>
-	                        <option <?php if($grp == "gr1") echo "selected"; ?> value="gr1">DUT 1</option>
-	                        <option <?php if($grp == "gr2") echo "selected"; ?> value="gr2">DUT 2</option>
-	                        <option <?php if($grp == "gr3") echo "selected"; ?> value="gr3">LP MMS</option>
+	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"></option>
+                            <?php
+                                // Récupération des groupes en BD pour remplir la liste
+                                $groupes = findAllGroupe();
+                                if (isset($fil) and $fil != 'defaut') {
+                                    foreach ($groupes as $value) {
+                                        $idFil = $value->getFiliere()->getId();
+                                        if ($idFil == $fil) {
+                                            $lib = $value->getLibelle(); // Le libelle du groupe
+                                            echo "<option ";
+        									if(isset($grp) and $grp == $lib) echo "selected";
+        									echo " value='".$lib."'>".$lib."</option>";
+                                        }
+                                    }
+                                } else {
+                                    foreach ($groupes as $value) {
+                                        $lib = $value->getLibelle(); // Le libelle du groupe
+                                        echo "<option ";
+    									if(isset($grp) and $grp == $lib) echo "selected";
+    									echo " value='".$lib."'>".$lib."</option>";
+                                    }
+                                }
+                            ?>
 	                    </select>
-					</div>
+					</div><!-- Fin groupe -->
 
-					<div class="col-md-4 col-sm-12">
+                    <!-- Sélection de la semaine -->
+					<div class="col-md-3 col-sm-12">
 						Semaine :
 	                    <select class="liste" name="semaine">
 							<option <?php if(isset($week) and $week == "defaut") echo "selected"; ?> value="defaut"></option>
@@ -112,10 +175,11 @@
 								}
 							?>
 	                    </select>
-					</div>
-	            </div>
+					</div><!-- Fin semaine -->
+	            </div><!-- Fin menu -->
 			</form><!-- Fin formulaire -->
 
+            <!-- Emploi du temps de sélection du cours -->
 			<div class="row menu">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>

@@ -156,7 +156,7 @@ div[class *="listeEleves"] div:nth-child(even) {
 /******************************************************************************/
 
 /* Media queries */
-@media screen and (max-width: 1240px) and (min-width: 200px){
+@media screen and (max-width: 1500px) and (min-width: 200px){
 
 	.bouton, .liste {
 		width: 150px;
