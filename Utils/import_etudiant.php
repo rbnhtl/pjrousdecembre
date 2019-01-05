@@ -6,11 +6,7 @@
 	include "../src/Etudiant.php";
 	include "../src/Appartient.php";
 	include "../DAO/groupeDAO.php";
-
-	$fichier = $_FILES["userfile"]["name"];
-	if($fichier) {
-		importEtudiant("userfile");
-	}
+	
 	function importEtudiant($fichier) {
 		global $em;
 
@@ -40,7 +36,5 @@
 
 		}
 		$em->flush();
-
-		echo("Etudiants ajoutés en BD<br>");
 	}
 ?>
