@@ -64,7 +64,7 @@
      * @param $departement duquel on veut récupérer la liste des filières
      * @return la liste des filieres du département passé en paramètres
      */
-    function getAllFiliereFromDepartement($departement){
+    function getFilieresFromDepartement($departement){
         global $em;
 
         $filieres = $em->getRepository("Filiere")->findBy(array("departement" => $departement));

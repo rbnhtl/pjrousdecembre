@@ -24,13 +24,6 @@ class Remplit
      **/
     private $role;
 
-    // Constructeur de la classe
-    public function Remplit($personnel, $role)
-    {
-        $this->personnel = $personnel;
-        $this->role = $role;
-    }
-
     /* Getter et Setter ID_PERSONNEL */
     public function getPersonnel(){ return $this->personnel; }
 

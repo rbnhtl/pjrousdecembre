@@ -24,13 +24,6 @@ class Appartient
      **/
     private $etudiant;
 
-    // Constructeur de la classe
-    public function Appartient($groupe, $etudiant)
-    {
-        $this->groupe = $groupe;
-        $this->etudiant = $etudiant;
-    }
-
     /* Getter et Setter GROUPE */
     public function getGroupe(){ return $this->groupe; }
 

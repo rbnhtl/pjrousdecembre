@@ -24,13 +24,6 @@ class Participe
      **/
     private $cours;
 
-    // Constructeur de la classe
-    public function Participe($groupe, $cours)
-    {
-        $this->groupe = $groupe;
-        $this->cours = $cours;
-    }
-
     /* Getter et Setter GROUPE */
     public function getGroupe(){ return $this->groupe; }
 

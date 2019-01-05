@@ -24,13 +24,6 @@ class Abscence
      **/
     private $cours;
 
-    // Constructeur de la classe
-    public function Abscence($etudiant,$cours)
-    {
-        $this->etudiant = $etudiant;
-        $this->cours = $cours;
-    }
-
     /* Getter et Setter INE_ETUD */
     public function getEtud(){ return $this->etudiant; }
 
