@@ -1,4 +1,4 @@
-<?php session_start(); 
+<?php session_start();
 
 	//Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
 	if ($_SESSION['role']!=2 || $_SESSION['role']!=3) {
@@ -197,7 +197,7 @@
 		</div>
 	</div>
 
-	<script src="../jquery/JQuery.js"></script>
+	<script src="../jquery/jquery-3.3.1.min.js"></script>
 	<script src="../jquery/javascript.js"></script>
 </body>
 </html>
