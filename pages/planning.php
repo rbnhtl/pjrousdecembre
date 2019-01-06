@@ -188,16 +188,16 @@
 								for ($i = 36; $i <= 52; $i++) {
                                     $wk =  getWeekDates($annee, $i);
 									echo "<option ";
-									if(isset($week) and $week == "sem".$i) echo "selected";
-									echo " value='sem".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+									if(isset($week) and $week == $i) echo "selected";
+									echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
 								}
                                 $annee++; // Passage à l'année calandaire suivante pour la fin de l'année scolaire
                                 //Deuxième partie du début de l'année à la fin Juin
                                 for ($i = 1; $i <= 26; $i++) {
                                     $wk =  getWeekDates($annee, $i);
 									echo "<option ";
-									if(isset($week) and $week == "sem".$i) echo "selected";
-									echo " value='sem".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+									if(isset($week) and $week == $i) echo "selected";
+									echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
                                 }
 							?>
 	                    </select>
@@ -210,9 +210,14 @@
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>
                 <?php
-                    /* Récupération des données nécessaire pour l'affichage de l'emploi du temps */
-                    $test = getWeekDates(2018, 41);
-                    $res = findCoursOfGroupeInPeriode(78, $test['dateDeb'], $test['dateFin']);
+                    /* Récupération des données nécessaires pour l'affichage de l'emploi du temps */
+                    if ((int)$week >= 36) {
+                        $year = ($dateCourante->format('Y')) - 1;
+                    } else {
+                        $year = $dateCourante->format('Y');
+                    }
+                    $dates = getWeekDates($year, (int)$week);
+                    $res = findCoursOfGroupeInPeriode($grp, $dates['dateDeb'], $dates['dateFin']);
                     $donnees = array();
                     foreach ($res as $cours) {
                         $cr = findCours($cours[1]); // Récupération de l'objet cours
@@ -222,6 +227,7 @@
                                          'salle' => findSallesOfCours($cr->getId()));  // La salle où il prend place
                         array_push($donnees, $unCours);
                     }
+                    var_dump($donnees);
                 ?>
 			</div>
 
