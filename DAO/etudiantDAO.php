@@ -70,7 +70,7 @@
         $qb = $em->createQueryBuilder();
         $qb->select("IDENTITY(ap.etudiant)");
         $qb->from("Appartient", "ap");
-        $qb->join("Groupe", "grp", \Doctrine\ORM\Query\Expr\Join::WITH, "ap.groupe = grp.id");
+        $qb->join("Groupe", "grp", 'WITH', "ap.groupe = grp.id");
         $qb->where("grp.id = ?1");
         $qb->setParameter(1, $groupe);
 

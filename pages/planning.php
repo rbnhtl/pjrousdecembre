@@ -7,14 +7,23 @@
     include "../DAO/filiereDAO.php";
     include "../DAO/groupeDAO.php";
     include "../DAO/etudiantDAO.php";
+    include "../DAO/coursDAO.php";
 
     // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
     function getWeekDates($year, $week) {
-        return [
-            (new DateTime())->setISODate($year, $week)->format('d-m-Y'),   // Date de début
-            (new DateTime())->setISODate($year, $week, 7)->format('d-m-Y') // et de fin de semaine
-        ];
+        $ret['dateDeb'] = (new DateTime())->setISODate($year, $week);    // Date de début
+        $ret['dateFin'] = (new DateTime())->setISODate($year, $week, 7); // et de fin de semaine
+        return $ret;
     }
+
+    $dateDeb = new DateTime('2018-10-08');
+    $dateDeb->setTime(00, 00, 00);
+    $dateFin = new DateTime('2018-10-09');
+    $dateFin->setTime(00, 00, 00);
+
+    var_dump($dateDeb);
+    $res = findCoursOfGroupeInPeriode(69, $dateDeb, $dateFin);
+    var_dump($res);
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
@@ -64,17 +73,18 @@
 					<div class="row listeEleves">
                         <?php
                             // Récupération des étudiants en BD pour remplir la liste
-                            // if (isset($grp) and $grp != 'defaut') {
-                            //     $etudiants = getEtudiantsFromGroupe($grp);
-                            // } else {
+                            if (isset($grp) and $grp != 'defaut') {
+                                $etudiants = getEtudiantsFromGroupe($grp);
+                                var_dump($etudiants);
+                            } else {
                                 $etudiants = findAllEtudiant();
-                            // }
-                            foreach ($etudiants as $value) {
-                                $nom = $value->getNom();       // Le nom de l'étudiant
-                                $prenom = $value->getPrenom(); // Le prenom de l'étudiant
-                                $ine = $value->getIne();       // L'ine de l'étudiant
-                                echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
                             }
+                            // foreach ($etudiants as $value) {
+                            //     $nom = $value->getNom();       // Le nom de l'étudiant
+                            //     $prenom = $value->getPrenom(); // Le prenom de l'étudiant
+                            //     $ine = $value->getIne();       // L'ine de l'étudiant
+                            //     echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
+                            // }
                         ?>
 	                </div>
 	                <button type="submit" name='valide' class="btn bouton">Valider</button>

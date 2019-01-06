@@ -24,7 +24,7 @@
         $em->flush();
         return $cours->getId();
     }
-    
+
     /*
      * @param id l'id du cours à rechercher
      * @return un objet cours correspondant à l'id ou null si le cours avec cet id n'existe pas
@@ -67,7 +67,8 @@
         $qb->from("Participe", "par");
         $qb->join("Groupe", "grp", 'WITH', "par.groupe = grp.id");
         $qb->join("Cours", "cours", 'WITH', "par.cours = cours.id");
-        $qb->where("grp.id = ?1 AND cours.dateDebut < ?2 AND cours.dateFin > ?3");
+        $qb->where("grp.id = ?1");
+        $qb->andWhere("cours.dateDebut BETWEEN ?2 AND ?3");
         $qb->setParameters(array(1 => $groupe, 2 => $dateDeb, 3 => $dateFin));
 
         return $qb->getQuery()->getResult();
