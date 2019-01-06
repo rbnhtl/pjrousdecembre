@@ -71,7 +71,9 @@
         $qb->select("IDENTITY(ap.etudiant)");
         $qb->from("Appartient", "ap");
         $qb->join("Groupe", "grp", 'WITH', "ap.groupe = grp.id");
+        $qb->join("Etudiant", "etu", 'WITH', "ap.etudiant = etu.ine");
         $qb->where("grp.id = ?1");
+        $qb->orderBy('etu.nom', 'ASC');
         $qb->setParameter(1, $groupe);
 
         return $qb->getQuery()->getResult();

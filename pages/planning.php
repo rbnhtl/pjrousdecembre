@@ -16,14 +16,9 @@
         return $ret;
     }
 
-    $dateDeb = new DateTime('2018-10-08');
-    $dateDeb->setTime(00, 00, 00);
-    $dateFin = new DateTime('2018-10-09');
-    $dateFin->setTime(00, 00, 00);
-
-    var_dump($dateDeb);
-    $res = findCoursOfGroupeInPeriode(69, $dateDeb, $dateFin);
-    var_dump($res);
+    $test = getWeekDates(2018, 41);
+    echo 'De '.$test['dateDeb']->format("d-m-Y").' à '.$test['dateFin']->format("d-m-Y");
+    $res = findCoursOfGroupeInPeriode(69, $test['dateDeb'], $test['dateFin']);
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
@@ -75,16 +70,22 @@
                             // Récupération des étudiants en BD pour remplir la liste
                             if (isset($grp) and $grp != 'defaut') {
                                 $etudiants = getEtudiantsFromGroupe($grp);
-                                var_dump($etudiants);
+                                foreach ($etudiants as $value) {
+                                    $ine = $value[1];            // L'INE de l'étudiant
+                                    $etu = findEtudiant($ine);   // Récupération de l'objet étudiant à partir de son INE
+                                    $nom = $etu->getNom();       // Le nom de l'étudiant
+                                    $prenom = $etu->getPrenom(); // Le prenom de l'étudiant
+                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
+                                }
                             } else {
                                 $etudiants = findAllEtudiant();
+                                foreach ($etudiants as $value) {
+                                    $nom = $value->getNom();       // Le nom de l'étudiant
+                                    $prenom = $value->getPrenom(); // Le prenom de l'étudiant
+                                    $ine = $value->getIne();       // L'INE de l'étudiant
+                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
+                                }
                             }
-                            // foreach ($etudiants as $value) {
-                            //     $nom = $value->getNom();       // Le nom de l'étudiant
-                            //     $prenom = $value->getPrenom(); // Le prenom de l'étudiant
-                            //     $ine = $value->getIne();       // L'ine de l'étudiant
-                            //     echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
-                            // }
                         ?>
 	                </div>
 	                <button type="submit" name='valide' class="btn bouton">Valider</button>
