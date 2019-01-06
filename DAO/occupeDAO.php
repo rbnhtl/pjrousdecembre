@@ -57,4 +57,20 @@
         $em->remove($occupe);
         $em->flush();
     }
+
+    /*
+     * @param cours  : le cours dont on veut les salles
+     */
+    function findSallesOfCours($cours){
+        global $em;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select("IDENTITY(oc.salle)");
+        $qb->from("Occupe", "oc");
+        $qb->join("Cours", "crs", 'WITH', "oc.cours = crs.id");
+        $qb->where("crs.id = ?1");
+        $qb->setParameters(array(1 => $cours));
+
+        return $qb->getQuery()->getResult();
+    }
 ?>

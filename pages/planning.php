@@ -8,6 +8,8 @@
     include "../DAO/groupeDAO.php";
     include "../DAO/etudiantDAO.php";
     include "../DAO/coursDAO.php";
+    include "../DAO/matiereDAO.php";
+    include "../DAO/occupeDAO.php";
 
     // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
     function getWeekDates($year, $week) {
@@ -15,10 +17,6 @@
         $ret['dateFin'] = (new DateTime())->setISODate($year, $week, 7); // et de fin de semaine
         return $ret;
     }
-
-    $test = getWeekDates(2018, 41);
-    echo 'De '.$test['dateDeb']->format("d-m-Y").' à '.$test['dateFin']->format("d-m-Y");
-    $res = findCoursOfGroupeInPeriode(69, $test['dateDeb'], $test['dateFin']);
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
@@ -67,7 +65,7 @@
 				<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
 					<div class="row listeEleves">
                         <?php
-                            // Récupération des étudiants en BD pour remplir la liste
+                            /* Récupération des étudiants en BD pour remplir la liste */
                             if (isset($grp) and $grp != 'defaut') {
                                 $etudiants = getEtudiantsFromGroupe($grp);
                                 foreach ($etudiants as $value) {
@@ -114,7 +112,7 @@
 	                    <select class="liste" name="departement">
 	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"></option>
                             <?php
-                                // Récupération des départements en BD pour remplir la liste
+                                /* Récupération des départements en BD pour remplir la liste */
                                 $departements = findAllDepartement();
                                 foreach ($departements as $value) {
                                     $lib = $value->getLibelle(); // Le libelle du département
@@ -133,7 +131,7 @@
 	                    <select class="liste" name="filiere">
 							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
-                                // Récupération des filières en BD pour remplir la liste
+                                /* Récupération des filières en BD pour remplir la liste */
                                 if (isset($dep) and $dep != 'defaut') {
                                     $filieres = getFilieresFromDepartement($dep);
                                 } else {
@@ -156,7 +154,7 @@
 	                    <select class="liste" name="groupe">
 	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"></option>
                             <?php
-                                // Récupération des groupes en BD pour remplir la liste
+                                /* Récupération des groupes en BD pour remplir la liste */
                                 if (isset($fil) and $fil != 'defaut') {
                                     $groupes = getGroupesFromFiliere($fil);
                                 } else {
@@ -177,7 +175,6 @@
 					<div class="col-md-3 col-sm-12">
 						Semaine :
 	                    <select class="liste" name="semaine">
-							<option <?php if(isset($week) and $week == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
                                 /* Génération de la liste des semaine de l'année scolaire courante uniquement */
                                 $dateCourante = new DateTime();
@@ -192,7 +189,7 @@
                                     $wk =  getWeekDates($annee, $i);
 									echo "<option ";
 									if(isset($week) and $week == "sem".$i) echo "selected";
-									echo " value='sem".$i."'>Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+									echo " value='sem".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
 								}
                                 $annee++; // Passage à l'année calandaire suivante pour la fin de l'année scolaire
                                 //Deuxième partie du début de l'année à la fin Juin
@@ -200,7 +197,7 @@
                                     $wk =  getWeekDates($annee, $i);
 									echo "<option ";
 									if(isset($week) and $week == "sem".$i) echo "selected";
-									echo " value='sem".$i."'>Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+									echo " value='sem".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
                                 }
 							?>
 	                    </select>
@@ -212,6 +209,20 @@
 			<div class="row menu">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>
+                <?php
+                    /* Récupération des données nécessaire pour l'affichage de l'emploi du temps */
+                    $test = getWeekDates(2018, 41);
+                    $res = findCoursOfGroupeInPeriode(78, $test['dateDeb'], $test['dateFin']);
+                    $donnees = array();
+                    foreach ($res as $cours) {
+                        $cr = findCours($cours[1]); // Récupération de l'objet cours
+                        $unCours = array('debut' => $cr->getDateDebut(),               // Le début du cours
+                                         'fin' => $cr->getDateFin(),                   // La fin du cours
+                                         'matiere' => $cr->getMatiere()->getLibelle(), // La matière qui y est enseignée
+                                         'salle' => findSallesOfCours($cr->getId()));  // La salle où il prend place
+                        array_push($donnees, $unCours);
+                    }
+                ?>
 			</div>
 
 		</div>

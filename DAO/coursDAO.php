@@ -59,6 +59,11 @@
         $em->flush();
     }
 
+    /*
+     * @param groupe  : le groupe dont on veut les cours
+     * @param dateDeb : la date du début de la plage de cours
+     * @param dateFin : la date de fin de la plage de cours
+     */
     function findCoursOfGroupeInPeriode($groupe, $dateDeb, $dateFin){
         global $em;
 
