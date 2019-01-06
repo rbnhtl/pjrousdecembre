@@ -179,12 +179,29 @@
 	                    <select class="liste" name="semaine">
 							<option <?php if(isset($week) and $week == "defaut") echo "selected"; ?> value="defaut"></option>
 							<?php
-								for ($i = 37; $i <= 52; $i++) {
-                                    $wk =  getWeekDates(2018, $i);
+                                /* Génération de la liste des semaine de l'année scolaire courante uniquement */
+                                $dateCourante = new DateTime();
+                                $mois = $dateCourante->format('m'); // Récupération du mois pour courant pour définir l'année de début
+                                if ($mois >= '09') {
+                                    $annee = $dateCourante->format('Y');
+                                } else {
+                                    $annee = ($dateCourante->format('Y')) - 1;
+                                }
+                                // Première partie de début Septembre à la fin de l'année
+								for ($i = 36; $i <= 52; $i++) {
+                                    $wk =  getWeekDates($annee, $i);
 									echo "<option ";
 									if(isset($week) and $week == "sem".$i) echo "selected";
-									echo " value='sem".$i."'>Semaine ".$i."</option>";
+									echo " value='sem".$i."'>Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
 								}
+                                $annee++; // Passage à l'année calandaire suivante pour la fin de l'année scolaire
+                                //Deuxième partie du début de l'année à la fin Juin
+                                for ($i = 1; $i <= 26; $i++) {
+                                    $wk =  getWeekDates($annee, $i);
+									echo "<option ";
+									if(isset($week) and $week == "sem".$i) echo "selected";
+									echo " value='sem".$i."'>Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+                                }
 							?>
 	                    </select>
 					</div><!-- Fin semaine -->
