@@ -53,7 +53,7 @@
         <link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="../style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
         <link href="../style/style.css" rel="stylesheet"/>
-        <script src="../jquery/jquery-3.3.1.min.js"></script>
+        <!-- Script de getion du menu -->
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
@@ -103,9 +103,10 @@
 
 			<!-- Ligne d'entête -->
             <div class="row enteteRubrique">
-                                        
+
                 <div class="col-xs-11"><h1>Rechercher des emplois du temps</h1></div>
-                
+
+                <!-- Le menu déroullant pour l'accès aux autres pages -->
                 <div class="dropdown col-xs-1"><h1>
                     <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right">
@@ -120,17 +121,17 @@
                         ?>	
                         <li><a href="../index.php">Deconnexion</a></li>
                     </ul></h1>
-                </div>
+                </div><!-- Fin menu déroullant -->
             </div>
 
 			<!-- Menu de sélection du groupe et de la semaine -->
-	            <div class="row menu">
+	            <div class="row menuPlanning">
 
                     <!-- Sélection du département -->
 					<div class="col-md-3 col-sm-12">
 						Département :
-	                    <select class="liste" name="departement">
-	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="departement" id="dep">
+	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
                                 /* Récupération des départements en BD pour remplir la liste */
                                 $departements = findAllDepartement();
@@ -148,15 +149,11 @@
                     <!-- Sélection de la filière -->
                     <div class="col-md-3 col-sm-12">
                         Filière :
-	                    <select class="liste" name="filiere">
-							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="filiere" id="fil">
+							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
 							<?php
                                 /* Récupération des filières en BD pour remplir la liste */
-                                if (isset($dep) and $dep != 'defaut') {
-                                    $filieres = getFilieresFromDepartement($dep);
-                                } else {
-                                    $filieres = findAllFiliere();
-                                }
+                                $filieres = findAllFiliere();
                                 foreach ($filieres as $value) {
                                     $lib = $value->getLibelle(); // Le libelle de la filière
                                     $id = $value->getId();       // L'id de la filière
@@ -171,15 +168,11 @@
                     <!-- Sélection du groupe -->
 					<div class="col-md-3 col-sm-12">
 						Groupe :
-	                    <select class="liste" name="groupe">
-	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="groupe" id="grp">
+	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
-                                /* Récupération des groupes en BD pour remplir la liste */
-                                if (isset($fil) and $fil != 'defaut') {
-                                    $groupes = getGroupesFromFiliere($fil);
-                                } else {
-                                    $groupes = findAllGroupe();
-                                }
+                                /* Récupération des groupes en BD pour remplir la liste */    
+                                $groupes = findAllGroupe();
                                 foreach ($groupes as $value) {
                                     $lib = $value->getLibelle(); // Le libelle du groupe
                                     $id = $value->getId();       // L'id du groupe
@@ -226,7 +219,7 @@
 			</form><!-- Fin formulaire -->
 
             <!-- Emploi du temps de sélection du cours -->
-			<div class="row menu">
+			<div class="row menuPlanning">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>
                 <?php
@@ -265,5 +258,7 @@
     <script src="../jquery/planning.js"></script>
     <!-- Le script qui permet l'affichage de la popup -->
     <script src="../templates/popup/popup.js"></script>
+    <!-- Le script pour remplir les listes avec ajax -->
+    <script src="../jquery/ajax.js"></script>
 
 </html>
