@@ -110,8 +110,14 @@
                     <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="liste.php">Listes</a></li>
-                    <li><a href="adminif.php">Administratif</a></li>
-                    <li><a href="admin.php">Administrateur</a></li>
+                    <?php
+					    if($_SESSION["role"]=="administrateur" || $_SESSION["role"]=="administratif"){
+					    	echo '<li><a href="adminif.php">Administratif</a></li>';
+					    }
+					    if($_SESSION["role"]=="administrateur"){
+					    	echo '<li><a href="admin.php">Administrateur</a></li>';
+					    }
+				    ?>	
                     <li><a href="../index.php">Deconnexion</a></li>
                     </ul></h1>
                 </div>

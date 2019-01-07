@@ -52,7 +52,11 @@
 				<ul class="dropdown-menu dropdown-menu-right">
 				<li><a href="liste.php">Listes</a></li>
 				<li><a href="planning.php">Planning</a></li>
-				<li><a href="admin.php">Administrateur</a></li>
+				<?php
+					if($_SESSION["role"]=="administrateur"){
+						echo '<li><a href="admin.php">Administrateur</a></li>';
+					}
+				?>	
 				<li><a href="../index.php">Deconnexion</a></li>
 				</ul></h1>
 			</div>
