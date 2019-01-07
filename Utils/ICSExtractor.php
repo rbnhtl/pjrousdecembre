@@ -10,6 +10,9 @@
 	require_once '../src/Salle.php';
 	require_once '../src/Occupe.php';
 	require_once '../src/Participe.php';
+	require_once '../src/Anime.php';
+
+	require_once '../DAO/personnelDAO.php';
 
 	// On récupère l'entity manager de l'orm doctrine
 	require_once "../bootstrap.php";
@@ -164,7 +167,7 @@
 		echo("<progress id='progres' max='100' value='70'></progress><br>");
 
 		// Affichage des résultats en tableau
-		echo("<table border='1px solid black'><tr><td>Matiere</td><td>Date cours</td><td>Salles (S) et Groupes (G)</td>");
+		echo("<table border='1px solid black'><tr><td>Matiere</td><td>Date cours</td><td>Professeur</td><td>Salles (S) et Groupes (G)</td>");
 
 		// Définit le nombre total de cours à traiter avant le début du traitement
 		?>
@@ -240,11 +243,6 @@
 				}
 			}
 
-			// Si le prof n'est pas indiqué -->
-			if(sizeof($profs) == 0) {
-				$profs = "non déterminé";
-			}
-
 			// Recherche de la matière dans la base de données
 			$matiere = substr($matiereTab[$j], 8);
 			$newMatiere = $em->getRepository('Matiere')->findOneBy(array('libelle' => $matiere));
@@ -255,6 +253,40 @@
 			
 			// On affiche dans le tableau les infos sur le nouveau cours
 			echo("</tr><tr><td>".$newCours->getMatiere()->getLibelle()."</td><td>".$newCours->getDateDebut()->format("Y-m-d H:i")."</td>");
+
+			///////////////////////////////
+			// GESTION DE LA TABLE ANIME //
+			///////////////////////////////
+
+			// Si le prof n'est pas indiqué -->
+			if(sizeof($profs) == 0) {
+				$afficheProf = "Non déterminé";
+			} else {
+				// Sinon on cherche le prof dans la base de données
+				// Forme de profs : array (size=1)
+				//                      0 => string 'BARRIOS FREDERIC' (length=16)
+				foreach($profs as $prof){
+					$infosProf = explode(" ", $prof);
+					$nomProf = $infosProf[0];
+					$prenomProf = $infosProf[1];
+
+					$personnel = findPersonnelByNomPrenom($nomProf, $prenomProf);
+					// Si le personnel n'a pas été trouvé dans la BD
+					if($personnel === NULL){
+						$afficheProf = "Non déterminé";
+						echo("<td>$afficheProf</td>");
+					} else {
+						$afficheProf = $prenomProf." ".$nomProf;
+
+						$newAnime = new Anime();
+						$newAnime->setProf($personnel);
+						$newAnime->setCours($newCours);
+						$em->persist($newAnime);
+	
+						echo("<td>".$newAnime->getProf()->getNom()."</td>");
+					}
+				}
+			}
 
 			//******************************************//
 			// Gestion des salles et de la table Occupe //

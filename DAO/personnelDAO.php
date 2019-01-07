@@ -38,6 +38,19 @@
         return $personnel;
     }
 
+    /** 
+     * @param nom du personnel à rechercher
+     * @param nom du personnel à rechercher
+     * @return un objet personnel correspondant au nom et au prénom ou null si l'objet avec ces infos n'existe pas
+     */
+    function findPersonnelByNomPrenom($nom, $prenom){
+        global $em;
+
+        $personnel = $em->getRepository("Personnel")->findOneBy(array("prenom" => $prenom, "nom" => $nom));
+
+        return $personnel;
+    }
+
     /*
     * @return la liste de tous les personnel de la base de données
     */

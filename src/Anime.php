@@ -24,13 +24,6 @@ class Anime
      **/
     private $cours;
 
-    // Constructeur de la classe
-    public function Anime($prof, $cours)
-    {
-        $this->prof = $prof;
-        $this->cours = $cours;
-    }
-
     /* Getter et Setter ID_PROF */
     public function getProf(){ return $this->prof; }
 
