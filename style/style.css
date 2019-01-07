@@ -45,6 +45,15 @@ body {
     margin-right: 10px;
 }
 
+/* Bouton du menu bleu avec texte en blanc */
+.boutonMenu {
+    background-color: #415B76;
+    color: white;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 /* Customisation des inputText */
 .inputText:hover, .inputText:focus {
     border: 1px solid #415B76;
@@ -164,7 +173,7 @@ div[class *="listeEleves"] div:nth-child(even) {
 
 }
 
-/*****************************************************************************/
+/******************************************************************************/
 /* Cadre */
 .cadre {
     border: solid #7B9BA6 2px;
@@ -175,4 +184,8 @@ div[class *="listeEleves"] div:nth-child(even) {
 
 #zoneAffichListe{
     padding: 0 0 0 0;
+}
+
+.menu {
+    background-color: #415B76!important;
 }

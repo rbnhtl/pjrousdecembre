@@ -50,8 +50,11 @@
         <link href="../templates/scheduler/scheduler.css" rel="stylesheet"/>
         <link href="../templates/popup/popup.css" rel="stylesheet"/>
         <!-- Style principal de la page -->
-		<link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-		<link href="../style/style.css" rel="stylesheet"/>
+        <link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="../style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
+        <link href="../style/style.css" rel="stylesheet"/>
+        <script src="../jquery/jquery-3.3.1.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
 	<body onload="generate()">
@@ -98,10 +101,21 @@
 		<!-- DEBUT DU CONTENU DE LA PAGE -->
 		<div class="container bloc">
 
-			<!-- Entête -->
-			<div class="row enteteRubrique">
-				<h1>Rechercher un emploi du temps</h1>
-			</div>
+			<!-- Ligne d'entête -->
+            <div class="row enteteRubrique">
+                                        
+                <div class="col-xs-11"><h1>Rechercher des emplois du temps</h1></div>
+                
+                <div class="dropdown col-xs-1"><h1>
+                    <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="liste.php">Listes</a></li>
+                    <li><a href="adminif.php">Administratif</a></li>
+                    <li><a href="admin.php">Administrateur</a></li>
+                    <li><a href="../index.php">Deconnexion</a></li>
+                    </ul></h1>
+                </div>
+            </div>
 
 			<!-- Menu de sélection du groupe et de la semaine -->
 	            <div class="row menu">

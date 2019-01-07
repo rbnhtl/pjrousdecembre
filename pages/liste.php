@@ -19,6 +19,8 @@
 	<link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="../style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
 	<link href="../style/style.css" rel="stylesheet"/>
+	<script src="../jquery/jquery-3.3.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<!-- Début du contenu de la page -->
@@ -26,7 +28,18 @@
 
 		<!-- Ligne d'entête -->
 		<div class="row enteteRubrique">
-			<h1>Listes</h1>
+									
+			<div class="col-xs-11"><h1>Listes</h1></div>
+			
+			<div class="dropdown col-xs-1"><h1>
+				<button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
+				<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="planning.php">Planning</a></li>
+				<li><a href="adminif.php">Administratif</a></li>
+				<li><a href="admin.php">Administrateur</a></li>
+				<li><a href="../index.php">Deconnexion</a></li>
+				</ul></h1>
+			</div>
 		</div>
 
 		<div class="col-xs-12">
@@ -217,7 +230,6 @@
 		</div>
 	</div>
 
-	<script src="../jquery/jquery-3.3.1.min.js"></script>
 	<script src="../jquery/liste.js"></script>
 </body>
 </html>
