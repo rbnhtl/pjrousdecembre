@@ -4,10 +4,10 @@
      *
      */
 
-    include "../src/Personnel.php";
+    require_once(dirname(__FILE__)."/../src/Personnel.php");
 
     // On récupère l'entity manager de l'orm doctrine
-    require_once "../bootstrap.php";
+    require_once(dirname(__FILE__)."/../bootstrap.php");
 
     /*
     * @param login login du nouveau personnel
@@ -34,6 +34,32 @@
         global $em;
 
         $personnel = $em->getRepository("Personnel")->find($id);
+
+        return $personnel;
+    }
+
+    /** 
+     * @param nom du personnel à rechercher
+     * @param prenom du personnel à rechercher
+     * @return un objet personnel correspondant au nom et au prénom ou null si l'objet avec ces infos n'existe pas
+     */
+    function findPersonnelByNomPrenom($nom, $prenom){
+        global $em;
+
+        $personnel = $em->getRepository("Personnel")->findOneBy(array("prenom" => $prenom, "nom" => $nom));
+
+        return $personnel;
+    }
+
+    /** 
+     * @param login du personnel à rechercher
+     * @param mdp du personnel à rechercher
+     * @return un objet personnel correspondant au login et au mdp ou null si l'objet avec ces infos n'existe pas
+     */
+    function findPersonnelByLoginMdp($login, $mdp){
+        global $em;
+
+        $personnel = $em->getRepository("Personnel")->findOneBy(array("login" => $login, "mdp" => $mdp));
 
         return $personnel;
     }

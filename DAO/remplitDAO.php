@@ -4,10 +4,10 @@
      *
      */
 
-    include "../src/Remplit.php";
+    require_once(dirname(__FILE__)."/../src/Remplit.php");
 
     // On récupère l'entity manager de l'orm doctrine
-    require_once "../bootstrap.php";
+    require_once(dirname(__FILE__)."/../bootstrap.php");
 
     /*
     * @return un tableau contenant le personnel et le role de l'objet remplit
@@ -24,12 +24,11 @@
 
     /*
     * @param personnel personnel qui remplit le role
-    * @param role role remplit par le personnel
     */
-    function findRemplit($personnel, $role){
+    function findRemplit($personnel){
         global $em;
 
-        $remplit = $em->getRepository("Remplit")->find(array("personnel" => $personnel, "role" => $role));
+        $remplit = $em->getRepository("Remplit")->findOneBy(array("personnel" => $personnel));
 
         return $remplit;
     }

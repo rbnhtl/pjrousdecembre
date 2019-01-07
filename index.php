@@ -1,8 +1,14 @@
 <?php
 	// Démarrage des sessions
-	 session_start();
-	 
-	 require_once("bootstrap.php");
+
+	session_start();
+	
+	require_once "bootstrap.php";
+
+	require_once "src/Remplit.php";
+	require_once "src/Personnel.php";
+	require_once "DAO/personnelDAO.php";
+	require_once "DAO/remplitDAO.php";
 
 	global $em;
 
@@ -19,43 +25,37 @@
 		$_SESSION["user"] = $_POST["user"];
 		$_SESSION["mdp"] = $_POST["passwd"];
 
-		$query = $em->createQuery('SELECT p FROM src/Personnel p WHERE p.login = ":login" AND p.mdp = ":passwd"');
-		$query->setParameters(array(
-			'login' => $_POST["user"],
-			'mdp' => $_POST["passwd"]
-		));
-		$personnel = $query->getResult();
+		$personnel = findPersonnelByLoginMdp($_POST["user"], $_POST["passwd"]);
+		if($personnel === null){
+			// Combinaison login mdp pas trouvés
 
-		$query = $em->createQuery('SELECT r FROM src/Remplit r WHERE r.personnel = ":personnel"');
-		$query->setParameters('personnel', $personnel);
-		$remplit = $query->getResult();
-
-		$_SESSION["nom"] = $personnel->getNom();
-		$_SESSION["prenom"] = $personnel->getPrenom();
-		$_SESSION["role"] = $remplit->getRole()->getId();
-
-		if($_SESSION["role"] == 1){
-			// Et on redirige vers la page admin
-			header('Location: http://localhost:8081/github/pjrousdecembre/pages/admin.php');
-			exit();
-		} elseif($_SESSION["role"] == 2){
-			// Et on redirige vers la page adminif
-			header('Location: http://localhost:8081/github/pjrousdecembre/pages/adminif.php');
-			exit();
-		} elseif($_SESSION["role"] == 3){
-			// Et on redirige vers la page du Planning
-			header('Location: http://localhost:8081/github/pjrousdecembre/pages/planning.php');
-			exit();
 		} else {
-			$_SESSION["role"] == -1;
-			echo "Identifiant ou Mot de passe incorrect";
-		}
-	}
+			// Personnel trouvé dans la base de données
+			$remplit = findRemplit($personnel);
+			$role = $remplit->getRole();
+			$nomRole = $role->getLibelle();
 
-	if ( isset($_SESSION["user"]) and isset($_SESSION["mdp"]) ) {
-		echo "User : ".$_SESSION["user"]."<br />
-			  Mot de passe : ".$_SESSION["mdp"]."<br />
-			  Id : ".session_id();
+			$_SESSION["nom"] = $personnel->getNom();
+			$_SESSION["prenom"] = $personnel->getPrenom();
+			$_SESSION["role"] = $role->getLibelle();
+
+			if($_SESSION["role"] == "administrateur"){
+				// Et on redirige vers la page admin
+				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/admin.php');
+				exit();
+			} elseif($_SESSION["role"] == "administratif"){
+				// Et on redirige vers la page adminif
+				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/adminif.php');
+				exit();
+			} elseif($_SESSION["role"] == "professeur"){
+				// Et on redirige vers la page du Planning
+				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/planning.php');
+				exit();
+			} else {
+				$_SESSION["role"] == "erreur";
+				echo "Identifiant ou Mot de passe incorrect";
+			}
+		}
 	}
 ?>
 <html>
