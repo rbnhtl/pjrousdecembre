@@ -163,3 +163,16 @@ div[class *="listeEleves"] div:nth-child(even) {
 	}
 
 }
+
+/*****************************************************************************/
+/* Cadre */
+.cadre {
+    border: solid #7B9BA6 2px;
+    border-radius: 5px;
+    background-color: #EEF4F2;
+    margin-top: 22px;
+}
+
+#zoneAffichListe{
+    padding: 0 0 0 0;
+}

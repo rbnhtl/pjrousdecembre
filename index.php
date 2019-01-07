@@ -1,6 +1,8 @@
 <?php
 	// Démarrage des sessions
- 	session_start();
+	 session_start();
+	 
+	 require_once("bootstrap.php");
 
 	global $em;
 

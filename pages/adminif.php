@@ -169,12 +169,16 @@
 						<!-- Choix du département -->
 						<label for="choixDepartement">Département :</label><br>
 						<select class="form-control" name="choixDepartement" required>
-								<option value="defaut"></option>
-								<option value="dep1">Informatique</option>
-								<option value="dep2">QLIO</option>
-								<option value="dep3">Info-com</option>
-								<option value="dep4">GEA</option>
-								<option value="dep5">Carrière juridique</option>
+							<?php
+								$departements = findAllDepartement();
+
+								echo("<option value='defaut'></option>");
+								foreach($departements as $dep){
+									$idDep = $dep->getId();
+									$libelleDep = $dep->getLibelle();
+									echo("<option value='$idDep'>$libelleDep</option>");
+								}
+							?>
 						</select>
 						<!-- Choix de la filière -->
 						<label for="choixFiliere">Filière :</label><br>
