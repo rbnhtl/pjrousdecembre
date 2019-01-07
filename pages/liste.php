@@ -5,11 +5,10 @@
 
 	require_once "../DAO/departementDAO.php";
 
-	//Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
-	// if ($_SESSION['role']!=2 || $_SESSION['role']!=3) {
-	// 		header('Location: ../index.php');
-	// 		exit();
-	// }
+	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
+    // if ( !isset($_SESSION["user"]) ) {
+    //     header('Location: ../index.php');
+    // }
 ?>
 
 <html>
@@ -58,14 +57,7 @@
 							<label for="choixDepartement">Département :</label><br>
 							<select class="form-control" name="choixDepartement" required>
 								<?php
-									// $departements = findAllDepartement();
-
-									// echo("<option value='defaut'></option>");
-									// foreach($departements as $dep){
-									// 	$idDep = $dep->getId();
-									// 	$libelleDep = $dep->getLibelle();
-									// 	echo("<option value='$idDep'>$libelleDep</option>");
-									// }
+									afficheDepartements();
 								?>
 							</select>
 
@@ -95,14 +87,7 @@
 							<label for="choixDepartement">Département :</label><br>
 							<select class="form-control" name="choixDepartement" required>
 								<?php
-									// $departements = findAllDepartement();
-
-									// echo("<option value='defaut'></option>");
-									// foreach($departements as $dep){
-									// 	$idDep = $dep->getId();
-									// 	$libelleDep = $dep->getLibelle();
-									// 	echo("<option value='$idDep'>$libelleDep</option>");
-									// }
+									afficheDepartements();
 								?>
 							</select>
 
@@ -141,14 +126,7 @@
 							<label for="choixDepartement">Département :</label><br>
 							<select class="form-control" name="choixDepartement" required>
 								<?php
-									// $departements = findAllDepartement();
-
-									// echo("<option value='defaut'></option>");
-									// foreach($departements as $dep){
-									// 	$idDep = $dep->getId();
-									// 	$libelleDep = $dep->getLibelle();
-									// 	echo("<option value='$idDep'>$libelleDep</option>");
-									// }
+									afficheDepartements();
 								?>
 							</select>
 
@@ -233,3 +211,17 @@
 	<script src="../jquery/liste.js"></script>
 </body>
 </html>
+
+<?php
+	function afficheDepartements(){
+		
+		$departements = findAllDepartement();
+
+		echo("<option value='defaut'></option>");
+		foreach($departements as $dep){
+			$idDep = $dep->getId();
+			$libelleDep = $dep->getLibelle();
+			echo("<option value='$idDep'>$libelleDep</option>");
+		}
+	}
+?>
