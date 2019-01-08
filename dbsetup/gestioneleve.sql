@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 07, 2019 at 10:09 PM
+-- Generation Time: Jan 08, 2019 at 04:01 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `absence` (
   `etudiant` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
-  `cours` int(11) NOT NULL
+  `cours` int(11) NOT NULL,
+  `justifiee` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

@@ -24,15 +24,25 @@ class Absence
      **/
     private $cours;
 
+    /**
+     * @Column(type="integer")
+     */
+    private $justifiee = 0;
+
     /* Getter et Setter INE_ETUD */
     public function getEtud(){ return $this->etudiant; }
 
     public function setEtud($etudiant){ $this->etudiant = $etudiant; }
 
-        /* Getter et Setter ID_COURS */
+    /* Getter et Setter ID_COURS */
     public function getCours(){ return $this->cours; }
 
     public function setCours($cours){ $this->cours = $cours; }
+
+    /* Getter et Setter Justifiée */
+    public function getJustifiee(){ return $this->justifiee; }
+
+    public function setJustifee($justifiee){ $this->justifiee = $justifiee; }
 }
 
 ?>
