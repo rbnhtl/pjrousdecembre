@@ -18,6 +18,12 @@
         return $ret;
     }
 
+    // Retourne une heure sous forme de réel
+    function timeDouble($value) {
+        $heure = explode(':', $value);
+        return $heure[0] + ($heure[1] / 60);
+    }
+
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
     //     header('Location: ../index.php');
@@ -118,7 +124,7 @@
                             if($_SESSION["role"]=="administrateur"){
                                 echo '<li><a href="admin.php">Administrateur</a></li>';
                             }
-                        ?>	
+                        ?>
                         <li><a href="../index.php">Deconnexion</a></li>
                     </ul></h1>
                 </div><!-- Fin menu déroullant -->
@@ -171,7 +177,7 @@
 	                    <select class="liste" name="groupe" id="grp">
 	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
-                                /* Récupération des groupes en BD pour remplir la liste */    
+                                /* Récupération des groupes en BD pour remplir la liste */
                                 $groupes = findAllGroupe();
                                 foreach ($groupes as $value) {
                                     $lib = $value->getLibelle(); // Le libelle du groupe
@@ -233,14 +239,17 @@
                     $res = findCoursOfGroupeInPeriode($grp, $dates['dateDeb'], $dates['dateFin']);
                     $donnees = array();
                     foreach ($res as $cours) {
-                        $cr = findCours($cours[1]); // Récupération de l'objet cours
-                        $unCours = array('debut' => $cr->getDateDebut(),               // Le début du cours
-                                         'fin' => $cr->getDateFin(),                   // La fin du cours
-                                         'matiere' => $cr->getMatiere()->getLibelle(), // La matière qui y est enseignée
-                                         'salle' => findSallesOfCours($cr->getId()));  // La salle où il prend place
+                        $cr = findCours($cours[1]);   // Récupération de l'objet cours
+                        $debut = $cr->getDateDebut(); // Objet date de début
+                        $fin = $cr->getDateFin();     // Objet date de fin
+                        $salle = findSallesOfCours($cr->getId()); // Objet sal(l)e
+                        $unCours = array('debut' => timeDouble($debut->format("H:i")), // Horaire de début sous forme de réel
+                                         'fin' => timeDouble($fin->format("H:i")),     // Horaire de fin sous forme de réel
+                                         'jour' => $debut->format("w"),                // Valeur numérique du jour de la semaine de 0 à 6
+                                         'matiere' => $cr->getMatiere()->getLibelle(), // Le nom de la matière qui y est enseignée
+                                         'salle' => $salle[0][1]);                     // Libelle de la salle où il prend place
                         array_push($donnees, $unCours);
                     }
-                    var_dump($donnees);
                 ?>
 			</div>
 
