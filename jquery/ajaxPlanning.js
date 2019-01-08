@@ -15,6 +15,9 @@ $(document).ready(function(){
 
                 $("#fil").empty(); // On vide le select des options actuelles
                 $("#fil").append('<option value="defaut"> -- Select -- </option>');
+                $("#grp").empty();
+                $("#grp").append('<option value="defaut"> -- Select -- </option>');
+                $("#etu").empty();
 
                 for( var i = 0; i<len; i++){
                     var id = response[i]['id'];
@@ -43,6 +46,7 @@ $(document).ready(function(){
 
                 $("#grp").empty(); // On vide le select des options actuelles
                 $("#grp").append('<option value="defaut"> -- Select -- </option>');
+                $("#etu").empty();
 
                 for( var i = 0; i<len; i++){
                     var id = response[i]['id'];

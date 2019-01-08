@@ -4,12 +4,8 @@
 
     //Inclusion des DAO nécessaires
     include "../DAO/departementDAO.php";
-    include "../DAO/filiereDAO.php";
-    include "../DAO/groupeDAO.php";
     include "../DAO/etudiantDAO.php";
     include "../DAO/coursDAO.php";
-    include "../DAO/matiereDAO.php";
-    include "../DAO/occupeDAO.php";
     include "../DAO/absenceDAO.php";
 
     // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
@@ -18,6 +14,9 @@
         $ret['dateFin'] = (new DateTime())->setISODate($year, $week, 7); // et de fin de semaine
         return $ret;
     }
+
+    // Récupération de la date courante pour définir la semaine par défaut
+    $dateCourante = new DateTime();
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     if ( !isset($_SESSION["role"]) ) {
@@ -34,15 +33,19 @@
         $week = $_POST["semaine"];
         $crs = $_POST["idCours"];
 
-		if (!empty($_POST["absents"])) {
-			echo 'Les étudiants absents sont :<br />';
+		if (!empty($_POST["absents"])) { // Si des élèces ont été notés absents
 			foreach($_POST['absents'] as $val) {
-                echo 'eleve : '.$val.', cours : '.$crs.'<br />';
+                // Ajout d'une absence pour chaque élève pour le cours donné
                 createAbscence(findEtudiant($val), findCours($crs));
 			}
 		}
-        unset($_POST["valide"]);
-	}
+
+        // Remise à zéro des variables
+        unset($_POST["valide"], $_POST["absents"], $_POST["idCours"]);
+
+	} else {
+        $week = $dateCourante->format("W");
+    }
 ?>
 
 <html>
@@ -68,18 +71,7 @@
                     <h1>Qui sont les absents ?</h1>
 
                     <!-- Menu de sélection des étudiants -->
-                        <div class="row listeEleves" id="etu">
-                            <?php
-                                /* Récupération des étudiants en BD pour remplir la liste */
-                                $etudiants = findAllEtudiant();
-                                foreach ($etudiants as $value) {
-                                    $nom = $value->getNom();       // Le nom de l'étudiant
-                                    $prenom = $value->getPrenom(); // Le prenom de l'étudiant
-                                    $ine = $value->getIne();       // L'INE de l'étudiant
-                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
-                                }
-                            ?>
-                        </div>
+                        <div class="row listeEleves" id="etu"></div>
                         <input type="hidden" value="1" name="id"/><!-- L'id du cours sélectionné -->
                         <button type="submit" name='valide' class="btn bouton">Valider</button><br/><br/>
 
@@ -143,17 +135,6 @@
                         Filière :
                         <select class="liste" name="filiere" id="fil">
                             <option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
-                            <?php
-                                /* Récupération des filières en BD pour remplir la liste */
-                                $filieres = findAllFiliere();
-                                foreach ($filieres as $value) {
-                                    $lib = $value->getLibelle(); // Le libelle de la filière
-                                    $id = $value->getId();       // L'id de la filière
-                                    echo "<option ";
-                                    if(isset($fil) and $fil == $id) echo "selected";
-                                    echo " value='".$id."'>".$lib."</option>";
-                                }
-                            ?>
                         </select>
                     </div><!-- Fin filière -->
 
@@ -162,17 +143,6 @@
                         Groupe :
                         <select class="liste" name="groupe" id="grp">
                             <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
-                            <?php
-                                /* Récupération des groupes en BD pour remplir la liste */
-                                $groupes = findAllGroupe();
-                                foreach ($groupes as $value) {
-                                    $lib = $value->getLibelle(); // Le libelle du groupe
-                                    $id = $value->getId();       // L'id du groupe
-                                    echo "<option ";
-                                    if(isset($grp) and $grp == $id) echo "selected";
-                                    echo " value='".$id."'>".$lib."</option>";
-                                }
-                            ?>
                         </select>
                     </div><!-- Fin groupe -->
 
@@ -182,7 +152,6 @@
                         <select class="liste" name="semaine" id="wk">
                             <?php
                                 /* Génération de la liste des semaine de l'année scolaire courante uniquement */
-                                $dateCourante = new DateTime();
                                 $mois = $dateCourante->format('m'); // Récupération du mois pour courant pour définir l'année de début
                                 if ($mois >= '09') {
                                     $annee = $dateCourante->format('Y');

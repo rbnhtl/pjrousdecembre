@@ -1,5 +1,5 @@
 <?php session_start();
-	
+
     // On récupère l'entity manager de l'orm doctrine
 	require_once "../bootstrap.php";
 
@@ -44,9 +44,9 @@
 
 		<!-- Ligne d'entête -->
 		<div class="row enteteRubrique">
-									
+
 			<div class="col-xs-11"><h1>Gestion des Filières</h1></div>
-			
+
 			<div class="dropdown col-xs-1"><h1>
 				<button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
 				<ul class="dropdown-menu dropdown-menu-right">
@@ -56,7 +56,7 @@
 					if($_SESSION["role"]=="administrateur"){
 						echo '<li><a href="admin.php">Administrateur</a></li>';
 					}
-				?>	
+				?>
 				<li><a href="../index.php">Deconnexion</a></li>
 				</ul></h1>
 			</div>
@@ -177,13 +177,13 @@
 					</form>
 				</div>
 
-				<!-- Suppression d'un planning -->
+				<!-- Suppression d'un planning --
 				<div class="col-xs-4 cadreFormulaireRow2">
 					<div class="row">
 						<h3>Supprimer un planning</h3>
 					</div>
 					<form class="form" action="adminif.php" method="post" enctype="multipart/form-data">
-						<!-- Choix du département -->
+						!-- Choix du département --
 						<label for="choixDepartement">Département :</label><br>
 						<select class="form-control" name="choixDepartement" required>
 							<?php
@@ -197,7 +197,7 @@
 								}
 							?>
 						</select>
-						<!-- Choix de la filière -->
+						!-- Choix de la filière --
 						<label for="choixFiliere">Filière :</label><br>
 						<select class="form-control" name="choixFiliere" required>
 								<option value="defaut"></option>
@@ -207,18 +207,18 @@
 								<option value="fil4">MIAGE</option>
 						</select>
 
-						<!-- Date de début -->
+						!-- Date de début --
 						<label for="datemin">Date de début :</label><br>
 						<input type="date" class="form-control" id="datemin" required>
 
-						<!-- Date de fin -->
+						!-- Date de fin --
 						<label for="datemax">Date de fin :</label><br>
 						<input type="date" class="form-control" id="datemax" required><br>
 
 						<button type="submit" class="btn btn-default bouton">Valider</button>
 					</form>
 
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</div>
