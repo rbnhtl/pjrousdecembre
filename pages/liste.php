@@ -6,6 +6,8 @@
 	require_once "../DAO/departementDAO.php";
 	require_once "../DAO/matiereDAO.php";
 	require_once "../DAO/etudiantDAO.php";
+	require_once "../DAO/absenceDAO.php";
+	require_once "../DAO/coursDAO.php";
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     if ( !isset($_SESSION["role"]) ) {
@@ -142,7 +144,7 @@
 							<label for="choixFiliere">Filière :</label><br>
 							<select class="form-control" name="choixFiliere" required>
 									<option value="defaut"></option>
-									<option value="fil1">INFO1</option>
+									<option value="1">INFO1</option>
 									<option value="fil2">INFO2</option>
 									<option value="fil3">MMS</option>
 									<option value="fil4">MIAGE</option>
@@ -152,7 +154,7 @@
 							<label for="choixGroupe">Groupe :</label><br>
 							<select class="form-control" name="choixGroupe" required>
 									<option value="defaut"></option>
-									<option value="grp1">INFO1TD01</option>
+									<option value="1">INFO1TD01</option>
 									<option value="grp2">INFO1TD02</option>
 									<option value="grp3">CJ1CM01</option>
 							</select>
@@ -243,7 +245,20 @@
 					} elseif (isset($_POST["formListAbsence"])) {
 						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut" 
 						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == ""){
-							echo"coucou";
+							$absences = findAllAbscence();
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
+							foreach($absences as $absence){
+								echo("<tbody><tr><th>".$absence->getEtud()->getIne()."</th><th>".$absence->getEtud()->getNom()."</th><th>".$absence->getEtud()->getPrenom()."</th><th>".$absence->getCours()->getMatiere()->getLibelle()."</th><th>".date_format($absence->getCours()->getDateDebut(), "d-m-Y H:i")."</th></tr></tbody>");
+							}
+						} else {
+							$absences = findAbscenceWithParams($_POST["choixDepartement"], $_POST["choixFiliere"], $_POST["choixGroupe"],
+							                                   $_POST["choixMatiere"], $_POST["datemin"], $_POST["datemax"]);
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
+							foreach($absences as $absence){
+								$etudiant = findEtudiant($absence[1]);
+								$cours = findCours($absence[2]);
+								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th><th>".$cours->getMatiere()->getLibelle()."</th><th>".date_format($cours->getDateDebut(), "d-m-Y H:i")."</th></tr></tbody>");
+							}
 						}
 					}
 				?>
