@@ -6,9 +6,9 @@
 	require_once "../DAO/departementDAO.php";
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
-    // if ( !isset($_SESSION["role"]) ) {
-    //     header('Location: ../index.php');
-    // }
+    if ( !isset($_SESSION["role"]) ) {
+        header('Location: ../index.php');
+    }
 ?>
 
 <html>

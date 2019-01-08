@@ -8,7 +8,7 @@
 	include "../src/Remplit.php";
 
 	// Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
-	if ($_SESSION['role']!=1) {
+	if ($_SESSION['role']!="administrateur") {
   		header('Location: ../index.php');
   		exit();
 	}

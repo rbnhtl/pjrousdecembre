@@ -7,11 +7,11 @@
 	require_once "../DAO/roleDAO.php";
 	require_once "../utils/import_etudiant.php";
 
-	//Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
-	// if ($_SESSION['role']!=2 || $_SESSION['role']!=3) {
-	// 		header('Location: ../index.php');
-	// 		exit();
-	// }
+	// Redirection vers l'index s'il n'y a pas eu connexion ou si les droits ne sont pas corrects
+	if ($_SESSION['role']!="administratif" && $_SESSION['role']!="administrateur") {
+			header('Location: ../index.php');
+			exit();
+	}
 
 	if(isset($_POST["formCreerDep"])){
 		creerDepartement($_POST["nomDep"]);
