@@ -64,26 +64,15 @@
 
                 <!-- Menu de sélection des étudiants -->
 				<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
-					<div class="row listeEleves">
+					<div class="row listeEleves" id="etu">
                         <?php
                             /* Récupération des étudiants en BD pour remplir la liste */
-                            if (isset($grp) and $grp != 'defaut') {
-                                $etudiants = getEtudiantsFromGroupe($grp);
-                                foreach ($etudiants as $value) {
-                                    $ine = $value[1];            // L'INE de l'étudiant
-                                    $etu = findEtudiant($ine);   // Récupération de l'objet étudiant à partir de son INE
-                                    $nom = $etu->getNom();       // Le nom de l'étudiant
-                                    $prenom = $etu->getPrenom(); // Le prenom de l'étudiant
-                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
-                                }
-                            } else {
-                                $etudiants = findAllEtudiant();
-                                foreach ($etudiants as $value) {
-                                    $nom = $value->getNom();       // Le nom de l'étudiant
-                                    $prenom = $value->getPrenom(); // Le prenom de l'étudiant
-                                    $ine = $value->getIne();       // L'INE de l'étudiant
-                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
-                                }
+                            $etudiants = findAllEtudiant();
+                            foreach ($etudiants as $value) {
+                                $nom = $value->getNom();       // Le nom de l'étudiant
+                                $prenom = $value->getPrenom(); // Le prenom de l'étudiant
+                                $ine = $value->getIne();       // L'INE de l'étudiant
+                                echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
                             }
                         ?>
 	                </div>
