@@ -8,7 +8,7 @@
  /**
   * @Entity @Table(name="absence")
   **/
-class Abscence
+class Absence
 {
     /**
      * @Id
