@@ -4,7 +4,7 @@ function generate() {
 
     // Pour tous les jours de la semaine
     for (var i = 0; i < 5; i++) {
-        var startTime = 7.5;
+        var startTime = 5.5;
         var duration = 0.5;
 
         // Pour 5 tâches par jour
@@ -29,7 +29,7 @@ function generate() {
             duration -= startTime + duration > 24 ? (startTime + duration) - 24 : 0; 
 
             // S'assure qu'on ne déborde pas de 18h30
-            if (startTime + duration > 18.5) {
+            if (startTime + duration > 17.5) {
                 break;
             }
 
