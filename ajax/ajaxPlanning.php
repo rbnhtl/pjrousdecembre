@@ -48,10 +48,11 @@
         $fin = $cr->getDateFin();     // Objet date de fin
         $salle = findSallesOfCours($cr->getId()); // Objet sal(l)e
         $donnees[] = array('debut' => timeDouble($debut->format("H:i")), // Horaire de début sous forme de réel
-                         'fin' => timeDouble($fin->format("H:i")),       // Horaire de fin sous forme de réel
-                         'jour' => $debut->format("w"),                  // Valeur numérique du jour de la semaine de 0 à 6
-                         'matiere' => $cr->getMatiere()->getLibelle(),   // Le nom de la matière qui y est enseignée
-                         'salle' => $salle[0][1]);                       // Libelle de la salle où il prend place
+                           'fin' => timeDouble($fin->format("H:i")),     // Horaire de fin sous forme de réel
+                           'jour' => $debut->format("w"),                // Valeur numérique du jour de la semaine de 0 à 6
+                           'id' => $cr->getId(),                         // L'id du cours pour gérer les abscences
+                           'matiere' => $cr->getMatiere()->getLibelle(), // Le nom de la matière qui y est enseignée
+                           'salle' => $salle[0][1]);                     // Libelle de la salle où il prend place
     }
 
     // Encodage en JSON et renvoi des informations

@@ -26,7 +26,7 @@
 	// Si le formulaire de sélection des étudiants est validé, on les enregistres
     if (isset($_POST["valide"])) {
 
-        // Récupération des valeurs séléctionner pour les conserver
+        // Récupération des valeurs séléctionnées pour les conserver
 		$dep = $_POST["departement"];
         $fil = $_POST["filiere"];
 		$grp = $_POST["groupe"];
@@ -76,6 +76,7 @@
                             }
                         ?>
 	                </div>
+                    <input type="hidden" value="1" name="id"/><!-- L'id du cours sélectionné -->
 	                <button type="submit" name='valide' class="btn bouton">Valider</button>
 
                 <!-- Bouton pour fermer la popup -->

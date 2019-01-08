@@ -42,7 +42,6 @@ function generate() {
                 title: 'Cours ' + i + '.' + j,
                 teacher: 'Mr.LeProf'
             };
-            console.log(task);
 
             tasks.push(task); // Et ajout à la liste
         }
@@ -81,6 +80,7 @@ $("#wk").change(function(){
                 var debut = response[i]['debut'];
                 var fin = response[i]['fin'];
                 var jour = response[i]['jour'];
+                var id = response[i]['id'];
                 var matiere = response[i]['matiere'];
                 var salle = response[i]['salle'];
 
@@ -89,11 +89,10 @@ $("#wk").change(function(){
                     startTime: debut,
                     duration: (fin - debut),
                     column: jour - 1,
-                    id: ''+i,
+                    id: id,
                     title: matiere,
                     salle: salle
                 };
-                console.log(task);
     
                 tasks.push(task); // Ajout de la tâche au tableau
             }
@@ -102,7 +101,8 @@ $("#wk").change(function(){
             $("#scheduler-container").scheduler({
                 headers: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
                 tasks: tasks,
-                cardTemplate: '<div>${title}</div><div>${salle}</div>',
+                // L'input permet de récupérer l'id du cours pour pouvoir gérer les absences
+                cardTemplate: '<div>${title}</div><div>${salle}</div><input type="hidden" value=${id} name="id"/>',
                 onClick: function (e, t) { affichePopup(); }
             });
         }
