@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	// Démarrage des sessions
  	session_start();
 
@@ -14,6 +14,11 @@
         $ret['dateFin'] = (new DateTime())->setISODate($year, $week, 7); // et de fin de semaine
         return $ret;
     }
+
+    // On initialise la timezone
+    // On utilise une commande pour donner la timezone par défault, pour utiliser les DATETIME par la suite
+    // On récupère la liste des timeZone UTC et prend la première etant donné que l'on est en UTC + 0
+    date_default_timezone_set(DateTimeZone::listIdentifiers(DateTimeZone::UTC)[0]);
 
     // Récupération de la date courante pour définir la semaine par défaut
     $dateCourante = new DateTime();
