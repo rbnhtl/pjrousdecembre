@@ -4,12 +4,12 @@ var open=1;
 $(function() {
 
     $('#listeAbsence').css("visibility", "visible");
-    $('#listeAbsence').css("height", "651px");
+    $('#listeAbsence').css("height", "520px");
     $('#listeEtudiant').css("visibility", "hidden");
     $('#listeEtudiant').css("height", "0px");
     $('#listeMatiere').css("visibility", "hidden");
     $('#listeMatiere').css("height", "0px");
-    $('#zoneAffichListe').css("height", "875px");
+    $('#zoneAffichListe').css("height", "743px");
 
     $('#dpmin').attr({format: "dd/mm/yyyy"});
     $('#dpmax').attr({format: "dd/mm/yyyy"});
@@ -52,13 +52,13 @@ $(function() {
 function clicAbsence(){
     open=1;
     $('#listeAbsence').css("visibility", "visible");
-    $('#listeAbsence').css("height", "651px");
+    $('#listeAbsence').css("height", "520px");
     $('#listeEtudiant').css("visibility", "hidden");
     $('#listeEtudiant').css("height", "0px");
     $('#listeMatiere').css("visibility", "hidden");
     $('#listeMatiere').css("height", "0px");
 
-    $('#zoneAffichListe').css("height", "875px");
+    $('#zoneAffichListe').css("height", "743px");
 
     $('.blocScroll').css("overflow", "scroll");
 }
@@ -72,7 +72,7 @@ function clicEtudiant(){
     $('#listeMatiere').css("visibility", "hidden");
     $('#listeMatiere').css("height", "0px");
 
-    $('#zoneAffichListe').css("height", "570px");
+    $('#zoneAffichListe').css("height", "538px");
 
     $('.blocScroll').css("overflow", "hidden");
 }
@@ -86,7 +86,7 @@ function clicMatiere(){
     $('#listeMatiere').css("visibility", "visible");
     $('#listeMatiere').css("height", "240px");
 
-    $('#zoneAffichListe').css("height", "570px");
+    $('#zoneAffichListe').css("height", "464px");
 
     $('.blocScroll').css("overflow", "hidden");
 }

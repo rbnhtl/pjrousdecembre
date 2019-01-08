@@ -160,7 +160,7 @@ div[class *="listeEleves"] div:nth-child(even) {
     box-shadow: 0px 0px 30px 5px #CDD6D5;
     margin-top: 8%;
     overflow: scroll;
-    height: 700px;
+    height: 70%;
 }
 /******************************************************************************/
 
@@ -176,6 +176,7 @@ div[class *="listeEleves"] div:nth-child(even) {
 /******************************************************************************/
 /* Cadre */
 .cadre {
+	overflow: auto;
     border: solid #7B9BA6 2px;
     border-radius: 5px;
     background-color: #EEF4F2;

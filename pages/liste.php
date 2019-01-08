@@ -147,11 +147,7 @@
 							<!-- Choix d'une matière -->
 							<label for="choixMatiere">Matière :</label><br>
 							<select class="form-control" name="choixMatiere" required id="matiereAbsence">
-							</select>
-
-							<!-- Nom d'un étudiant -->
-							<label for="nomEtudiant">Nom de l'étudiant :</label><br>
-							<input type="text" class="form-control" id="nomEtudiant" name="nomEtudiant" minlength="3" placeholder="Entrez un nom"><br>
+							</select><br/>
 
 							<button type="submit" class="btn btn-default bouton" name="formListAbsence">Valider</button>
 						</form>
@@ -168,71 +164,79 @@
 						// Par filière
 						if($_POST["choixFiliere"] != "defaut"){
 							$matieres = findMatieresOfFiliere($_POST["choixFiliere"]);
-							echo("<thead><tr><th>Libelle de la matière</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>Libelle de la matière</th></tr></thead><tbody>");
 							foreach($matieres as $matiere){
-								echo("<tbody><tr><th>".$matiere[1]."</th></tr></tbody>");
+								echo("<tr><th>".$matiere[1]."</th></tr>");
 							}
+							echo("</tbody>");
 						}
 						// Par département
 						elseif($_POST["choixDepartement"] != "defaut"){
 							$matieres = findMatieresOfDepartement($_POST["choixDepartement"]);
-							echo("<thead><tr><th>Libelle de la matière</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>Libelle de la matière</th></tr></thead><tbody>");
 							foreach($matieres as $matiere){
-								echo("<tbody><tr><th>".$matiere[1]."</th></tr></tbody>");
+								echo("<tr><th>".$matiere[1]."</th></tr>");
 							}
+							echo("</tbody>");
 						}
 					// Si on effectue une recherche détudiant
 					} elseif (isset($_POST["formListEtudiant"])) {
 						// Sans paramètres
 						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut"){
 							$etudiants = findAllEtudiant();
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead><tbody>");
 							foreach($etudiants as $etudiant){
-								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+								echo("<tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr>");
 							}
+							echo("</tbody>");
 						// Par groupe
 						} elseif($_POST["choixGroupe"] != "defaut") {
 							$ineEtudiants = getEtudiantsFromGroupe($_POST["choixGroupe"]);
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead><tbody>");
 							foreach($ineEtudiants as $ineEtudiant){
 								$etudiant = findEtudiant($ineEtudiant[1]);
-								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+								echo("<tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr>");
 							}
+							echo("</tbody>");
 						// Par filière
 						} elseif($_POST["choixFiliere"] != "defaut") {
 							$ineEtudiants = getEtudiantsFromFiliere($_POST["choixFiliere"]);
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead><tbody>");
 							foreach($ineEtudiants as $ineEtudiant){
 								$etudiant = findEtudiant($ineEtudiant[1]);
-								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+								echo("<tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr>");
 							}
+							echo("</tbody>");
 						// Par département
 						} else {
 							$ineEtudiants = getEtudiantsFromDepartement($_POST["choixDepartement"]);
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead><tbody>");
 							foreach($ineEtudiants as $ineEtudiant){
 								$etudiant = findEtudiant($ineEtudiant[1]);
-								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+								echo("<tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr>");
 							}
+							echo("</tbody>");
 						}
 					// Si on effectue une recherche d'absence
 					} elseif (isset($_POST["formListAbsence"])) {
 						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut"
-						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == "" && $_POST["nomEtudiant"] == ""){
+						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == ""){
 							$absences = findAllAbscence();
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead><tbody>");
 							foreach($absences as $absence){
-								echo("<tbody><tr><th>".$absence->getEtud()->getIne()."</th><th>".$absence->getEtud()->getNom()."</th><th>".$absence->getEtud()->getPrenom()."</th><th>".$absence->getCours()->getMatiere()->getLibelle()."</th><th>".date_format($absence->getCours()->getDateDebut(), "d-m-Y H:i")."</th></tr></tbody>");
+								echo("<tr><th>".$absence->getEtud()->getIne()."</th><th>".$absence->getEtud()->getNom()."</th><th>".$absence->getEtud()->getPrenom()."</th><th>".$absence->getCours()->getMatiere()->getLibelle()."</th><th>".date_format($absence->getCours()->getDateDebut(), "d-m-Y H:i")."</th></tr>");
 							}
+							echo("</tbody>");
 						} else {
 							$absences = findAbscenceWithParams($_POST["choixDepartement"], $_POST["choixFiliere"], $_POST["choixGroupe"],
-							                                   $_POST["choixMatiere"], $_POST["datemin"], $_POST["datemax"], $_POST["nomEtudiant"]);
-							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
+							                                   $_POST["choixMatiere"], $_POST["datemin"], $_POST["datemax"]);
+							echo("<thead class='enteteRubrique'><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead><tbody>");
 							foreach($absences as $absence){
 								$etudiant = findEtudiant($absence[1]);
 								$cours = findCours($absence[2]);
-								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th><th>".$cours->getMatiere()->getLibelle()."</th><th>".date_format($cours->getDateDebut(), "d-m-Y H:i")."</th></tr></tbody>");
+								echo("<tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th><th>".$cours->getMatiere()->getLibelle()."</th><th>".date_format($cours->getDateDebut(), "d-m-Y H:i")."</th></tr>");
 							}
+							echo("</tbody>");
 						}
 					}
 				?>
