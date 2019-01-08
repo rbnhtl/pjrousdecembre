@@ -20,7 +20,7 @@
         $grpArray[] = array("id" => $id, "libelle" => $lib); // Ajout au tableau
     }
 
-    // Encodage de JSON et renvoi des information
+    // Encodage en JSON et renvoi des informations
     echo json_encode($grpArray);
 
 ?>

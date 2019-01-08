@@ -193,7 +193,7 @@
                     <!-- Sélection de la semaine -->
 					<div class="col-md-3 col-sm-12">
 						Semaine :
-	                    <select class="liste" name="semaine">
+	                    <select class="liste" name="semaine" id="wk">
 							<?php
                                 /* Génération de la liste des semaine de l'année scolaire courante uniquement */
                                 $dateCourante = new DateTime();
@@ -250,6 +250,7 @@
                                          'salle' => $salle[0][1]);                     // Libelle de la salle où il prend place
                         array_push($donnees, $unCours);
                     }
+                    echo json_encode($donnees);
                 ?>
 			</div>
 
