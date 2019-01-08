@@ -159,11 +159,11 @@
 
 							<!-- Date de début -->
 							<label for="datemin">Date de début :</label><br>
-							<input type="date" class="form-control" id="datemin">
+							<input type="date" class="form-control" id="datemin" name="datemin">
 
 							<!-- Date de fin -->
 							<label for="datemax">Date de fin :</label><br>
-							<input type="date" class="form-control" id="datemax">
+							<input type="date" class="form-control" id="datemax" name="datemax">
 
 							<!-- Choix d'une matière -->
 							<label for="choixMatiere">Matière :</label><br>
@@ -239,6 +239,11 @@
 								$etudiant = findEtudiant($ineEtudiant[1]);
 								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
 							}
+						}
+					} elseif (isset($_POST["formListAbsence"])) {
+						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut" 
+						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == ""){
+							echo"coucou";
 						}
 					}
 				?>
