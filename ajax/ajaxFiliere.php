@@ -6,7 +6,7 @@
     // Récupération des données envoyées
     $dep = $_POST['dep'];   // L'id du département séléctionné
 
-    if (isset($dep) and $dep != 'defaut') { // Selon la valeur on va chercher toute les filières
+    if (isset($dep) and $dep != 'defaut') { // Selon la valeur on va chercher toutes les filières
         $filieres = getFilieresFromDepartement($dep);
     } else { // Ou seulement celle qui correspondent au département
         $filieres = findAllFiliere();

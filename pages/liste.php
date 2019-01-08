@@ -65,7 +65,7 @@
 						<form class="form" action="liste.php" method="post">
 							<!-- Choix du département -->
 							<label for="choixDepartement">Département :</label><br>
-							<select class="form-control" name="choixDepartement" required>
+							<select class="form-control" name="choixDepartement" required id="departementMatiere">
 								<?php
 									afficheDepartements();
 								?>
@@ -73,12 +73,7 @@
 
 							<!-- Choix de la filière -->
 							<label for="choixFiliere">Filière :</label><br>
-							<select class="form-control" name="choixFiliere" required>
-									<option value="defaut"></option>
-									<option value="15">INFO1</option>
-									<option value="16">INFO2</option>
-									<option value="18">MMS</option>
-									<option value="17">MIAGE</option>
+							<select class="form-control" name="choixFiliere" required id="filiereMatiere">
 							</select><br>
 
 							<button type="submit" class="btn btn-default bouton" name="formListMatiere">Valider</button>
@@ -95,7 +90,7 @@
 						<form class="form" action="liste.php" method="post">
 							<!-- Choix du département -->
 							<label for="choixDepartement">Département :</label><br>
-							<select class="form-control" name="choixDepartement" required>
+							<select class="form-control" name="choixDepartement" required id="departementEtudiant">
 								<?php
 									afficheDepartements();
 								?>
@@ -103,21 +98,12 @@
 
 							<!-- Choix de la filière -->
 							<label for="choixFiliere">Filière :</label><br>
-							<select class="form-control" name="choixFiliere" required>
-									<option value="defaut"></option>
-									<option value="fil1">INFO1</option>
-									<option value="fil2">INFO2</option>
-									<option value="fil3">MMS</option>
-									<option value="1">DUT-1A-Carrières juridiques</option>
+							<select class="form-control" name="choixFiliere" required id="filiereEtudiant">
 							</select>
 
 							<!-- Choix du groupe -->
 							<label for="choixGroupe">Groupe :</label><br>
-							<select class="form-control" name="choixGroupe" required>
-									<option value="defaut"></option>
-									<option value="grp1">INFO1TD01</option>
-									<option value="grp2">INFO1TD02</option>
-									<option value="1">CJ1CM01</option>
+							<select class="form-control" name="choixGroupe" required id="groupeEtudiant">
 							</select><br>
 
 							<button type="submit" class="btn btn-default bouton" name="formListEtudiant">Valider</button>
@@ -134,7 +120,7 @@
 						<form class="form" action="liste.php" method="post">
 							<!-- Choix du département -->
 							<label for="choixDepartement">Département :</label><br>
-							<select class="form-control" name="choixDepartement" required>
+							<select class="form-control" name="choixDepartement" required id="departementAbsence">
 								<?php
 									afficheDepartements();
 								?>
@@ -142,21 +128,12 @@
 
 							<!-- Choix de la filière -->
 							<label for="choixFiliere">Filière :</label><br>
-							<select class="form-control" name="choixFiliere" required>
-									<option value="defaut"></option>
-									<option value="1">INFO1</option>
-									<option value="fil2">INFO2</option>
-									<option value="fil3">MMS</option>
-									<option value="fil4">MIAGE</option>
+							<select class="form-control" name="choixFiliere" required id="filiereAbsence">
 							</select>
 
 							<!-- Choix du groupe -->
 							<label for="choixGroupe">Groupe :</label><br>
-							<select class="form-control" name="choixGroupe" required>
-									<option value="defaut"></option>
-									<option value="1">INFO1TD01</option>
-									<option value="grp2">INFO1TD02</option>
-									<option value="grp3">CJ1CM01</option>
+							<select class="form-control" name="choixGroupe" required id="groupeAbsence">
 							</select>
 
 							<!-- Date de début -->
@@ -169,11 +146,7 @@
 
 							<!-- Choix d'une matière -->
 							<label for="choixMatiere">Matière :</label><br>
-							<select class="form-control" name="choixMatiere" required>
-									<option value="defaut"></option>
-									<option value="mtr1">POO</option>
-									<option value="mtr2">Communication</option>
-									<option value="mtr3">Bases de données</option>
+							<select class="form-control" name="choixMatiere" required id="matiereAbsence">
 							</select>
 
 							<!-- Nom d'un étudiant -->
@@ -269,6 +242,8 @@
 	</div>
 
 	<script src="../jquery/liste.js"></script>
+	<!-- Pour l'ajax des selects -->
+	<script src="../jquery/ajaxListes.js"></script>
 </body>
 </html>
 

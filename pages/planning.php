@@ -232,7 +232,7 @@
     <!-- Le script qui permet l'affichage de la popup -->
     <script src="../templates/popup/popup.js"></script>
     <!-- Le script pour remplir les listes avec ajax -->
-    <script src="../jquery/ajax.js"></script>
+    <script src="../jquery/ajaxPlanning.js"></script>
     <!-- Script de getion du menu des pages -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 

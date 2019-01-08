@@ -5,7 +5,7 @@ $(document).ready(function(){
         var leDep = $(this).val(); // Récupération de la valeur sélectionnée
 
         $.ajax({
-            url: '../ajax/ajaxPlanningFiliere.php',
+            url: '../ajax/ajaxFiliere.php',
             type: 'post',
             data: {dep : leDep},
             dataType: 'json',
@@ -33,7 +33,7 @@ $(document).ready(function(){
         var laFil = $(this).val(); // Récupération de la valeur sélectionnée
 
         $.ajax({
-            url: '../ajax/ajaxPlanningGroupe.php',
+            url: '../ajax/ajaxGroupe.php',
             type: 'post',
             data: {fil : laFil},
             dataType: 'json',
@@ -56,12 +56,12 @@ $(document).ready(function(){
         });
     });
 
-    // Re-remplit la liste des élèves avec les valeurs adéquates lors de la sélection du groupe 
+    // Re-remplit la liste des élèves avec les valeurs adéquates lors de la sélection du groupe
     $("#grp").change(function(){
         var leGrp = $(this).val(); // Récupération de la valeur sélectionnée
 
         $.ajax({
-            url: '../ajax/ajaxPlanningEtudiant.php',
+            url: '../ajax/ajaxEtudiant.php',
             type: 'post',
             data: {grp : leGrp},
             dataType: 'json',

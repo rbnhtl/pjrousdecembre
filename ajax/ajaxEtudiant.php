@@ -6,9 +6,9 @@
     // Récupération des données envoyées
     $grp = $_POST['grp'];   // L'id du groupe séléctionné
 
-    if ($grp != 'defaut') { // Selon la valeur on va chercher toute les filières
+    if ($grp != 'defaut') { // Selon la valeur on va chercher tout les étudiants
         $etudiants = getEtudiantsFromGroupe($grp);
-    } else { // Ou seulement celle qui correspondent au département
+    } else { // Ou seulement ceux qui correspondent au groupe
         $etudiants = findAllEtudiant();
     }
 
