@@ -50,8 +50,8 @@
 
     /* Return top offset of task card based on start time of the task startTime - in hours */
     function getCardTopPosition(startTime) {
-        /* On retire 16 demi-heure pour que le 0 corresponde à 8h */
-        return (settings.lineHeight + settings.borderWidth) * ((startTime * 2) - 16);
+        /* On retire 12 demi-heure pour que le 0 corresponde à 6h */
+        return (settings.lineHeight + settings.borderWidth) * ((startTime * 2) - 12);
     }
 
     /* Render card template */
@@ -123,8 +123,6 @@
 
         for (var i = 0; i < args.args.length; i++) {
             var width = 194 / (args.args[i] || 1);
-            tasks[i].width = width;
-            tasks[i].left = (args.indexes[i] * width) || 4;
         }
 
         tasks.forEach(function (task) {
@@ -194,8 +192,8 @@
         var gridColumnElement = div.clone();
 
         /* Populate timeline */
-        // Pour une plage d'horaires scolaires 8h -> 18h
-        for (var i = 8; i < 19; i++) {
+        // Pour une plage d'horaires scolaires 6h -> 17h
+        for (var i = 6; i < 18; i++) {
             // Pour chaque heure, ajout à la timeline d'une div contenant le libelle de l'heure
             div.clone().text(toTimeString(i)).appendTo(scheduleTimelineEl);
             // Et d'une div vide pour marquer la 1/2 heure qui suit

@@ -18,12 +18,6 @@
         return $ret;
     }
 
-    // Retourne une heure sous forme de réel
-    function timeDouble($value) {
-        $heure = explode(':', $value);
-        return $heure[0] + ($heure[1] / 60);
-    }
-
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     // if ( !isset($_SESSION["user"]) ) {
     //     header('Location: ../index.php');
@@ -59,8 +53,6 @@
         <link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="../style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
         <link href="../style/style.css" rel="stylesheet"/>
-        <!-- Script de getion du menu -->
-	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
 	<body onload="generate()">
@@ -228,30 +220,6 @@
 			<div class="row menuPlanning">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>
-                <?php
-                    /* Récupération des données nécessaires pour l'affichage de l'emploi du temps */
-                    if ((int)$week >= 36) {
-                        $year = ($dateCourante->format('Y')) - 1;
-                    } else {
-                        $year = $dateCourante->format('Y');
-                    }
-                    $dates = getWeekDates($year, (int)$week);
-                    $res = findCoursOfGroupeInPeriode($grp, $dates['dateDeb'], $dates['dateFin']);
-                    $donnees = array();
-                    foreach ($res as $cours) {
-                        $cr = findCours($cours[1]);   // Récupération de l'objet cours
-                        $debut = $cr->getDateDebut(); // Objet date de début
-                        $fin = $cr->getDateFin();     // Objet date de fin
-                        $salle = findSallesOfCours($cr->getId()); // Objet sal(l)e
-                        $unCours = array('debut' => timeDouble($debut->format("H:i")), // Horaire de début sous forme de réel
-                                         'fin' => timeDouble($fin->format("H:i")),     // Horaire de fin sous forme de réel
-                                         'jour' => $debut->format("w"),                // Valeur numérique du jour de la semaine de 0 à 6
-                                         'matiere' => $cr->getMatiere()->getLibelle(), // Le nom de la matière qui y est enseignée
-                                         'salle' => $salle[0][1]);                     // Libelle de la salle où il prend place
-                        array_push($donnees, $unCours);
-                    }
-                    echo json_encode($donnees);
-                ?>
 			</div>
 
 		</div>
@@ -270,5 +238,7 @@
     <script src="../templates/popup/popup.js"></script>
     <!-- Le script pour remplir les listes avec ajax -->
     <script src="../jquery/ajax.js"></script>
+    <!-- Script de getion du menu des pages -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </html>
