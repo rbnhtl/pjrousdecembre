@@ -15,11 +15,13 @@
     function createAbscence($etudiant, $cours){
         global $em;
 
-        $abscence = new Abscence($etudiant, $cours);
+        $absence = new Absence();
+        $absence->setEtud($etudiant);
+        $absence->setCours($cours);
 
-        $em->persist($abscence);
+        $em->persist($absence);
         $em->flush();
-        return array($abscence->getEtud(), $abscence->getCours());
+        return array($absence->getEtud(), $absence->getCours());
     }
 
     /*

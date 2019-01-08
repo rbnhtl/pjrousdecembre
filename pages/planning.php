@@ -10,7 +10,7 @@
     include "../DAO/coursDAO.php";
     include "../DAO/matiereDAO.php";
     include "../DAO/occupeDAO.php";
-    include "../DAO/abscenceDAO.php";
+    include "../DAO/absenceDAO.php";
 
     // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
     function getWeekDates($year, $week) {

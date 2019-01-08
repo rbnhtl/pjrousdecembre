@@ -1,5 +1,5 @@
 <?php session_start();
-	
+
     // On récupère l'entity manager de l'orm doctrine
 	require_once "../bootstrap.php";
 
@@ -31,9 +31,9 @@
 
 		<!-- Ligne d'entête -->
 		<div class="row enteteRubrique">
-									
+
 			<div class="col-xs-11"><h1>Listes</h1></div>
-			
+
 			<div class="dropdown col-xs-1"><h1>
 				<button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
 				<ul class="dropdown-menu dropdown-menu-right">
@@ -45,7 +45,7 @@
 					if($_SESSION["role"]=="administrateur"){
 						echo '<li><a href="admin.php">Administrateur</a></li>';
 					}
-				?>					
+				?>
 				<li><a href="../index.php">Deconnexion</a></li>
 				</ul></h1>
 			</div>
@@ -243,7 +243,7 @@
 							}
 						}
 					} elseif (isset($_POST["formListAbsence"])) {
-						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut" 
+						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut"
 						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == ""){
 							$absences = findAllAbscence();
 							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
@@ -273,7 +273,7 @@
 
 <?php
 	function afficheDepartements(){
-		
+
 		$departements = findAllDepartement();
 
 		echo("<option value='defaut'></option>");
