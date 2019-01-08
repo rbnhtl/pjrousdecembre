@@ -19,9 +19,9 @@
     }
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
-    // if ( !isset($_SESSION["user"]) ) {
-    //     header('Location: ../index.php');
-    // }
+    if ( !isset($_SESSION["role"]) ) {
+        header('Location: ../index.php');
+    }
 
 	// Si le formulaire de sélection des étudiants est validé, on les enregistres
     if (isset($_POST["valide"])) {

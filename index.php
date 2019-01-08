@@ -16,24 +16,23 @@
 	if (isset($_POST["deco"])) {
 		session_unset();
 		session_destroy();
+		unset($_POST["user"]);
+		unset($_POST["passwd"]);
 	}
 
 	// Si le formulaire a été validé, on enregistre les données dans la session
-    if ( isset($_POST["user"]) and $_POST["user"] != "" and
-	 	 isset($_POST["passwd"]) and $_POST["passwd"] != "") {
+    if ( isset($_POST["formConnexion"])) {
 
 		$_SESSION["user"] = $_POST["user"];
 		$_SESSION["mdp"] = $_POST["passwd"];
 
 		$personnel = findPersonnelByLoginMdp($_POST["user"], $_POST["passwd"]);
-		if($personnel === null){
-			// Combinaison login mdp pas trouvés
-
-		} else {
+		if ($personnel !== null) {
 			// Personnel trouvé dans la base de données
 			$remplit = findRemplit($personnel);
 			$role = $remplit->getRole();
 			$nomRole = $role->getLibelle();
+			var_dump($_SESSION[$remplit]);
 
 			$_SESSION["nom"] = $personnel->getNom();
 			$_SESSION["prenom"] = $personnel->getPrenom();
@@ -41,15 +40,15 @@
 
 			if($_SESSION["role"] == "administrateur"){
 				// Et on redirige vers la page admin
-				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/admin.php');
+				header('Location: http://localhost:8081/pjrousdecembre/pages/admin.php');
 				exit();
 			} elseif($_SESSION["role"] == "administratif"){
 				// Et on redirige vers la page adminif
-				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/adminif.php');
+				header('Location: http://localhost:8081/pjrousdecembre/pages/adminif.php');
 				exit();
 			} elseif($_SESSION["role"] == "professeur"){
 				// Et on redirige vers la page du Planning
-				header('Location: http://localhost:8081/pjRousDecembre/pjrousdecembre/pages/planning.php');
+				header('Location: http://localhost:8081/pjrousdecembre/pages/planning.php');
 				exit();
 			} else {
 				$_SESSION["role"] == "erreur";
@@ -87,7 +86,7 @@
 					<input type="text" name="user" class="form-control inputText" placeholder="Votre mail ..."/> <br/>
 					<h3>Mot de passe</h3>
 					<input type="password" name="passwd" class="form-control inputText" placeholder="Votre mot de passe ..."/> <br/>
-					<button type="submit" class="btn bouton">Connexion  <span class="fas fa-sign-in-alt"></span></button>
+					<button type="submit" class="btn bouton" name="formConnexion">Connexion  <span class="fas fa-sign-in-alt"></span></button>
 					<button type="submit" name="deco" class="btn bouton">Déconnexion  <span class="fas fa-sign-out-alt"></span></button>
                     <br/><br/>
 				</form>
