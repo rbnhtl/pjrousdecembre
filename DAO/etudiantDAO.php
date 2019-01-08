@@ -61,8 +61,8 @@
     }
 
     /*
-     * @param $filiere de laquelle on veut récupérer la liste des groupes
-     * @return la liste des groupes de la filière passée en paramètre
+     * @param $groupe duquel on veut récupérer la liste des etudiants
+     * @return la liste des étudiants du groupe passé en paramètre
      */
     function getEtudiantsFromGroupe($groupe){
         global $em;
@@ -78,4 +78,46 @@
 
         return $qb->getQuery()->getResult();
     }
+
+    /*
+     * @param filiere de laquelle on veut récupérer la liste des étudiants
+     * @return la liste des étudiants de la filière passée en paramètre
+     */
+    function getEtudiantsFromFiliere($filiere){
+        global $em;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select("IDENTITY(ap.etudiant)");
+        $qb->from("Appartient", "ap");
+        $qb->join("Etudiant", "etu", 'WITH', "ap.etudiant = etu.ine");
+        $qb->join("Groupe", "grp", 'WITH', "ap.groupe = grp.id");
+        $qb->join("Filiere", "fil", 'WITH', "grp.filiere = fil.id");
+        $qb->where("fil.id = ?1");
+        $qb->orderBy('etu.nom', 'ASC');
+        $qb->setParameter(1, $filiere);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /*
+     * @param département duquel on veut récupérer la liste des étudiants
+     * @return la liste des étudiants du département passé en paramètre
+     */
+    function getEtudiantsFromDepartement($departement){
+        global $em;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select("IDENTITY(ap.etudiant)");
+        $qb->from("Appartient", "ap");
+        $qb->join("Etudiant", "etu", 'WITH', "ap.etudiant = etu.ine");
+        $qb->join("Groupe", "grp", 'WITH', "ap.groupe = grp.id");
+        $qb->join("Filiere", "fil", 'WITH', "grp.filiere = fil.id");
+        $qb->join("Departement", "dep", 'WITH', "fil.departement = dep.id");
+        $qb->where("dep.id = ?1");
+        $qb->orderBy('etu.nom', 'ASC');
+        $qb->setParameter(1, $departement);
+
+        return $qb->getQuery()->getResult();
+    }
+    
 ?>

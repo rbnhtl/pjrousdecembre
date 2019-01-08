@@ -45,3 +45,27 @@ function generate() {
         onClick: function (e, t) { affichePopup(); }
     });
 }
+
+// Re-remplit l'emploi du temps avec les cours correspondants à la sélection du groupe et de la semaine
+$("#wk").change(function(){
+    var laSem = $(this).val();   // Récupération de la semaine sélectionnée
+    var leGrp = $('#grp').val(); // Récupération du groupe sélectionné
+    console.log("ça marche plus ?");
+
+    $.ajax({
+        url: '../ajax/ajaxPlanning.php',
+        type: 'post',
+        data: {week : laSem,
+               grp  : leGrp},
+        dataType: 'json',
+        success:function(response){
+
+            console.log('succes');
+        },
+        error : function(resultat, statut, erreur){
+            console.log(resultat);
+            console.log(statut);
+            console.log(erreur);
+       }
+    });
+});

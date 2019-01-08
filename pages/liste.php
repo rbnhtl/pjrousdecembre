@@ -4,6 +4,8 @@
 	require_once "../bootstrap.php";
 
 	require_once "../DAO/departementDAO.php";
+	require_once "../DAO/matiereDAO.php";
+	require_once "../DAO/etudiantDAO.php";
 
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     if ( !isset($_SESSION["role"]) ) {
@@ -71,10 +73,10 @@
 							<label for="choixFiliere">Filière :</label><br>
 							<select class="form-control" name="choixFiliere" required>
 									<option value="defaut"></option>
-									<option value="fil1">INFO1</option>
-									<option value="fil2">INFO2</option>
-									<option value="fil3">MMS</option>
-									<option value="fil4">MIAGE</option>
+									<option value="15">INFO1</option>
+									<option value="16">INFO2</option>
+									<option value="18">MMS</option>
+									<option value="17">MIAGE</option>
 							</select><br>
 
 							<button type="submit" class="btn btn-default bouton" name="formListMatiere">Valider</button>
@@ -104,7 +106,7 @@
 									<option value="fil1">INFO1</option>
 									<option value="fil2">INFO2</option>
 									<option value="fil3">MMS</option>
-									<option value="fil4">MIAGE</option>
+									<option value="1">DUT-1A-Carrières juridiques</option>
 							</select>
 
 							<!-- Choix du groupe -->
@@ -113,7 +115,7 @@
 									<option value="defaut"></option>
 									<option value="grp1">INFO1TD01</option>
 									<option value="grp2">INFO1TD02</option>
-									<option value="grp3">INFO1CM01</option>
+									<option value="1">CJ1CM01</option>
 							</select><br>
 
 							<button type="submit" class="btn btn-default bouton" name="formListEtudiant">Valider</button>
@@ -152,7 +154,7 @@
 									<option value="defaut"></option>
 									<option value="grp1">INFO1TD01</option>
 									<option value="grp2">INFO1TD02</option>
-									<option value="grp3">INFO1CM01</option>
+									<option value="grp3">CJ1CM01</option>
 							</select>
 
 							<!-- Date de début -->
@@ -185,30 +187,61 @@
 
 			<div class="col-xs-8 cadre" id="zoneAffichListe">
 			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Firstname</th>
-						<th>Lastname</th>
-						<th>Email</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>John</td>
-						<td>Doe</td>
-						<td>john@example.com</td>
-					</tr>
-					<tr>
-						<td>Mary</td>
-						<td>Moe</td>
-						<td>mary@example.com</td>
-					</tr>
-					<tr>
-						<td>July</td>
-						<td>Dooley</td>
-						<td>july@example.com</td>
-					</tr>
-				</tbody>
+				<?php
+					// Si on effectue une recherche de matières par filière
+					if (isset($_POST["formListMatiere"])) {
+						// Par filière
+						if($_POST["choixFiliere"] != "defaut"){
+							$matieres = findMatieresOfFiliere($_POST["choixFiliere"]);
+							echo("<thead><tr><th>Libelle de la matière</th></tr></thead>");
+							foreach($matieres as $matiere){
+								echo("<tbody><tr><th>".$matiere[1]."</th></tr></tbody>");
+							}
+						}
+						// Par département
+						elseif($_POST["choixDepartement"] != "defaut"){
+							$matieres = findMatieresOfDepartement($_POST["choixDepartement"]);
+							echo("<thead><tr><th>Libelle de la matière</th></tr></thead>");
+							foreach($matieres as $matiere){
+								echo("<tbody><tr><th>".$matiere[1]."</th></tr></tbody>");
+							}
+						}
+					// Si on effectue une recherche détudiant
+					} elseif (isset($_POST["formListEtudiant"])) {
+						// Sans paramètres
+						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut"){
+							$etudiants = findAllEtudiant();
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							foreach($etudiants as $etudiant){
+								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+							}
+						// Par groupe
+						} elseif($_POST["choixGroupe"] != "defaut") {
+							$ineEtudiants = getEtudiantsFromGroupe($_POST["choixGroupe"]);
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							foreach($ineEtudiants as $ineEtudiant){
+								$etudiant = findEtudiant($ineEtudiant[1]);
+								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+							}
+						// Par filière
+						} elseif($_POST["choixFiliere"] != "defaut") {
+							$ineEtudiants = getEtudiantsFromFiliere($_POST["choixFiliere"]);
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							foreach($ineEtudiants as $ineEtudiant){
+								$etudiant = findEtudiant($ineEtudiant[1]);
+								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+							}
+						// Par département
+						} else {
+							$ineEtudiants = getEtudiantsFromDepartement($_POST["choixDepartement"]);
+							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th></tr></thead>");
+							foreach($ineEtudiants as $ineEtudiant){
+								$etudiant = findEtudiant($ineEtudiant[1]);
+								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
+							}
+						}
+					}
+				?>
 			</table>
 			</div>
 		</div>

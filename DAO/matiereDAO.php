@@ -57,4 +57,45 @@
         $em->remove($matiere);
         $em->flush();
     }
+
+    /*
+     * @param filiere id de la filière dont on veut obtenir les matières
+     */
+    function findMatieresOfFiliere($filiere){
+        global $em;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select("DISTINCT(mat.libelle)");
+        $qb->from("Matiere", "mat");
+        $qb->join("Cours", "crs", 'WITH', "crs.matiere = mat.id");
+        $qb->join("Participe", "par", 'WITH', "par.cours = crs.id");
+        $qb->join("Groupe", "grp", 'WITH', "par.groupe = grp.id");
+        $qb->join("Filiere", "fil", 'WITH', "grp.filiere = fil.id");
+        $qb->where("fil.id = ?1");
+
+        $qb->setParameters(array(1 => $filiere));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /*
+     * @param departement id du departement dont on veut obtenir les matières
+     */
+    function findMatieresOfDepartement($departement){
+        global $em;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select("DISTINCT(mat.libelle)");
+        $qb->from("Matiere", "mat");
+        $qb->join("Cours", "crs", 'WITH', "crs.matiere = mat.id");
+        $qb->join("Participe", "par", 'WITH', "par.cours = crs.id");
+        $qb->join("Groupe", "grp", 'WITH', "par.groupe = grp.id");
+        $qb->join("Filiere", "fil", 'WITH', "grp.filiere = fil.id");
+        $qb->join("Departement", "dep", 'WITH', "fil.departement = dep.id");
+        $qb->where("dep.id = ?1");
+
+        $qb->setParameters(array(1 => $departement));
+
+        return $qb->getQuery()->getResult();
+    }
 ?>

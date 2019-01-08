@@ -18,6 +18,12 @@
         return $ret;
     }
 
+    // Retourne une heure sous forme de réel
+    function timeDouble($value) {
+        $heure = explode(':', $value);
+        return $heure[0] + ($heure[1] / 60);
+    }
+
 	// On vérifie qu'un utilisateur est bien connecté, sinon retour à la page de connexion
     if ( !isset($_SESSION["role"]) ) {
         header('Location: ../index.php');
@@ -53,7 +59,7 @@
         <link href="../style/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="../style/fontawesome-5.6.1/css/all.css" rel="stylesheet"/>
         <link href="../style/style.css" rel="stylesheet"/>
-        <script src="../jquery/jquery-3.3.1.min.js"></script>
+        <!-- Script de getion du menu -->
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 
@@ -103,34 +109,35 @@
 
 			<!-- Ligne d'entête -->
             <div class="row enteteRubrique">
-                                        
+
                 <div class="col-xs-11"><h1>Rechercher des emplois du temps</h1></div>
-                
+
+                <!-- Le menu déroullant pour l'accès aux autres pages -->
                 <div class="dropdown col-xs-1"><h1>
                     <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="liste.php">Listes</a></li>
-                    <?php
-					    if($_SESSION["role"]=="administrateur" || $_SESSION["role"]=="administratif"){
-					    	echo '<li><a href="adminif.php">Administratif</a></li>';
-					    }
-					    if($_SESSION["role"]=="administrateur"){
-					    	echo '<li><a href="admin.php">Administrateur</a></li>';
-					    }
-				    ?>	
-                    <li><a href="../index.php">Deconnexion</a></li>
+                        <li><a href="liste.php">Listes</a></li>
+                        <?php
+                            if($_SESSION["role"]=="administrateur" || $_SESSION["role"]=="administratif"){
+                                echo '<li><a href="adminif.php">Administratif</a></li>';
+                            }
+                            if($_SESSION["role"]=="administrateur"){
+                                echo '<li><a href="admin.php">Administrateur</a></li>';
+                            }
+                        ?>
+                        <li><a href="../index.php">Deconnexion</a></li>
                     </ul></h1>
-                </div>
+                </div><!-- Fin menu déroullant -->
             </div>
 
 			<!-- Menu de sélection du groupe et de la semaine -->
-	            <div class="row menu">
+	            <div class="row menuPlanning">
 
                     <!-- Sélection du département -->
 					<div class="col-md-3 col-sm-12">
 						Département :
-	                    <select class="liste" name="departement">
-	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="departement" id="dep">
+	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
                                 /* Récupération des départements en BD pour remplir la liste */
                                 $departements = findAllDepartement();
@@ -148,15 +155,11 @@
                     <!-- Sélection de la filière -->
                     <div class="col-md-3 col-sm-12">
                         Filière :
-	                    <select class="liste" name="filiere">
-							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="filiere" id="fil">
+							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
 							<?php
                                 /* Récupération des filières en BD pour remplir la liste */
-                                if (isset($dep) and $dep != 'defaut') {
-                                    $filieres = getFilieresFromDepartement($dep);
-                                } else {
-                                    $filieres = findAllFiliere();
-                                }
+                                $filieres = findAllFiliere();
                                 foreach ($filieres as $value) {
                                     $lib = $value->getLibelle(); // Le libelle de la filière
                                     $id = $value->getId();       // L'id de la filière
@@ -171,15 +174,11 @@
                     <!-- Sélection du groupe -->
 					<div class="col-md-3 col-sm-12">
 						Groupe :
-	                    <select class="liste" name="groupe">
-	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"></option>
+	                    <select class="liste" name="groupe" id="grp">
+	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
                                 /* Récupération des groupes en BD pour remplir la liste */
-                                if (isset($fil) and $fil != 'defaut') {
-                                    $groupes = getGroupesFromFiliere($fil);
-                                } else {
-                                    $groupes = findAllGroupe();
-                                }
+                                $groupes = findAllGroupe();
                                 foreach ($groupes as $value) {
                                     $lib = $value->getLibelle(); // Le libelle du groupe
                                     $id = $value->getId();       // L'id du groupe
@@ -194,7 +193,7 @@
                     <!-- Sélection de la semaine -->
 					<div class="col-md-3 col-sm-12">
 						Semaine :
-	                    <select class="liste" name="semaine">
+	                    <select class="liste" name="semaine" id="wk">
 							<?php
                                 /* Génération de la liste des semaine de l'année scolaire courante uniquement */
                                 $dateCourante = new DateTime();
@@ -226,7 +225,7 @@
 			</form><!-- Fin formulaire -->
 
             <!-- Emploi du temps de sélection du cours -->
-			<div class="row menu">
+			<div class="row menuPlanning">
                 <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
                 <div id="scheduler-container"></div>
                 <?php
@@ -240,14 +239,18 @@
                     $res = findCoursOfGroupeInPeriode($grp, $dates['dateDeb'], $dates['dateFin']);
                     $donnees = array();
                     foreach ($res as $cours) {
-                        $cr = findCours($cours[1]); // Récupération de l'objet cours
-                        $unCours = array('debut' => $cr->getDateDebut(),               // Le début du cours
-                                         'fin' => $cr->getDateFin(),                   // La fin du cours
-                                         'matiere' => $cr->getMatiere()->getLibelle(), // La matière qui y est enseignée
-                                         'salle' => findSallesOfCours($cr->getId()));  // La salle où il prend place
+                        $cr = findCours($cours[1]);   // Récupération de l'objet cours
+                        $debut = $cr->getDateDebut(); // Objet date de début
+                        $fin = $cr->getDateFin();     // Objet date de fin
+                        $salle = findSallesOfCours($cr->getId()); // Objet sal(l)e
+                        $unCours = array('debut' => timeDouble($debut->format("H:i")), // Horaire de début sous forme de réel
+                                         'fin' => timeDouble($fin->format("H:i")),     // Horaire de fin sous forme de réel
+                                         'jour' => $debut->format("w"),                // Valeur numérique du jour de la semaine de 0 à 6
+                                         'matiere' => $cr->getMatiere()->getLibelle(), // Le nom de la matière qui y est enseignée
+                                         'salle' => $salle[0][1]);                     // Libelle de la salle où il prend place
                         array_push($donnees, $unCours);
                     }
-                    var_dump($donnees);
+                    echo json_encode($donnees);
                 ?>
 			</div>
 
@@ -265,5 +268,7 @@
     <script src="../jquery/planning.js"></script>
     <!-- Le script qui permet l'affichage de la popup -->
     <script src="../templates/popup/popup.js"></script>
+    <!-- Le script pour remplir les listes avec ajax -->
+    <script src="../jquery/ajax.js"></script>
 
 </html>
