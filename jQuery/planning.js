@@ -102,7 +102,7 @@ $("#wk").change(function(){
                 headers: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"],
                 tasks: tasks,
                 // L'input permet de récupérer l'id du cours pour pouvoir gérer les absences
-                cardTemplate: '<div>${title}</div><div>${salle}</div><input type="hidden" value=${id} name="id"/>',
+                cardTemplate: '<div>${title}</div><div>${salle}</div><input type="hidden" value=${id} name="idCours"/>',
                 onClick: function (e, t) { affichePopup(); }
             });
         }

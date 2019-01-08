@@ -10,6 +10,7 @@
     include "../DAO/coursDAO.php";
     include "../DAO/matiereDAO.php";
     include "../DAO/occupeDAO.php";
+    include "../DAO/abscenceDAO.php";
 
     // Retourne pour une année et un numéro de semaine donné, les date de début et de fin de celle-ci
     function getWeekDates($year, $week) {
@@ -30,12 +31,14 @@
 		$dep = $_POST["departement"];
         $fil = $_POST["filiere"];
 		$grp = $_POST["groupe"];
-		$week = $_POST["semaine"];
+        $week = $_POST["semaine"];
+        $crs = $_POST["idCours"];
 
 		if (!empty($_POST["absents"])) {
 			echo 'Les étudiants absents sont :<br />';
 			foreach($_POST['absents'] as $val) {
-				echo $val,'<br />';
+                echo 'eleve : '.$val.', cours : '.$crs.'<br />';
+                createAbscence(findEtudiant($val), findCours($crs));
 			}
 		}
         unset($_POST["valide"]);
@@ -57,69 +60,70 @@
 
 	<body onload="generate()">
 
-		<!-- DEBUT DU CONTENU DE LA POPUP -->
-        <div class="modalWindow blur-effect" id="popup">
-			<div class="popup">
-    			<h1>Qui sont les absents ?</h1>
+		<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
 
-                <!-- Menu de sélection des étudiants -->
-				<form action="planning.php" method="post"><!-- Le formulaire chevauche sur la popup et la page -->
-					<div class="row listeEleves" id="etu">
-                        <?php
-                            /* Récupération des étudiants en BD pour remplir la liste */
-                            $etudiants = findAllEtudiant();
-                            foreach ($etudiants as $value) {
-                                $nom = $value->getNom();       // Le nom de l'étudiant
-                                $prenom = $value->getPrenom(); // Le prenom de l'étudiant
-                                $ine = $value->getIne();       // L'INE de l'étudiant
-                                echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
-                            }
-                        ?>
-	                </div>
-                    <input type="hidden" value="1" name="id"/><!-- L'id du cours sélectionné -->
-	                <button type="submit" name='valide' class="btn bouton">Valider</button>
+            <!-- DEBUT DU CONTENU DE LA POPUP -->
+            <div class="modalWindow blur-effect" id="popup">
+                <div class="popup">
+                    <h1>Qui sont les absents ?</h1>
 
-                <!-- Bouton pour fermer la popup -->
-				<div class="close"></div>
-			</div>
-		</div>
-		<!-- FIN DE LA POPUP -->
+                    <!-- Menu de sélection des étudiants -->
+                        <div class="row listeEleves" id="etu">
+                            <?php
+                                /* Récupération des étudiants en BD pour remplir la liste */
+                                $etudiants = findAllEtudiant();
+                                foreach ($etudiants as $value) {
+                                    $nom = $value->getNom();       // Le nom de l'étudiant
+                                    $prenom = $value->getPrenom(); // Le prenom de l'étudiant
+                                    $ine = $value->getIne();       // L'INE de l'étudiant
+                                    echo "<div>".$nom." ".$prenom." <input type='checkbox' name='absents[]' value='".$ine."'/><br/></div>";
+                                }
+                            ?>
+                        </div>
+                        <input type="hidden" value="1" name="id"/><!-- L'id du cours sélectionné -->
+                        <button type="submit" name='valide' class="btn bouton">Valider</button><br/><br/>
 
-
-		<!-- DEBUT DU CONTENU DE LA PAGE -->
-		<div class="container bloc">
-
-			<!-- Ligne d'entête -->
-            <div class="row enteteRubrique">
-
-                <div class="col-xs-11"><h1>Rechercher des emplois du temps</h1></div>
-
-                <!-- Le menu déroullant pour l'accès aux autres pages -->
-                <div class="dropdown col-xs-1"><h1>
-                    <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="liste.php">Listes</a></li>
-                        <?php
-                            if($_SESSION["role"]=="administrateur" || $_SESSION["role"]=="administratif"){
-                                echo '<li><a href="adminif.php">Administratif</a></li>';
-                            }
-                            if($_SESSION["role"]=="administrateur"){
-                                echo '<li><a href="admin.php">Administrateur</a></li>';
-                            }
-                        ?>
-                        <li><a href="../index.php">Deconnexion</a></li>
-                    </ul></h1>
-                </div><!-- Fin menu déroullant -->
+                    <!-- Bouton pour fermer la popup -->
+                    <div class="close"></div>
+                </div>
             </div>
+            <!-- FIN DE LA POPUP -->
 
-			<!-- Menu de sélection du groupe et de la semaine -->
-	            <div class="row menuPlanning">
+
+            <!-- DEBUT DU CONTENU DE LA PAGE -->
+            <div class="container bloc">
+
+                <!-- Ligne d'entête -->
+                <div class="row enteteRubrique">
+
+                    <div class="col-xs-11"><h1>Rechercher des emplois du temps</h1></div>
+
+                    <!-- Le menu déroullant pour l'accès aux autres pages -->
+                    <div class="dropdown col-xs-1"><h1>
+                        <button class="btn btn-default boutonMenu dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="liste.php">Listes</a></li>
+                            <?php
+                                if($_SESSION["role"]=="administrateur" || $_SESSION["role"]=="administratif"){
+                                    echo '<li><a href="adminif.php">Administratif</a></li>';
+                                }
+                                if($_SESSION["role"]=="administrateur"){
+                                    echo '<li><a href="admin.php">Administrateur</a></li>';
+                                }
+                            ?>
+                            <li><a href="../index.php">Deconnexion</a></li>
+                        </ul></h1>
+                    </div><!-- Fin menu déroullant -->
+                </div>
+
+                <!-- Menu de sélection du groupe et de la semaine -->
+                <div class="row menuPlanning">
 
                     <!-- Sélection du département -->
-					<div class="col-md-3 col-sm-12">
-						Département :
-	                    <select class="liste" name="departement" id="dep">
-	                        <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
+                    <div class="col-md-3 col-sm-12">
+                        Département :
+                        <select class="liste" name="departement" id="dep">
+                            <option <?php if(isset($dep) and $dep == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
                                 /* Récupération des départements en BD pour remplir la liste */
                                 $departements = findAllDepartement();
@@ -127,19 +131,19 @@
                                     $lib = $value->getLibelle(); // Le libelle du département
                                     $id = $value->getId();       // L'id du département
                                     echo "<option ";
-									if(isset($dep) and $dep == $id) echo "selected";
-									echo " value='".$id."'>".$lib."</option>";
+                                    if(isset($dep) and $dep == $id) echo "selected";
+                                    echo " value='".$id."'>".$lib."</option>";
                                 }
                             ?>
-	                    </select>
-					</div><!-- Fin département -->
+                        </select>
+                    </div><!-- Fin département -->
 
                     <!-- Sélection de la filière -->
                     <div class="col-md-3 col-sm-12">
                         Filière :
-	                    <select class="liste" name="filiere" id="fil">
-							<option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
-							<?php
+                        <select class="liste" name="filiere" id="fil">
+                            <option <?php if(isset($fil) and $fil == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
+                            <?php
                                 /* Récupération des filières en BD pour remplir la liste */
                                 $filieres = findAllFiliere();
                                 foreach ($filieres as $value) {
@@ -149,15 +153,15 @@
                                     if(isset($fil) and $fil == $id) echo "selected";
                                     echo " value='".$id."'>".$lib."</option>";
                                 }
-							?>
+                            ?>
                         </select>
                     </div><!-- Fin filière -->
 
                     <!-- Sélection du groupe -->
-					<div class="col-md-3 col-sm-12">
-						Groupe :
-	                    <select class="liste" name="groupe" id="grp">
-	                        <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
+                    <div class="col-md-3 col-sm-12">
+                        Groupe :
+                        <select class="liste" name="groupe" id="grp">
+                            <option <?php if(isset($grp) and $grp == "defaut") echo "selected"; ?> value="defaut"> -- Select -- </option>
                             <?php
                                 /* Récupération des groupes en BD pour remplir la liste */
                                 $groupes = findAllGroupe();
@@ -165,18 +169,18 @@
                                     $lib = $value->getLibelle(); // Le libelle du groupe
                                     $id = $value->getId();       // L'id du groupe
                                     echo "<option ";
-									if(isset($grp) and $grp == $id) echo "selected";
-									echo " value='".$id."'>".$lib."</option>";
+                                    if(isset($grp) and $grp == $id) echo "selected";
+                                    echo " value='".$id."'>".$lib."</option>";
                                 }
                             ?>
-	                    </select>
-					</div><!-- Fin groupe -->
+                        </select>
+                    </div><!-- Fin groupe -->
 
                     <!-- Sélection de la semaine -->
-					<div class="col-md-3 col-sm-12">
-						Semaine :
-	                    <select class="liste" name="semaine" id="wk">
-							<?php
+                    <div class="col-md-3 col-sm-12">
+                        Semaine :
+                        <select class="liste" name="semaine" id="wk">
+                            <?php
                                 /* Génération de la liste des semaine de l'année scolaire courante uniquement */
                                 $dateCourante = new DateTime();
                                 $mois = $dateCourante->format('m'); // Récupération du mois pour courant pour définir l'année de début
@@ -186,34 +190,35 @@
                                     $annee = ($dateCourante->format('Y')) - 1;
                                 }
                                 // Première partie de début Septembre à la fin de l'année
-								for ($i = 36; $i <= 52; $i++) {
+                                for ($i = 36; $i <= 52; $i++) {
                                     $wk =  getWeekDates($annee, $i);
-									echo "<option ";
-									if(isset($week) and $week == $i) echo "selected";
-									echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
-								}
+                                    echo "<option ";
+                                    if(isset($week) and $week == $i) echo "selected";
+                                    echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+                                }
                                 $annee++; // Passage à l'année calandaire suivante pour la fin de l'année scolaire
                                 //Deuxième partie du début de l'année à la fin Juin
                                 for ($i = 1; $i <= 26; $i++) {
                                     $wk =  getWeekDates($annee, $i);
-									echo "<option ";
-									if(isset($week) and $week == $i) echo "selected";
-									echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
+                                    echo "<option ";
+                                    if(isset($week) and $week == $i) echo "selected";
+                                    echo " value='".$i."'>".$i.": Du ".$wk['dateDeb']->format('d/m/y')." au ".$wk['dateFin']->format('d/m/y')."</option>";
                                 }
-							?>
-	                    </select>
-					</div><!-- Fin semaine -->
-	            </div><!-- Fin menu -->
-			</form><!-- Fin formulaire -->
+                            ?>
+                        </select>
+                    </div><!-- Fin semaine -->
+                </div><!-- Fin menu -->
 
-            <!-- Emploi du temps de sélection du cours -->
-			<div class="row menuPlanning">
-                <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
-                <div id="scheduler-container"></div>
-			</div>
+                <!-- Emploi du temps de sélection du cours -->
+                <div class="row menuPlanning">
+                    <!-- Div qui contiendra l'emploi du temps généré par le jQuery -->
+                    <div id="scheduler-container"></div>
+                </div>
 
-		</div>
-		<!-- FIN DE LA PAGE -->
+            </div>
+		    <!-- FIN DE LA PAGE -->
+
+        </form><!-- Fin formulaire -->
 
 		<!-- Permet de fermer les pop-ups sans cliquer sur le bouton -->
         <div class="overlay"></div>
