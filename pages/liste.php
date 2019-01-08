@@ -242,9 +242,10 @@
 								echo("<tbody><tr><th>".$etudiant->getIne()."</th><th>".$etudiant->getNom()."</th><th>".$etudiant->getPrenom()."</th></tr></tbody>");
 							}
 						}
+					// Si on effectue une recherche d'absence
 					} elseif (isset($_POST["formListAbsence"])) {
 						if($_POST["choixDepartement"] == "defaut" && $_POST["choixFiliere"] == "defaut" && $_POST["choixGroupe"] == "defaut"
-						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == ""){
+						   && $_POST["choixMatiere"] == "defaut" && $_POST["datemin"] == "" && $_POST["datemax"] == "" && $_POST["nomEtudiant"] == ""){
 							$absences = findAllAbscence();
 							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
 							foreach($absences as $absence){
@@ -252,7 +253,7 @@
 							}
 						} else {
 							$absences = findAbscenceWithParams($_POST["choixDepartement"], $_POST["choixFiliere"], $_POST["choixGroupe"],
-							                                   $_POST["choixMatiere"], $_POST["datemin"], $_POST["datemax"]);
+							                                   $_POST["choixMatiere"], $_POST["datemin"], $_POST["datemax"], $_POST["nomEtudiant"]);
 							echo("<thead><tr><th>INE</th><th>Nom</th><th>Prénom</th><th>Cours</th><th>Date</th></tr></thead>");
 							foreach($absences as $absence){
 								$etudiant = findEtudiant($absence[1]);

@@ -63,7 +63,7 @@
     /*
     * @params les differents parametres saisis lors d'une recherche d'absences
     */
-    function findAbscenceWithParams($departement, $filiere, $groupe, $matiere, $datemin, $datemax){
+    function findAbscenceWithParams($departement, $filiere, $groupe, $matiere, $datemin, $datemax, $etudiant){
         global $em;
 
         $parametres = [];
@@ -77,6 +77,8 @@
         $qb->join("Groupe", "grp", 'WITH', "par.groupe = grp.id");
         $qb->join("Filiere", "fil", 'WITH', "grp.filiere = fil.id");
         $qb->join("Departement", "dep", 'WITH', "fil.departement = dep.id");
+        $qb->join("Appartient", "app", 'WITH', "app.groupe = grp.id");
+        $qb->join("Etudiant", "etu", 'WITH', "app.etudiant = etu.ine");
         if($departement != "defaut"){
             $qb->andWhere("dep.id = ?1");
             $parametres[1] = $departement;
@@ -103,6 +105,10 @@
         } elseif($datemax != "") {
             $qb->andWhere("crs.dateDebut < ?8");
             $parametres[8] = $datemax;
+        }
+        if($etudiant != ""){
+            $qb->andWhere("etu.nom = ?9");
+            $parametres[9] = $etudiant;
         }
 
         $qb->setParameters($parametres);
